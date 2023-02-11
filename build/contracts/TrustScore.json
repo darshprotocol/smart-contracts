@@ -1,0 +1,3104 @@
+{
+  "contractName": "TrustScore",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferStarted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "acceptOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pendingOwner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "percentages",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "poorPercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "goodPercentage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "excellentPercentage",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateScores",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pendingLoans",
+          "type": "uint256"
+        }
+      ],
+      "name": "trustGrade",
+      "outputs": [
+        {
+          "internalType": "enum TrustScore.Grade",
+          "name": "",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pendingLoans",
+          "type": "uint256"
+        }
+      ],
+      "name": "inverseTrustGrade",
+      "outputs": [
+        {
+          "internalType": "enum TrustScore.Grade",
+          "name": "",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferStarted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"pendingLoans\",\"type\":\"uint256\"}],\"name\":\"inverseTrustGrade\",\"outputs\":[{\"internalType\":\"enum TrustScore.Grade\",\"name\":\"\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"percentages\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"pendingLoans\",\"type\":\"uint256\"}],\"name\":\"trustGrade\",\"outputs\":[{\"internalType\":\"enum TrustScore.Grade\",\"name\":\"\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"poorPercentage\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"goodPercentage\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"excellentPercentage\",\"type\":\"uint256\"}],\"name\":\"updateScores\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"acceptOwnership()\":{\"details\":\"The new owner accepts the ownership transfer.\"},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"pendingOwner()\":{\"details\":\"Returns the address of the pending owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/TrustScore.sol\":\"TrustScore\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0xee2b6bc803215b66037612da0fe9f23ec3c99ff89db4ff05449a8df17c9befc5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://127be279bb6b2f6106127ea6b431cfc879f9018dd76b7575841821be9eef3488\",\"dweb:/ipfs/QmfXqvL6sKx256hrVuQcSnNtirZrpm4JUbDFXwGHKgrrXU\"]},\"@openzeppelin/contracts/access/Ownable2Step.sol\":{\"keccak256\":\"0xcb3486322c36755440f6f07ce94c23c0fffe1f628a79fd50f8f501007de8ebc6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5abe306336e45520a971708e3fb0def42c20adf50a14f19a8b2849611e04b2bd\",\"dweb:/ipfs/QmQYysdtGUqyyz5a14FnxDq3QszsddtkeJ7cNammhvLcNP\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0x81d5fc973a522c8909d60be6a201869d46aa47b030b8813f60616404628c2b94\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9755b505799e622d964a843a8ed1fd60fedffca230178e5cb95ae9280df4dcd2\",\"dweb:/ipfs/QmRkhUYUUgRZ2QYJjmtQct2ubyYwS3bdUMhbuFYM12VfYn\"]},\"project:/contracts/TrustScore.sol\":{\"keccak256\":\"0x6d80c18abf297cc142545cb8aae26ebcfe17c864f4eb4f48626ec2b49f37473c\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://dee90da20f74bd91e2d02e33d06f7ac65a85d71851df81b18efa4acdef7c33fa\",\"dweb:/ipfs/QmfVutu6DxkrRCHfCE1wChAU4anzdbcrSvRWB9ajcmoUau\"]}},\"version\":1}",
+  "bytecode": "0x6080806040523461007257600180546001600160a01b03199081169091556000805433928116831782556001600160a01b0316907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09080a3606e600255605a600355605060045561052690816100788239f35b600080fdfe604060808152600436101561001357600080fd5b600090813560e01c908163069108741461032257816315d91def146102df5781634c71d5ca146102a4578163715018a61461023f57816379ba5097146101805781638da5cb5b146101585781639d592c6614610120578163e30c3978146100f3575063f2fde38b1461008457600080fd5b346100f05760203660031901126100f05761009d61034c565b6100a5610397565b600180546001600160a01b0319166001600160a01b0392831690811790915582549091167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e227008380a380f35b80fd5b90503461011c578160031936011261011c5760015490516001600160a01b039091168152602090f35b5080fd5b90503461011c57602036600319011261011c5760209181906001600160a01b0361014861034c565b1681526005845220549051908152f35b90503461011c578160031936011261011c57905490516001600160a01b039091168152602090f35b90503461011c578160031936011261011c57600154906001600160a01b039033828416036101ea57506001600160a01b031991821660015582543392811683178455167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08380a380f35b5162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b6064820152608490fd5b82346100f057806003193601126100f057610258610397565b600180546001600160a01b03199081169091558154908116825581906001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b90503461011c578060031936011261011c576102db906102ce6102c561034c565b602435906103ef565b9290915192839283610367565b0390f35b82346100f05760603660031901126100f057604435602435600435610302610397565b8181111561031e578282111561031e5760025560035560045580f35b8380fd5b90503461011c578060031936011261011c576102db906102ce61034361034c565b60243590610472565b600435906001600160a01b038216820361036257565b600080fd5b929190604084019360038210156103815760209181520152565b634e487b7160e01b600052602160045260246000fd5b6000546001600160a01b031633036103ab57565b606460405162461bcd60e51b815260206004820152602060248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152fd5b6001600160a01b03166000908152600560205260409020549081158015610466575b61045c5760035480921015610445576001811115610433575050600254600091565b6104405750600454600291565b600191565b9190916104525760019190565b6002546000925090565b5050600254600091565b50600254821015610411565b6001600160a01b031660009081526005602052604090205490811580156104e4575b6104da57600354809210156104c35760018111156104b6575050600454600291565b6104405750600254600091565b9190916104d05760019190565b6004546002925090565b5050600454600291565b5060025482101561049456fea2646970667358221220a84e25ec63119ce5a325d2dea6f0da74c7c27d91c6ed4b4cd436c796f898d19164736f6c63430008110033",
+  "deployedBytecode": "0x604060808152600436101561001357600080fd5b600090813560e01c908163069108741461032257816315d91def146102df5781634c71d5ca146102a4578163715018a61461023f57816379ba5097146101805781638da5cb5b146101585781639d592c6614610120578163e30c3978146100f3575063f2fde38b1461008457600080fd5b346100f05760203660031901126100f05761009d61034c565b6100a5610397565b600180546001600160a01b0319166001600160a01b0392831690811790915582549091167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e227008380a380f35b80fd5b90503461011c578160031936011261011c5760015490516001600160a01b039091168152602090f35b5080fd5b90503461011c57602036600319011261011c5760209181906001600160a01b0361014861034c565b1681526005845220549051908152f35b90503461011c578160031936011261011c57905490516001600160a01b039091168152602090f35b90503461011c578160031936011261011c57600154906001600160a01b039033828416036101ea57506001600160a01b031991821660015582543392811683178455167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08380a380f35b5162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b6064820152608490fd5b82346100f057806003193601126100f057610258610397565b600180546001600160a01b03199081169091558154908116825581906001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b90503461011c578060031936011261011c576102db906102ce6102c561034c565b602435906103ef565b9290915192839283610367565b0390f35b82346100f05760603660031901126100f057604435602435600435610302610397565b8181111561031e578282111561031e5760025560035560045580f35b8380fd5b90503461011c578060031936011261011c576102db906102ce61034361034c565b60243590610472565b600435906001600160a01b038216820361036257565b600080fd5b929190604084019360038210156103815760209181520152565b634e487b7160e01b600052602160045260246000fd5b6000546001600160a01b031633036103ab57565b606460405162461bcd60e51b815260206004820152602060248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152fd5b6001600160a01b03166000908152600560205260409020549081158015610466575b61045c5760035480921015610445576001811115610433575050600254600091565b6104405750600454600291565b600191565b9190916104525760019190565b6002546000925090565b5050600254600091565b50600254821015610411565b6001600160a01b031660009081526005602052604090205490811580156104e4575b6104da57600354809210156104c35760018111156104b6575050600454600291565b6104405750600254600091565b9190916104d05760019190565b6004546002925090565b5050600454600291565b5060025482101561049456fea2646970667358221220a84e25ec63119ce5a325d2dea6f0da74c7c27d91c6ed4b4cd436c796f898d19164736f6c63430008110033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "133:2429:16:-:0;;;;;;;;;;-1:-1:-1;;;;;;133:2429:16;;;;;;-1:-1:-1;133:2429:16;;736:10:10;133:2429:16;;;;;;;-1:-1:-1;;;;;133:2429:16;;2653:40:1;;-1:-1:-1;2653:40:1;486:3:16;468:21;133:2429;518:2;133:2429;;554:2;531:25;133:2429;;;;;;;;;;;",
+  "deployedSourceMap": "133:2429:16:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;133:2429:16;;;;;;:::i;:::-;1097:65:1;;:::i;:::-;133:2429:16;;;-1:-1:-1;;;;;;133:2429:16;-1:-1:-1;;;;;133:2429:16;;;;;;;;;;;;;;1303:43:2;133:2429:16;;1303:43:2;133:2429:16;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2429:16;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;133:2429:16;;;;;;;;-1:-1:-1;;;;;133:2429:16;;:::i;:::-;;;;373:46;133:2429;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2429:16;;;;;;;;;;;;;;;;;;;;;;953:13:2;133:2429:16;;-1:-1:-1;;;;;133:2429:16;736:10:10;133:2429:16;;;1880:24:2;133:2429:16;;-1:-1:-1;;;;;;;133:2429:16;;;953:13:2;133:2429:16;;;736:10:10;133:2429:16;;;;;;;;2653:40:1;133:2429:16;;2653:40:1;133:2429:16;;;;-1:-1:-1;;;133:2429:16;;;;;;;;;;;;;;;;;-1:-1:-1;;;133:2429:16;;;;;;;;;;;;;;;;;;;;1097:65:1;;:::i;:::-;1627:20:2;133:2429:16;;-1:-1:-1;;;;;;133:2429:16;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2429:16;2653:40:1;133:2429:16;;2653:40:1;133:2429:16;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;:::i;:::-;;;;;;;;;;:::i;:::-;;;;;;;;;;;-1:-1:-1;;133:2429:16;;;;;;;;;;1097:65:1;;:::i;:::-;741:31:16;;;133:2429;;;792:36;;;133:2429;;;842:32;133:2429;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;:::i;:::-;;;;-1:-1:-1;;;;;133:2429:16;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;-1:-1:-1;133:2429:16;;;;;-1:-1:-1;133:2429:16;1408:132:1;1316:6;133:2429:16;-1:-1:-1;;;;;133:2429:16;736:10:10;1472:23:1;133:2429:16;;1408:132:1:o;133:2429:16:-;;;;;;;;;;;;;;;;;;;;;;;;;986:769;-1:-1:-1;;;;;133:2429:16;-1:-1:-1;133:2429:16;;;1143:11;133:2429;;;;;;;1177:15;;:48;;;;986:769;1173:117;;1318:15;133:2429;1304:29;;;;1300:205;;133:2429;1519:16;;1534:1;;;-1:-1:-1;;1572:15:16;133:2429;-1:-1:-1;;1552:36:16:o;1515:176::-;1606:85;;-1:-1:-1;1726:20:16;133:2429;1709:15;;986:769::o;1606:85::-;133:2429;;1643:36::o;1300:205::-;1354:16;;;1350:93;;133:2429;1457:36;;:::o;1350:93::-;1411:15;133:2429;-1:-1:-1;;;133:2429:16;1391:36::o;1173:117::-;-1:-1:-1;;1262:15:16;133:2429;-1:-1:-1;;1242:36:16:o;1177:48::-;133:2429;1210:15;133:2429;1196:29;;;1177:48;;1763:796;-1:-1:-1;;;;;133:2429:16;-1:-1:-1;133:2429:16;;;1927:11;133:2429;;;;;;;1961:15;;:48;;;;1763:796;1957:127;;2112:15;133:2429;2098:29;;;;2094:215;;133:2429;2323:16;;2338:1;;;-1:-1:-1;;2381:20:16;133:2429;2364:15;;2356:46::o;2319:186::-;2420:85;;-1:-1:-1;2535:15:16;133:2429;-1:-1:-1;;1763:796:16:o;2094:215::-;2148:16;;;2144:103;;133:2429;2261:36;;:::o;2144:103::-;2210:20;133:2429;2193:15;;-1:-1:-1;133:2429:16;2185:46::o;1957:127::-;-1:-1:-1;;2051:20:16;133:2429;2034:15;;2026:46::o;1961:48::-;133:2429;1994:15;133:2429;1980:29;;;1961:48;",
+  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\nimport \"@openzeppelin/contracts/access/Ownable2Step.sol\";\r\n\r\ncontract TrustScore is Ownable2Step {\r\n    uint256 private POOR_PERCENTAGE;\r\n    uint256 private GOOD_PERCENTAGE;\r\n    uint256 private EXCELLENT_PERCENTAGE;\r\n\r\n    enum Grade {\r\n        POOR,\r\n        GOOD,\r\n        EXCELLENT\r\n    }\r\n\r\n    mapping(address => uint256) public percentages;\r\n\r\n    constructor() Ownable2Step() {\r\n        POOR_PERCENTAGE = 110;\r\n        GOOD_PERCENTAGE = 90;\r\n        EXCELLENT_PERCENTAGE = 80;\r\n    }\r\n\r\n    function updateScores(\r\n        uint256 poorPercentage,\r\n        uint256 goodPercentage,\r\n        uint256 excellentPercentage\r\n    ) public onlyOwner {\r\n        require(poorPercentage > goodPercentage);\r\n        require(goodPercentage > excellentPercentage);\r\n\r\n        POOR_PERCENTAGE = poorPercentage;\r\n        GOOD_PERCENTAGE = goodPercentage;\r\n        EXCELLENT_PERCENTAGE = excellentPercentage;\r\n    }\r\n\r\n    function trustGrade(address user, uint256 pendingLoans)\r\n        public\r\n        view\r\n        returns (Grade, uint256)\r\n    {\r\n        uint256 percentage = percentages[user];\r\n\r\n        if (percentage == 0 || percentage >= POOR_PERCENTAGE) {\r\n            return (Grade.POOR, POOR_PERCENTAGE);\r\n        }\r\n        if (percentage >= GOOD_PERCENTAGE) {\r\n            if (pendingLoans > 0) {\r\n                return (Grade.POOR, POOR_PERCENTAGE);\r\n            }\r\n            return (Grade.GOOD, GOOD_PERCENTAGE);\r\n        }\r\n        if (pendingLoans > 1) {\r\n            return (Grade.POOR, POOR_PERCENTAGE);\r\n        } else if (pendingLoans > 0) {\r\n            return (Grade.GOOD, GOOD_PERCENTAGE);\r\n        }\r\n        return (Grade.EXCELLENT, EXCELLENT_PERCENTAGE);\r\n    }\r\n\r\n    function inverseTrustGrade(address user, uint256 pendingLoans)\r\n        public\r\n        view\r\n        returns (Grade, uint256)\r\n    {\r\n        uint256 percentage = percentages[user];\r\n\r\n        if (percentage == 0 || percentage >= POOR_PERCENTAGE) {\r\n            return (Grade.EXCELLENT, EXCELLENT_PERCENTAGE);\r\n        }\r\n        if (percentage >= GOOD_PERCENTAGE) {\r\n            if (pendingLoans > 0) {\r\n                return (Grade.EXCELLENT, EXCELLENT_PERCENTAGE);\r\n            }\r\n            return (Grade.GOOD, GOOD_PERCENTAGE);\r\n        }\r\n        if (pendingLoans > 1) {\r\n            return (Grade.EXCELLENT, EXCELLENT_PERCENTAGE);\r\n        } else if (pendingLoans > 0) {\r\n            return (Grade.GOOD, GOOD_PERCENTAGE);\r\n        }\r\n        return (Grade.POOR, POOR_PERCENTAGE);\r\n    }\r\n}\r\n",
+  "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\TrustScore.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/TrustScore.sol",
+    "exportedSymbols": {
+      "Context": [
+        1654
+      ],
+      "Ownable": [
+        158
+      ],
+      "Ownable2Step": [
+        241
+      ],
+      "TrustScore": [
+        3835
+      ]
+    },
+    "id": 3836,
+    "license": "GPL-3.0",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3607,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.7",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "37:31:16"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/access/Ownable2Step.sol",
+        "file": "@openzeppelin/contracts/access/Ownable2Step.sol",
+        "id": 3608,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3836,
+        "sourceUnit": 242,
+        "src": "72:57:16",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 3609,
+              "name": "Ownable2Step",
+              "nameLocations": [
+                "156:12:16"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 241,
+              "src": "156:12:16"
+            },
+            "id": 3610,
+            "nodeType": "InheritanceSpecifier",
+            "src": "156:12:16"
+          }
+        ],
+        "canonicalName": "TrustScore",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 3835,
+        "linearizedBaseContracts": [
+          3835,
+          241,
+          158,
+          1654
+        ],
+        "name": "TrustScore",
+        "nameLocation": "142:10:16",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 3612,
+            "mutability": "mutable",
+            "name": "POOR_PERCENTAGE",
+            "nameLocation": "192:15:16",
+            "nodeType": "VariableDeclaration",
+            "scope": 3835,
+            "src": "176:31:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 3611,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "176:7:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 3614,
+            "mutability": "mutable",
+            "name": "GOOD_PERCENTAGE",
+            "nameLocation": "230:15:16",
+            "nodeType": "VariableDeclaration",
+            "scope": 3835,
+            "src": "214:31:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 3613,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "214:7:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "constant": false,
+            "id": 3616,
+            "mutability": "mutable",
+            "name": "EXCELLENT_PERCENTAGE",
+            "nameLocation": "268:20:16",
+            "nodeType": "VariableDeclaration",
+            "scope": 3835,
+            "src": "252:36:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 3615,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "252:7:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "canonicalName": "TrustScore.Grade",
+            "id": 3620,
+            "members": [
+              {
+                "id": 3617,
+                "name": "POOR",
+                "nameLocation": "319:4:16",
+                "nodeType": "EnumValue",
+                "src": "319:4:16"
+              },
+              {
+                "id": 3618,
+                "name": "GOOD",
+                "nameLocation": "334:4:16",
+                "nodeType": "EnumValue",
+                "src": "334:4:16"
+              },
+              {
+                "id": 3619,
+                "name": "EXCELLENT",
+                "nameLocation": "349:9:16",
+                "nodeType": "EnumValue",
+                "src": "349:9:16"
+              }
+            ],
+            "name": "Grade",
+            "nameLocation": "302:5:16",
+            "nodeType": "EnumDefinition",
+            "src": "297:68:16"
+          },
+          {
+            "constant": false,
+            "functionSelector": "9d592c66",
+            "id": 3624,
+            "mutability": "mutable",
+            "name": "percentages",
+            "nameLocation": "408:11:16",
+            "nodeType": "VariableDeclaration",
+            "scope": 3835,
+            "src": "373:46:16",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 3623,
+              "keyType": {
+                "id": 3621,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "381:7:16",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "373:27:16",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 3622,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "392:7:16",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3641,
+              "nodeType": "Block",
+              "src": "457:107:16",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 3631,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3629,
+                      "name": "POOR_PERCENTAGE",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3612,
+                      "src": "468:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "313130",
+                      "id": 3630,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "486:3:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_110_by_1",
+                        "typeString": "int_const 110"
+                      },
+                      "value": "110"
+                    },
+                    "src": "468:21:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3632,
+                  "nodeType": "ExpressionStatement",
+                  "src": "468:21:16"
+                },
+                {
+                  "expression": {
+                    "id": 3635,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3633,
+                      "name": "GOOD_PERCENTAGE",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3614,
+                      "src": "500:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "3930",
+                      "id": 3634,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "518:2:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_90_by_1",
+                        "typeString": "int_const 90"
+                      },
+                      "value": "90"
+                    },
+                    "src": "500:20:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3636,
+                  "nodeType": "ExpressionStatement",
+                  "src": "500:20:16"
+                },
+                {
+                  "expression": {
+                    "id": 3639,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3637,
+                      "name": "EXCELLENT_PERCENTAGE",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3616,
+                      "src": "531:20:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "3830",
+                      "id": 3638,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "554:2:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_80_by_1",
+                        "typeString": "int_const 80"
+                      },
+                      "value": "80"
+                    },
+                    "src": "531:25:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3640,
+                  "nodeType": "ExpressionStatement",
+                  "src": "531:25:16"
+                }
+              ]
+            },
+            "id": 3642,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [
+              {
+                "arguments": [],
+                "id": 3627,
+                "kind": "baseConstructorSpecifier",
+                "modifierName": {
+                  "id": 3626,
+                  "name": "Ownable2Step",
+                  "nameLocations": [
+                    "442:12:16"
+                  ],
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 241,
+                  "src": "442:12:16"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "442:14:16"
+              }
+            ],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3625,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "439:2:16"
+            },
+            "returnParameters": {
+              "id": 3628,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "457:0:16"
+            },
+            "scope": 3835,
+            "src": "428:136:16",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3677,
+              "nodeType": "Block",
+              "src": "722:256:16",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 3656,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "id": 3654,
+                          "name": "poorPercentage",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3644,
+                          "src": "741:14:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": ">",
+                        "rightExpression": {
+                          "id": 3655,
+                          "name": "goodPercentage",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3646,
+                          "src": "758:14:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "src": "741:31:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 3653,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "733:7:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 3657,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "733:40:16",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3658,
+                  "nodeType": "ExpressionStatement",
+                  "src": "733:40:16"
+                },
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 3662,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "id": 3660,
+                          "name": "goodPercentage",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3646,
+                          "src": "792:14:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": ">",
+                        "rightExpression": {
+                          "id": 3661,
+                          "name": "excellentPercentage",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3648,
+                          "src": "809:19:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "src": "792:36:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 3659,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "784:7:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 3663,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "784:45:16",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3664,
+                  "nodeType": "ExpressionStatement",
+                  "src": "784:45:16"
+                },
+                {
+                  "expression": {
+                    "id": 3667,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3665,
+                      "name": "POOR_PERCENTAGE",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3612,
+                      "src": "842:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3666,
+                      "name": "poorPercentage",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3644,
+                      "src": "860:14:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "842:32:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3668,
+                  "nodeType": "ExpressionStatement",
+                  "src": "842:32:16"
+                },
+                {
+                  "expression": {
+                    "id": 3671,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3669,
+                      "name": "GOOD_PERCENTAGE",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3614,
+                      "src": "885:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3670,
+                      "name": "goodPercentage",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3646,
+                      "src": "903:14:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "885:32:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3672,
+                  "nodeType": "ExpressionStatement",
+                  "src": "885:32:16"
+                },
+                {
+                  "expression": {
+                    "id": 3675,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 3673,
+                      "name": "EXCELLENT_PERCENTAGE",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3616,
+                      "src": "928:20:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 3674,
+                      "name": "excellentPercentage",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3648,
+                      "src": "951:19:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "928:42:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 3676,
+                  "nodeType": "ExpressionStatement",
+                  "src": "928:42:16"
+                }
+              ]
+            },
+            "functionSelector": "15d91def",
+            "id": 3678,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 3651,
+                "kind": "modifierInvocation",
+                "modifierName": {
+                  "id": 3650,
+                  "name": "onlyOwner",
+                  "nameLocations": [
+                    "712:9:16"
+                  ],
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 77,
+                  "src": "712:9:16"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "712:9:16"
+              }
+            ],
+            "name": "updateScores",
+            "nameLocation": "581:12:16",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3649,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3644,
+                  "mutability": "mutable",
+                  "name": "poorPercentage",
+                  "nameLocation": "612:14:16",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3678,
+                  "src": "604:22:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3643,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "604:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3646,
+                  "mutability": "mutable",
+                  "name": "goodPercentage",
+                  "nameLocation": "645:14:16",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3678,
+                  "src": "637:22:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3645,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "637:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3648,
+                  "mutability": "mutable",
+                  "name": "excellentPercentage",
+                  "nameLocation": "678:19:16",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3678,
+                  "src": "670:27:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3647,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "670:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "593:111:16"
+            },
+            "returnParameters": {
+              "id": 3652,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "722:0:16"
+            },
+            "scope": 3835,
+            "src": "572:406:16",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3755,
+              "nodeType": "Block",
+              "src": "1111:644:16",
+              "statements": [
+                {
+                  "assignments": [
+                    3691
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 3691,
+                      "mutability": "mutable",
+                      "name": "percentage",
+                      "nameLocation": "1130:10:16",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3755,
+                      "src": "1122:18:16",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 3690,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1122:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 3695,
+                  "initialValue": {
+                    "baseExpression": {
+                      "id": 3692,
+                      "name": "percentages",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3624,
+                      "src": "1143:11:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 3694,
+                    "indexExpression": {
+                      "id": 3693,
+                      "name": "user",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3680,
+                      "src": "1155:4:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "1143:17:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1122:38:16"
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 3702,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 3698,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "id": 3696,
+                        "name": "percentage",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3691,
+                        "src": "1177:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "==",
+                      "rightExpression": {
+                        "hexValue": "30",
+                        "id": 3697,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1191:1:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_0_by_1",
+                          "typeString": "int_const 0"
+                        },
+                        "value": "0"
+                      },
+                      "src": "1177:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "||",
+                    "rightExpression": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 3701,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "id": 3699,
+                        "name": "percentage",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3691,
+                        "src": "1196:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": ">=",
+                      "rightExpression": {
+                        "id": 3700,
+                        "name": "POOR_PERCENTAGE",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3612,
+                        "src": "1210:15:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "src": "1196:29:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "src": "1177:48:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 3709,
+                  "nodeType": "IfStatement",
+                  "src": "1173:117:16",
+                  "trueBody": {
+                    "id": 3708,
+                    "nodeType": "Block",
+                    "src": "1227:63:16",
+                    "statements": [
+                      {
+                        "expression": {
+                          "components": [
+                            {
+                              "expression": {
+                                "id": 3703,
+                                "name": "Grade",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3620,
+                                "src": "1250:5:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                  "typeString": "type(enum TrustScore.Grade)"
+                                }
+                              },
+                              "id": 3704,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "memberLocation": "1256:4:16",
+                              "memberName": "POOR",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 3617,
+                              "src": "1250:10:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_enum$_Grade_$3620",
+                                "typeString": "enum TrustScore.Grade"
+                              }
+                            },
+                            {
+                              "id": 3705,
+                              "name": "POOR_PERCENTAGE",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3612,
+                              "src": "1262:15:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "id": 3706,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "TupleExpression",
+                          "src": "1249:29:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                            "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                          }
+                        },
+                        "functionReturnParameters": 3689,
+                        "id": 3707,
+                        "nodeType": "Return",
+                        "src": "1242:36:16"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 3712,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "id": 3710,
+                      "name": "percentage",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3691,
+                      "src": "1304:10:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">=",
+                    "rightExpression": {
+                      "id": 3711,
+                      "name": "GOOD_PERCENTAGE",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3614,
+                      "src": "1318:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1304:29:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 3729,
+                  "nodeType": "IfStatement",
+                  "src": "1300:205:16",
+                  "trueBody": {
+                    "id": 3728,
+                    "nodeType": "Block",
+                    "src": "1335:170:16",
+                    "statements": [
+                      {
+                        "condition": {
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "id": 3715,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftExpression": {
+                            "id": 3713,
+                            "name": "pendingLoans",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3682,
+                            "src": "1354:12:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "nodeType": "BinaryOperation",
+                          "operator": ">",
+                          "rightExpression": {
+                            "hexValue": "30",
+                            "id": 3714,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "number",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "1369:1:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_rational_0_by_1",
+                              "typeString": "int_const 0"
+                            },
+                            "value": "0"
+                          },
+                          "src": "1354:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        },
+                        "id": 3722,
+                        "nodeType": "IfStatement",
+                        "src": "1350:93:16",
+                        "trueBody": {
+                          "id": 3721,
+                          "nodeType": "Block",
+                          "src": "1372:71:16",
+                          "statements": [
+                            {
+                              "expression": {
+                                "components": [
+                                  {
+                                    "expression": {
+                                      "id": 3716,
+                                      "name": "Grade",
+                                      "nodeType": "Identifier",
+                                      "overloadedDeclarations": [],
+                                      "referencedDeclaration": 3620,
+                                      "src": "1399:5:16",
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                        "typeString": "type(enum TrustScore.Grade)"
+                                      }
+                                    },
+                                    "id": 3717,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "lValueRequested": false,
+                                    "memberLocation": "1405:4:16",
+                                    "memberName": "POOR",
+                                    "nodeType": "MemberAccess",
+                                    "referencedDeclaration": 3617,
+                                    "src": "1399:10:16",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_enum$_Grade_$3620",
+                                      "typeString": "enum TrustScore.Grade"
+                                    }
+                                  },
+                                  {
+                                    "id": 3718,
+                                    "name": "POOR_PERCENTAGE",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 3612,
+                                    "src": "1411:15:16",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_uint256",
+                                      "typeString": "uint256"
+                                    }
+                                  }
+                                ],
+                                "id": 3719,
+                                "isConstant": false,
+                                "isInlineArray": false,
+                                "isLValue": false,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "TupleExpression",
+                                "src": "1398:29:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                                  "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                                }
+                              },
+                              "functionReturnParameters": 3689,
+                              "id": 3720,
+                              "nodeType": "Return",
+                              "src": "1391:36:16"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "expression": {
+                          "components": [
+                            {
+                              "expression": {
+                                "id": 3723,
+                                "name": "Grade",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3620,
+                                "src": "1465:5:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                  "typeString": "type(enum TrustScore.Grade)"
+                                }
+                              },
+                              "id": 3724,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "memberLocation": "1471:4:16",
+                              "memberName": "GOOD",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 3618,
+                              "src": "1465:10:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_enum$_Grade_$3620",
+                                "typeString": "enum TrustScore.Grade"
+                              }
+                            },
+                            {
+                              "id": 3725,
+                              "name": "GOOD_PERCENTAGE",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3614,
+                              "src": "1477:15:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "id": 3726,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "TupleExpression",
+                          "src": "1464:29:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                            "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                          }
+                        },
+                        "functionReturnParameters": 3689,
+                        "id": 3727,
+                        "nodeType": "Return",
+                        "src": "1457:36:16"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 3732,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "id": 3730,
+                      "name": "pendingLoans",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3682,
+                      "src": "1519:12:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">",
+                    "rightExpression": {
+                      "hexValue": "31",
+                      "id": 3731,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1534:1:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_1_by_1",
+                        "typeString": "int_const 1"
+                      },
+                      "value": "1"
+                    },
+                    "src": "1519:16:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": {
+                    "condition": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 3741,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "id": 3739,
+                        "name": "pendingLoans",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3682,
+                        "src": "1610:12:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": ">",
+                      "rightExpression": {
+                        "hexValue": "30",
+                        "id": 3740,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1625:1:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_0_by_1",
+                          "typeString": "int_const 0"
+                        },
+                        "value": "0"
+                      },
+                      "src": "1610:16:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "id": 3748,
+                    "nodeType": "IfStatement",
+                    "src": "1606:85:16",
+                    "trueBody": {
+                      "id": 3747,
+                      "nodeType": "Block",
+                      "src": "1628:63:16",
+                      "statements": [
+                        {
+                          "expression": {
+                            "components": [
+                              {
+                                "expression": {
+                                  "id": 3742,
+                                  "name": "Grade",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 3620,
+                                  "src": "1651:5:16",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                    "typeString": "type(enum TrustScore.Grade)"
+                                  }
+                                },
+                                "id": 3743,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": true,
+                                "lValueRequested": false,
+                                "memberLocation": "1657:4:16",
+                                "memberName": "GOOD",
+                                "nodeType": "MemberAccess",
+                                "referencedDeclaration": 3618,
+                                "src": "1651:10:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_enum$_Grade_$3620",
+                                  "typeString": "enum TrustScore.Grade"
+                                }
+                              },
+                              {
+                                "id": 3744,
+                                "name": "GOOD_PERCENTAGE",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3614,
+                                "src": "1663:15:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              }
+                            ],
+                            "id": 3745,
+                            "isConstant": false,
+                            "isInlineArray": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "nodeType": "TupleExpression",
+                            "src": "1650:29:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                              "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                            }
+                          },
+                          "functionReturnParameters": 3689,
+                          "id": 3746,
+                          "nodeType": "Return",
+                          "src": "1643:36:16"
+                        }
+                      ]
+                    }
+                  },
+                  "id": 3749,
+                  "nodeType": "IfStatement",
+                  "src": "1515:176:16",
+                  "trueBody": {
+                    "id": 3738,
+                    "nodeType": "Block",
+                    "src": "1537:63:16",
+                    "statements": [
+                      {
+                        "expression": {
+                          "components": [
+                            {
+                              "expression": {
+                                "id": 3733,
+                                "name": "Grade",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3620,
+                                "src": "1560:5:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                  "typeString": "type(enum TrustScore.Grade)"
+                                }
+                              },
+                              "id": 3734,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "memberLocation": "1566:4:16",
+                              "memberName": "POOR",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 3617,
+                              "src": "1560:10:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_enum$_Grade_$3620",
+                                "typeString": "enum TrustScore.Grade"
+                              }
+                            },
+                            {
+                              "id": 3735,
+                              "name": "POOR_PERCENTAGE",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3612,
+                              "src": "1572:15:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "id": 3736,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "TupleExpression",
+                          "src": "1559:29:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                            "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                          }
+                        },
+                        "functionReturnParameters": 3689,
+                        "id": 3737,
+                        "nodeType": "Return",
+                        "src": "1552:36:16"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "expression": {
+                    "components": [
+                      {
+                        "expression": {
+                          "id": 3750,
+                          "name": "Grade",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3620,
+                          "src": "1709:5:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                            "typeString": "type(enum TrustScore.Grade)"
+                          }
+                        },
+                        "id": 3751,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "memberLocation": "1715:9:16",
+                        "memberName": "EXCELLENT",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 3619,
+                        "src": "1709:15:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_Grade_$3620",
+                          "typeString": "enum TrustScore.Grade"
+                        }
+                      },
+                      {
+                        "id": 3752,
+                        "name": "EXCELLENT_PERCENTAGE",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3616,
+                        "src": "1726:20:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "id": 3753,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "1708:39:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                      "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                    }
+                  },
+                  "functionReturnParameters": 3689,
+                  "id": 3754,
+                  "nodeType": "Return",
+                  "src": "1701:46:16"
+                }
+              ]
+            },
+            "functionSelector": "4c71d5ca",
+            "id": 3756,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "trustGrade",
+            "nameLocation": "995:10:16",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3683,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3680,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "1014:4:16",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3756,
+                  "src": "1006:12:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3679,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1006:7:16",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3682,
+                  "mutability": "mutable",
+                  "name": "pendingLoans",
+                  "nameLocation": "1028:12:16",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3756,
+                  "src": "1020:20:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3681,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1020:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1005:36:16"
+            },
+            "returnParameters": {
+              "id": 3689,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3686,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3756,
+                  "src": "1090:5:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Grade_$3620",
+                    "typeString": "enum TrustScore.Grade"
+                  },
+                  "typeName": {
+                    "id": 3685,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 3684,
+                      "name": "Grade",
+                      "nameLocations": [
+                        "1090:5:16"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 3620,
+                      "src": "1090:5:16"
+                    },
+                    "referencedDeclaration": 3620,
+                    "src": "1090:5:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Grade_$3620",
+                      "typeString": "enum TrustScore.Grade"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3688,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3756,
+                  "src": "1097:7:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3687,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1097:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1089:16:16"
+            },
+            "scope": 3835,
+            "src": "986:769:16",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3833,
+              "nodeType": "Block",
+              "src": "1895:664:16",
+              "statements": [
+                {
+                  "assignments": [
+                    3769
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 3769,
+                      "mutability": "mutable",
+                      "name": "percentage",
+                      "nameLocation": "1914:10:16",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 3833,
+                      "src": "1906:18:16",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 3768,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1906:7:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 3773,
+                  "initialValue": {
+                    "baseExpression": {
+                      "id": 3770,
+                      "name": "percentages",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3624,
+                      "src": "1927:11:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                        "typeString": "mapping(address => uint256)"
+                      }
+                    },
+                    "id": 3772,
+                    "indexExpression": {
+                      "id": 3771,
+                      "name": "user",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3758,
+                      "src": "1939:4:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "1927:17:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1906:38:16"
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "id": 3780,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 3776,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "id": 3774,
+                        "name": "percentage",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3769,
+                        "src": "1961:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "==",
+                      "rightExpression": {
+                        "hexValue": "30",
+                        "id": 3775,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1975:1:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_0_by_1",
+                          "typeString": "int_const 0"
+                        },
+                        "value": "0"
+                      },
+                      "src": "1961:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "||",
+                    "rightExpression": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 3779,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "id": 3777,
+                        "name": "percentage",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3769,
+                        "src": "1980:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": ">=",
+                      "rightExpression": {
+                        "id": 3778,
+                        "name": "POOR_PERCENTAGE",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3612,
+                        "src": "1994:15:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "src": "1980:29:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "src": "1961:48:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 3787,
+                  "nodeType": "IfStatement",
+                  "src": "1957:127:16",
+                  "trueBody": {
+                    "id": 3786,
+                    "nodeType": "Block",
+                    "src": "2011:73:16",
+                    "statements": [
+                      {
+                        "expression": {
+                          "components": [
+                            {
+                              "expression": {
+                                "id": 3781,
+                                "name": "Grade",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3620,
+                                "src": "2034:5:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                  "typeString": "type(enum TrustScore.Grade)"
+                                }
+                              },
+                              "id": 3782,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "memberLocation": "2040:9:16",
+                              "memberName": "EXCELLENT",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 3619,
+                              "src": "2034:15:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_enum$_Grade_$3620",
+                                "typeString": "enum TrustScore.Grade"
+                              }
+                            },
+                            {
+                              "id": 3783,
+                              "name": "EXCELLENT_PERCENTAGE",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3616,
+                              "src": "2051:20:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "id": 3784,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "TupleExpression",
+                          "src": "2033:39:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                            "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                          }
+                        },
+                        "functionReturnParameters": 3767,
+                        "id": 3785,
+                        "nodeType": "Return",
+                        "src": "2026:46:16"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 3790,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "id": 3788,
+                      "name": "percentage",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3769,
+                      "src": "2098:10:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">=",
+                    "rightExpression": {
+                      "id": 3789,
+                      "name": "GOOD_PERCENTAGE",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3614,
+                      "src": "2112:15:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "2098:29:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 3807,
+                  "nodeType": "IfStatement",
+                  "src": "2094:215:16",
+                  "trueBody": {
+                    "id": 3806,
+                    "nodeType": "Block",
+                    "src": "2129:180:16",
+                    "statements": [
+                      {
+                        "condition": {
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "id": 3793,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftExpression": {
+                            "id": 3791,
+                            "name": "pendingLoans",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 3760,
+                            "src": "2148:12:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "nodeType": "BinaryOperation",
+                          "operator": ">",
+                          "rightExpression": {
+                            "hexValue": "30",
+                            "id": 3792,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "number",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "2163:1:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_rational_0_by_1",
+                              "typeString": "int_const 0"
+                            },
+                            "value": "0"
+                          },
+                          "src": "2148:16:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        },
+                        "id": 3800,
+                        "nodeType": "IfStatement",
+                        "src": "2144:103:16",
+                        "trueBody": {
+                          "id": 3799,
+                          "nodeType": "Block",
+                          "src": "2166:81:16",
+                          "statements": [
+                            {
+                              "expression": {
+                                "components": [
+                                  {
+                                    "expression": {
+                                      "id": 3794,
+                                      "name": "Grade",
+                                      "nodeType": "Identifier",
+                                      "overloadedDeclarations": [],
+                                      "referencedDeclaration": 3620,
+                                      "src": "2193:5:16",
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                        "typeString": "type(enum TrustScore.Grade)"
+                                      }
+                                    },
+                                    "id": 3795,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "lValueRequested": false,
+                                    "memberLocation": "2199:9:16",
+                                    "memberName": "EXCELLENT",
+                                    "nodeType": "MemberAccess",
+                                    "referencedDeclaration": 3619,
+                                    "src": "2193:15:16",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_enum$_Grade_$3620",
+                                      "typeString": "enum TrustScore.Grade"
+                                    }
+                                  },
+                                  {
+                                    "id": 3796,
+                                    "name": "EXCELLENT_PERCENTAGE",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "referencedDeclaration": 3616,
+                                    "src": "2210:20:16",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_uint256",
+                                      "typeString": "uint256"
+                                    }
+                                  }
+                                ],
+                                "id": 3797,
+                                "isConstant": false,
+                                "isInlineArray": false,
+                                "isLValue": false,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "TupleExpression",
+                                "src": "2192:39:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                                  "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                                }
+                              },
+                              "functionReturnParameters": 3767,
+                              "id": 3798,
+                              "nodeType": "Return",
+                              "src": "2185:46:16"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "expression": {
+                          "components": [
+                            {
+                              "expression": {
+                                "id": 3801,
+                                "name": "Grade",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3620,
+                                "src": "2269:5:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                  "typeString": "type(enum TrustScore.Grade)"
+                                }
+                              },
+                              "id": 3802,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "memberLocation": "2275:4:16",
+                              "memberName": "GOOD",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 3618,
+                              "src": "2269:10:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_enum$_Grade_$3620",
+                                "typeString": "enum TrustScore.Grade"
+                              }
+                            },
+                            {
+                              "id": 3803,
+                              "name": "GOOD_PERCENTAGE",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3614,
+                              "src": "2281:15:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "id": 3804,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "TupleExpression",
+                          "src": "2268:29:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                            "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                          }
+                        },
+                        "functionReturnParameters": 3767,
+                        "id": 3805,
+                        "nodeType": "Return",
+                        "src": "2261:36:16"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 3810,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "id": 3808,
+                      "name": "pendingLoans",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3760,
+                      "src": "2323:12:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">",
+                    "rightExpression": {
+                      "hexValue": "31",
+                      "id": 3809,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "2338:1:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_1_by_1",
+                        "typeString": "int_const 1"
+                      },
+                      "value": "1"
+                    },
+                    "src": "2323:16:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": {
+                    "condition": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 3819,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "id": 3817,
+                        "name": "pendingLoans",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3760,
+                        "src": "2424:12:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": ">",
+                      "rightExpression": {
+                        "hexValue": "30",
+                        "id": 3818,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "2439:1:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_0_by_1",
+                          "typeString": "int_const 0"
+                        },
+                        "value": "0"
+                      },
+                      "src": "2424:16:16",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "id": 3826,
+                    "nodeType": "IfStatement",
+                    "src": "2420:85:16",
+                    "trueBody": {
+                      "id": 3825,
+                      "nodeType": "Block",
+                      "src": "2442:63:16",
+                      "statements": [
+                        {
+                          "expression": {
+                            "components": [
+                              {
+                                "expression": {
+                                  "id": 3820,
+                                  "name": "Grade",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 3620,
+                                  "src": "2465:5:16",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                    "typeString": "type(enum TrustScore.Grade)"
+                                  }
+                                },
+                                "id": 3821,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": true,
+                                "lValueRequested": false,
+                                "memberLocation": "2471:4:16",
+                                "memberName": "GOOD",
+                                "nodeType": "MemberAccess",
+                                "referencedDeclaration": 3618,
+                                "src": "2465:10:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_enum$_Grade_$3620",
+                                  "typeString": "enum TrustScore.Grade"
+                                }
+                              },
+                              {
+                                "id": 3822,
+                                "name": "GOOD_PERCENTAGE",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3614,
+                                "src": "2477:15:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              }
+                            ],
+                            "id": 3823,
+                            "isConstant": false,
+                            "isInlineArray": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "nodeType": "TupleExpression",
+                            "src": "2464:29:16",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                              "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                            }
+                          },
+                          "functionReturnParameters": 3767,
+                          "id": 3824,
+                          "nodeType": "Return",
+                          "src": "2457:36:16"
+                        }
+                      ]
+                    }
+                  },
+                  "id": 3827,
+                  "nodeType": "IfStatement",
+                  "src": "2319:186:16",
+                  "trueBody": {
+                    "id": 3816,
+                    "nodeType": "Block",
+                    "src": "2341:73:16",
+                    "statements": [
+                      {
+                        "expression": {
+                          "components": [
+                            {
+                              "expression": {
+                                "id": 3811,
+                                "name": "Grade",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3620,
+                                "src": "2364:5:16",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                                  "typeString": "type(enum TrustScore.Grade)"
+                                }
+                              },
+                              "id": 3812,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "memberLocation": "2370:9:16",
+                              "memberName": "EXCELLENT",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 3619,
+                              "src": "2364:15:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_enum$_Grade_$3620",
+                                "typeString": "enum TrustScore.Grade"
+                              }
+                            },
+                            {
+                              "id": 3813,
+                              "name": "EXCELLENT_PERCENTAGE",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3616,
+                              "src": "2381:20:16",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            }
+                          ],
+                          "id": 3814,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "TupleExpression",
+                          "src": "2363:39:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                            "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                          }
+                        },
+                        "functionReturnParameters": 3767,
+                        "id": 3815,
+                        "nodeType": "Return",
+                        "src": "2356:46:16"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "expression": {
+                    "components": [
+                      {
+                        "expression": {
+                          "id": 3828,
+                          "name": "Grade",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3620,
+                          "src": "2523:5:16",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_enum$_Grade_$3620_$",
+                            "typeString": "type(enum TrustScore.Grade)"
+                          }
+                        },
+                        "id": 3829,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "memberLocation": "2529:4:16",
+                        "memberName": "POOR",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 3617,
+                        "src": "2523:10:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_Grade_$3620",
+                          "typeString": "enum TrustScore.Grade"
+                        }
+                      },
+                      {
+                        "id": 3830,
+                        "name": "POOR_PERCENTAGE",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3612,
+                        "src": "2535:15:16",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "id": 3831,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "2522:29:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_enum$_Grade_$3620_$_t_uint256_$",
+                      "typeString": "tuple(enum TrustScore.Grade,uint256)"
+                    }
+                  },
+                  "functionReturnParameters": 3767,
+                  "id": 3832,
+                  "nodeType": "Return",
+                  "src": "2515:36:16"
+                }
+              ]
+            },
+            "functionSelector": "06910874",
+            "id": 3834,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "inverseTrustGrade",
+            "nameLocation": "1772:17:16",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3761,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3758,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "1798:4:16",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3834,
+                  "src": "1790:12:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3757,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1790:7:16",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3760,
+                  "mutability": "mutable",
+                  "name": "pendingLoans",
+                  "nameLocation": "1812:12:16",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3834,
+                  "src": "1804:20:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3759,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1804:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1789:36:16"
+            },
+            "returnParameters": {
+              "id": 3767,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3764,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3834,
+                  "src": "1874:5:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Grade_$3620",
+                    "typeString": "enum TrustScore.Grade"
+                  },
+                  "typeName": {
+                    "id": 3763,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 3762,
+                      "name": "Grade",
+                      "nameLocations": [
+                        "1874:5:16"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 3620,
+                      "src": "1874:5:16"
+                    },
+                    "referencedDeclaration": 3620,
+                    "src": "1874:5:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Grade_$3620",
+                      "typeString": "enum TrustScore.Grade"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3766,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3834,
+                  "src": "1881:7:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3765,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1881:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1873:16:16"
+            },
+            "scope": 3835,
+            "src": "1763:796:16",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 3836,
+        "src": "133:2429:16",
+        "usedErrors": []
+      }
+    ],
+    "src": "37:2527:16"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {
+    "4002": {
+      "events": {
+        "0x38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e22700": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferStarted",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x9082e4a33418C0881B68B97C4bF73186EC60C4bB",
+      "transactionHash": "0xf22433160c5a0ec0669734dd9ca68f8a12c56329cc944056f1c6288f6d6b4df0"
+    },
+    "5777": {
+      "events": {
+        "0x38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e22700": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferStarted",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xE2054f64EC2B98629514bEC72CECfDe0310fC425",
+      "transactionHash": "0x3fa55fafced5871aa033ca6a9d8a7ddd08560405dc09c0ea8467c1b876b55e6d"
+    }
+  },
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-02-11T06:38:09.107Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "acceptOwnership()": {
+        "details": "The new owner accepts the ownership transfer."
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "pendingOwner()": {
+        "details": "Returns the address of the pending owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

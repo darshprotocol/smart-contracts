@@ -1,0 +1,395 @@
+{
+  "contractName": "AssetLibrary",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/libraries/AssetLibrary.sol\":\"AssetLibrary\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/libraries/AssetLibrary.sol\":{\"keccak256\":\"0x3d55d6265ce1ef4a1e034b916e499774ca114fec23035cdb91aba55ebf900f3b\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://d5bb52fcd01233068f75d1dcbcbba3f63782bba2f16577775ac321d093f00c36\",\"dweb:/ipfs/QmPAoEe5svN99P2prQtMkfWMSnvqZMXC1XHcCyDA66bQZG\"]}},\"version\":1}",
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea26469706673582212200b3d829d88d7a43f099a3483b6142d39bb3f628631a3d82cd365b6c4d1d82ff864736f6c63430008110033",
+  "deployedBytecode": "0x600080fdfea26469706673582212200b3d829d88d7a43f099a3483b6142d39bb3f628631a3d82cd365b6c4d1d82ff864736f6c63430008110033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "72:639:28:-:0;;;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "72:639:28:-:0;;",
+  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\nlibrary AssetLibrary {\r\n    enum Type {\r\n        NATIVE,\r\n        WBTC,\r\n        WETH,\r\n        USDT,\r\n        USDC,\r\n        DAI\r\n    }\r\n\r\n    struct Pool {\r\n        address token;\r\n        uint256 amount;\r\n    }\r\n\r\n    /* belongs to a wallet address or user */\r\n    struct StakingReward {\r\n        address token; // address of the associated stake e.g WETH\r\n        uint256 amount; // current amount of stake\r\n        uint256 amount24; // previous amount of stake since last distribution\r\n        uint256 reward; // amount of unclaimed reward\r\n    }\r\n\r\n    struct Reserve {\r\n        address[] providers;\r\n        uint256 total;\r\n    }\r\n}\r\n",
+  "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\libraries\\AssetLibrary.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/libraries/AssetLibrary.sol",
+    "exportedSymbols": {
+      "AssetLibrary": [
+        4255
+      ]
+    },
+    "id": 4256,
+    "license": "GPL-3.0",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4227,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.7",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "37:31:28"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "AssetLibrary",
+        "contractDependencies": [],
+        "contractKind": "library",
+        "fullyImplemented": true,
+        "id": 4255,
+        "linearizedBaseContracts": [
+          4255
+        ],
+        "name": "AssetLibrary",
+        "nameLocation": "80:12:28",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "AssetLibrary.Type",
+            "id": 4234,
+            "members": [
+              {
+                "id": 4228,
+                "name": "NATIVE",
+                "nameLocation": "121:6:28",
+                "nodeType": "EnumValue",
+                "src": "121:6:28"
+              },
+              {
+                "id": 4229,
+                "name": "WBTC",
+                "nameLocation": "138:4:28",
+                "nodeType": "EnumValue",
+                "src": "138:4:28"
+              },
+              {
+                "id": 4230,
+                "name": "WETH",
+                "nameLocation": "153:4:28",
+                "nodeType": "EnumValue",
+                "src": "153:4:28"
+              },
+              {
+                "id": 4231,
+                "name": "USDT",
+                "nameLocation": "168:4:28",
+                "nodeType": "EnumValue",
+                "src": "168:4:28"
+              },
+              {
+                "id": 4232,
+                "name": "USDC",
+                "nameLocation": "183:4:28",
+                "nodeType": "EnumValue",
+                "src": "183:4:28"
+              },
+              {
+                "id": 4233,
+                "name": "DAI",
+                "nameLocation": "198:3:28",
+                "nodeType": "EnumValue",
+                "src": "198:3:28"
+              }
+            ],
+            "name": "Type",
+            "nameLocation": "105:4:28",
+            "nodeType": "EnumDefinition",
+            "src": "100:108:28"
+          },
+          {
+            "canonicalName": "AssetLibrary.Pool",
+            "id": 4239,
+            "members": [
+              {
+                "constant": false,
+                "id": 4236,
+                "mutability": "mutable",
+                "name": "token",
+                "nameLocation": "247:5:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 4239,
+                "src": "239:13:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 4235,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "239:7:28",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4238,
+                "mutability": "mutable",
+                "name": "amount",
+                "nameLocation": "271:6:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 4239,
+                "src": "263:14:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4237,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "263:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Pool",
+            "nameLocation": "223:4:28",
+            "nodeType": "StructDefinition",
+            "scope": 4255,
+            "src": "216:69:28",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "AssetLibrary.StakingReward",
+            "id": 4248,
+            "members": [
+              {
+                "constant": false,
+                "id": 4241,
+                "mutability": "mutable",
+                "name": "token",
+                "nameLocation": "380:5:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 4248,
+                "src": "372:13:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 4240,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "372:7:28",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4243,
+                "mutability": "mutable",
+                "name": "amount",
+                "nameLocation": "448:6:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 4248,
+                "src": "440:14:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4242,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "440:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4245,
+                "mutability": "mutable",
+                "name": "amount24",
+                "nameLocation": "500:8:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 4248,
+                "src": "492:16:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4244,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "492:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4247,
+                "mutability": "mutable",
+                "name": "reward",
+                "nameLocation": "579:6:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 4248,
+                "src": "571:14:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4246,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "571:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "StakingReward",
+            "nameLocation": "347:13:28",
+            "nodeType": "StructDefinition",
+            "scope": 4255,
+            "src": "340:283:28",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "AssetLibrary.Reserve",
+            "id": 4254,
+            "members": [
+              {
+                "constant": false,
+                "id": 4251,
+                "mutability": "mutable",
+                "name": "providers",
+                "nameLocation": "667:9:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 4254,
+                "src": "657:19:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                  "typeString": "address[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 4249,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "657:7:28",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 4250,
+                  "nodeType": "ArrayTypeName",
+                  "src": "657:9:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                    "typeString": "address[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4253,
+                "mutability": "mutable",
+                "name": "total",
+                "nameLocation": "695:5:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 4254,
+                "src": "687:13:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4252,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "687:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Reserve",
+            "nameLocation": "638:7:28",
+            "nodeType": "StructDefinition",
+            "scope": 4255,
+            "src": "631:77:28",
+            "visibility": "public"
+          }
+        ],
+        "scope": 4256,
+        "src": "72:639:28",
+        "usedErrors": []
+      }
+    ],
+    "src": "37:676:28"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-02-11T06:38:09.129Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

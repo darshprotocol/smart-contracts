@@ -1,0 +1,1529 @@
+{
+  "contractName": "Activity",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "models",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "repaidNumbers",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "borrowedNumbers",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "borrowedValue",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "repaidValue",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "defaultNumbers",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "incrementBorrowed",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "incrementRepaid",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "pendingLoans",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "isDefaulter",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "model",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "repaidNumbers",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "borrowedNumbers",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "borrowedValue",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "repaidValue",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "defaultNumbers",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Activity.Model",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"incrementBorrowed\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"incrementRepaid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"isDefaulter\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"model\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"repaidNumbers\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"borrowedNumbers\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"borrowedValue\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"repaidValue\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"defaultNumbers\",\"type\":\"uint256\"}],\"internalType\":\"struct Activity.Model\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"models\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"repaidNumbers\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"borrowedNumbers\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"borrowedValue\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"repaidValue\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"defaultNumbers\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"pendingLoans\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Activity.sol\":\"Activity\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/Activity.sol\":{\"keccak256\":\"0xd033d96431d48e4edc1eb72fd2fc798bf446a9416fdc65803db7c86ca765c6f5\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://999d46ea9d984c0aca0c1cb18ff750e21a8c9f2f2cc219e7b411267619f07a41\",\"dweb:/ipfs/QmbmNLCZPA888e3yf1W2mMm4svk5W6rXqEVcsWpTynKAFa\"]}},\"version\":1}",
+  "bytecode": "0x608080604052346100165761037f908161001c8239f35b600080fdfe6040608081526004908136101561001557600080fd5b600091823560e01c80632fd0c0581461027a5780633df18d2a146101d157806340e181de1461017457806354222aa51461010057806354917f831461009f5763d8689e131461006357600080fd5b3461009b57602036600319011261009b5760209282906001600160a01b036100896102d5565b16815280855220015415159051908152f35b8280fd5b50903461009b57602036600319011261009b5760a09281906001600160a01b036100c76102d5565b16815280602052208054926001820154926002830154916003840154930154938151958652602086015284015260608301526080820152f35b509190346101705780600319360112610170576001600160a01b036101236102d5565b16808352826020528183208054906001820180921161015d5760039495505583528260205282200161015860243582546102f0565b905580f35b634e487b7160e01b855260118652602485fd5b5080fd5b50919034610170576020366003190112610170576001600160a01b036101986102d5565b1682528160205260018183200154918181205483039283116101be576020838351908152f35b634e487b7160e01b815260118452602490fd5b50903461009b57602036600319011261009b578060a0936101f06102d5565b8160806101fb610313565b82815282602082015282868201528260608201520152600180871b031681528060205220610227610313565b918154938484526001830154602085019081526080600285015492848701938452600386015495606088019687520154950194855282519586525160208601525190840152516060830152516080820152f35b509190346101705780600319360112610170576001600160a01b0361029d6102d5565b16808352826020526001828420018054906001820180921161015d5760029495505583528260205282200161015860243582546102f0565b600435906001600160a01b03821682036102eb57565b600080fd5b919082018092116102fd57565b634e487b7160e01b600052601160045260246000fd5b6040519060a0820182811067ffffffffffffffff82111761033357604052565b634e487b7160e01b600052604160045260246000fdfea26469706673582212202e6cbaa7ae67331f6d11465f5421ccd93b42e48c522c58bc31a117eaf7fd508364736f6c63430008110033",
+  "deployedBytecode": "0x6040608081526004908136101561001557600080fd5b600091823560e01c80632fd0c0581461027a5780633df18d2a146101d157806340e181de1461017457806354222aa51461010057806354917f831461009f5763d8689e131461006357600080fd5b3461009b57602036600319011261009b5760209282906001600160a01b036100896102d5565b16815280855220015415159051908152f35b8280fd5b50903461009b57602036600319011261009b5760a09281906001600160a01b036100c76102d5565b16815280602052208054926001820154926002830154916003840154930154938151958652602086015284015260608301526080820152f35b509190346101705780600319360112610170576001600160a01b036101236102d5565b16808352826020528183208054906001820180921161015d5760039495505583528260205282200161015860243582546102f0565b905580f35b634e487b7160e01b855260118652602485fd5b5080fd5b50919034610170576020366003190112610170576001600160a01b036101986102d5565b1682528160205260018183200154918181205483039283116101be576020838351908152f35b634e487b7160e01b815260118452602490fd5b50903461009b57602036600319011261009b578060a0936101f06102d5565b8160806101fb610313565b82815282602082015282868201528260608201520152600180871b031681528060205220610227610313565b918154938484526001830154602085019081526080600285015492848701938452600386015495606088019687520154950194855282519586525160208601525190840152516060830152516080820152f35b509190346101705780600319360112610170576001600160a01b0361029d6102d5565b16808352826020526001828420018054906001820180921161015d5760029495505583528260205282200161015860243582546102f0565b600435906001600160a01b03821682036102eb57565b600080fd5b919082018092116102fd57565b634e487b7160e01b600052601160045260246000fd5b6040519060a0820182811067ffffffffffffffff82111761033357604052565b634e487b7160e01b600052604160045260246000fdfea26469706673582212202e6cbaa7ae67331f6d11465f5421ccd93b42e48c522c58bc31a117eaf7fd508364736f6c63430008110033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "72:994:13:-:0;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "72:994:13:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;72:994:13;;;;;;;;-1:-1:-1;;;;;72:994:13;;:::i;:::-;;;;;;;;911:27;72:994;911:31;;72:994;;;;;;;;;;;;;;;;;;-1:-1:-1;;72:994:13;;;;;;;;-1:-1:-1;;;;;72:994:13;;:::i;:::-;;;;;;;;;;287:39;72:994;287:39;;72:994;287:39;;;;72:994;287:39;72:994;287:39;;72:994;287:39;;72:994;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;72:994:13;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;625:24;:34;72:994;;;;625:34;:::i;:::-;72:994;;;;;-1:-1:-1;;;72:994:13;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;72:994:13;;;;-1:-1:-1;;;;;72:994:13;;:::i;:::-;;;;;;;;;;;757:28;72:994;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;72:994:13;;;;;;;;;;;;;;;;-1:-1:-1;;72:994:13;;;;;;;;;:::i;:::-;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;72:994:13;;:::i;:::-;;;;;;;;;;;;412:28;72:994;;;;;;;;;;;456:26;72:994;;;;;;;;;;;456:26;:36;72:994;;;;456:36;:::i;72:994::-;;;;-1:-1:-1;;;;;72:994:13;;;;;;:::o;:::-;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;",
+  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\ncontract Activity {\r\n    \r\n    struct Model {\r\n        uint repaidNumbers;\r\n        uint borrowedNumbers;\r\n        uint256 borrowedValue;\r\n        uint256 repaidValue;\r\n        uint256 defaultNumbers;\r\n    }\r\n\r\n    mapping(address => Model) public models;\r\n\r\n    function incrementBorrowed(address user, uint256 amount) external {\r\n        models[user].borrowedNumbers += 1;\r\n        models[user].borrowedValue += amount;\r\n    }\r\n\r\n    function incrementRepaid(address user, uint256 amount) external {\r\n        models[user].repaidNumbers += 1;\r\n        models[user].repaidValue += amount;\r\n    }\r\n\r\n    function pendingLoans(address user) external view returns(uint) {\r\n        return models[user].borrowedNumbers - models[user].repaidNumbers;\r\n    }\r\n\r\n    function isDefaulter(address user) external view returns(bool) {\r\n        return models[user].defaultNumbers > 0;\r\n    }\r\n\r\n    function model(address user) external view returns(Model memory) {\r\n        return models[user];\r\n    }\r\n\r\n}\r\n",
+  "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\Activity.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/Activity.sol",
+    "exportedSymbols": {
+      "Activity": [
+        2149
+      ]
+    },
+    "id": 2150,
+    "license": "GPL-3.0",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2042,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.7",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "37:31:13"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "Activity",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 2149,
+        "linearizedBaseContracts": [
+          2149
+        ],
+        "name": "Activity",
+        "nameLocation": "81:8:13",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Activity.Model",
+            "id": 2053,
+            "members": [
+              {
+                "constant": false,
+                "id": 2044,
+                "mutability": "mutable",
+                "name": "repaidNumbers",
+                "nameLocation": "132:13:13",
+                "nodeType": "VariableDeclaration",
+                "scope": 2053,
+                "src": "127:18:13",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2043,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "127:4:13",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2046,
+                "mutability": "mutable",
+                "name": "borrowedNumbers",
+                "nameLocation": "161:15:13",
+                "nodeType": "VariableDeclaration",
+                "scope": 2053,
+                "src": "156:20:13",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2045,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "156:4:13",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2048,
+                "mutability": "mutable",
+                "name": "borrowedValue",
+                "nameLocation": "195:13:13",
+                "nodeType": "VariableDeclaration",
+                "scope": 2053,
+                "src": "187:21:13",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2047,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "187:7:13",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2050,
+                "mutability": "mutable",
+                "name": "repaidValue",
+                "nameLocation": "227:11:13",
+                "nodeType": "VariableDeclaration",
+                "scope": 2053,
+                "src": "219:19:13",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2049,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "219:7:13",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2052,
+                "mutability": "mutable",
+                "name": "defaultNumbers",
+                "nameLocation": "257:14:13",
+                "nodeType": "VariableDeclaration",
+                "scope": 2053,
+                "src": "249:22:13",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2051,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "249:7:13",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Model",
+            "nameLocation": "110:5:13",
+            "nodeType": "StructDefinition",
+            "scope": 2149,
+            "src": "103:176:13",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "functionSelector": "54917f83",
+            "id": 2058,
+            "mutability": "mutable",
+            "name": "models",
+            "nameLocation": "320:6:13",
+            "nodeType": "VariableDeclaration",
+            "scope": 2149,
+            "src": "287:39:13",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+              "typeString": "mapping(address => struct Activity.Model)"
+            },
+            "typeName": {
+              "id": 2057,
+              "keyType": {
+                "id": 2054,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "295:7:13",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "287:25:13",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                "typeString": "mapping(address => struct Activity.Model)"
+              },
+              "valueType": {
+                "id": 2056,
+                "nodeType": "UserDefinedTypeName",
+                "pathNode": {
+                  "id": 2055,
+                  "name": "Model",
+                  "nameLocations": [
+                    "306:5:13"
+                  ],
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 2053,
+                  "src": "306:5:13"
+                },
+                "referencedDeclaration": 2053,
+                "src": "306:5:13",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Model_$2053_storage_ptr",
+                  "typeString": "struct Activity.Model"
+                }
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 2079,
+              "nodeType": "Block",
+              "src": "401:99:13",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 2070,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 2065,
+                          "name": "models",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2058,
+                          "src": "412:6:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                            "typeString": "mapping(address => struct Activity.Model storage ref)"
+                          }
+                        },
+                        "id": 2067,
+                        "indexExpression": {
+                          "id": 2066,
+                          "name": "user",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2060,
+                          "src": "419:4:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "412:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Model_$2053_storage",
+                          "typeString": "struct Activity.Model storage ref"
+                        }
+                      },
+                      "id": 2068,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "425:15:13",
+                      "memberName": "borrowedNumbers",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2046,
+                      "src": "412:28:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "+=",
+                    "rightHandSide": {
+                      "hexValue": "31",
+                      "id": 2069,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "444:1:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_1_by_1",
+                        "typeString": "int_const 1"
+                      },
+                      "value": "1"
+                    },
+                    "src": "412:33:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 2071,
+                  "nodeType": "ExpressionStatement",
+                  "src": "412:33:13"
+                },
+                {
+                  "expression": {
+                    "id": 2077,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 2072,
+                          "name": "models",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2058,
+                          "src": "456:6:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                            "typeString": "mapping(address => struct Activity.Model storage ref)"
+                          }
+                        },
+                        "id": 2074,
+                        "indexExpression": {
+                          "id": 2073,
+                          "name": "user",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2060,
+                          "src": "463:4:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "456:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Model_$2053_storage",
+                          "typeString": "struct Activity.Model storage ref"
+                        }
+                      },
+                      "id": 2075,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "469:13:13",
+                      "memberName": "borrowedValue",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2048,
+                      "src": "456:26:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "+=",
+                    "rightHandSide": {
+                      "id": 2076,
+                      "name": "amount",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2062,
+                      "src": "486:6:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "456:36:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 2078,
+                  "nodeType": "ExpressionStatement",
+                  "src": "456:36:13"
+                }
+              ]
+            },
+            "functionSelector": "2fd0c058",
+            "id": 2080,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "incrementBorrowed",
+            "nameLocation": "344:17:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2063,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2060,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "370:4:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2080,
+                  "src": "362:12:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2059,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "362:7:13",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2062,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nameLocation": "384:6:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2080,
+                  "src": "376:14:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2061,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "376:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "361:30:13"
+            },
+            "returnParameters": {
+              "id": 2064,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "401:0:13"
+            },
+            "scope": 2149,
+            "src": "335:165:13",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 2101,
+              "nodeType": "Block",
+              "src": "572:95:13",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 2092,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 2087,
+                          "name": "models",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2058,
+                          "src": "583:6:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                            "typeString": "mapping(address => struct Activity.Model storage ref)"
+                          }
+                        },
+                        "id": 2089,
+                        "indexExpression": {
+                          "id": 2088,
+                          "name": "user",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2082,
+                          "src": "590:4:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "583:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Model_$2053_storage",
+                          "typeString": "struct Activity.Model storage ref"
+                        }
+                      },
+                      "id": 2090,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "596:13:13",
+                      "memberName": "repaidNumbers",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2044,
+                      "src": "583:26:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "+=",
+                    "rightHandSide": {
+                      "hexValue": "31",
+                      "id": 2091,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "613:1:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_1_by_1",
+                        "typeString": "int_const 1"
+                      },
+                      "value": "1"
+                    },
+                    "src": "583:31:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 2093,
+                  "nodeType": "ExpressionStatement",
+                  "src": "583:31:13"
+                },
+                {
+                  "expression": {
+                    "id": 2099,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 2094,
+                          "name": "models",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2058,
+                          "src": "625:6:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                            "typeString": "mapping(address => struct Activity.Model storage ref)"
+                          }
+                        },
+                        "id": 2096,
+                        "indexExpression": {
+                          "id": 2095,
+                          "name": "user",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2082,
+                          "src": "632:4:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "625:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Model_$2053_storage",
+                          "typeString": "struct Activity.Model storage ref"
+                        }
+                      },
+                      "id": 2097,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "638:11:13",
+                      "memberName": "repaidValue",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2050,
+                      "src": "625:24:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "+=",
+                    "rightHandSide": {
+                      "id": 2098,
+                      "name": "amount",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2084,
+                      "src": "653:6:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "625:34:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 2100,
+                  "nodeType": "ExpressionStatement",
+                  "src": "625:34:13"
+                }
+              ]
+            },
+            "functionSelector": "54222aa5",
+            "id": 2102,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "incrementRepaid",
+            "nameLocation": "517:15:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2085,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2082,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "541:4:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2102,
+                  "src": "533:12:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2081,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "533:7:13",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2084,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nameLocation": "555:6:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2102,
+                  "src": "547:14:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2083,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "547:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "532:30:13"
+            },
+            "returnParameters": {
+              "id": 2086,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "572:0:13"
+            },
+            "scope": 2149,
+            "src": "508:159:13",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 2119,
+              "nodeType": "Block",
+              "src": "739:83:13",
+              "statements": [
+                {
+                  "expression": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 2117,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 2109,
+                          "name": "models",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2058,
+                          "src": "757:6:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                            "typeString": "mapping(address => struct Activity.Model storage ref)"
+                          }
+                        },
+                        "id": 2111,
+                        "indexExpression": {
+                          "id": 2110,
+                          "name": "user",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2104,
+                          "src": "764:4:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "757:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Model_$2053_storage",
+                          "typeString": "struct Activity.Model storage ref"
+                        }
+                      },
+                      "id": 2112,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "770:15:13",
+                      "memberName": "borrowedNumbers",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2046,
+                      "src": "757:28:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "-",
+                    "rightExpression": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 2113,
+                          "name": "models",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2058,
+                          "src": "788:6:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                            "typeString": "mapping(address => struct Activity.Model storage ref)"
+                          }
+                        },
+                        "id": 2115,
+                        "indexExpression": {
+                          "id": 2114,
+                          "name": "user",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2104,
+                          "src": "795:4:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "788:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Model_$2053_storage",
+                          "typeString": "struct Activity.Model storage ref"
+                        }
+                      },
+                      "id": 2116,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "801:13:13",
+                      "memberName": "repaidNumbers",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2044,
+                      "src": "788:26:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "757:57:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 2108,
+                  "id": 2118,
+                  "nodeType": "Return",
+                  "src": "750:64:13"
+                }
+              ]
+            },
+            "functionSelector": "40e181de",
+            "id": 2120,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "pendingLoans",
+            "nameLocation": "684:12:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2105,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2104,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "705:4:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2120,
+                  "src": "697:12:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2103,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "697:7:13",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "696:14:13"
+            },
+            "returnParameters": {
+              "id": 2108,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2107,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2120,
+                  "src": "733:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2106,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "733:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "732:6:13"
+            },
+            "scope": 2149,
+            "src": "675:147:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 2134,
+              "nodeType": "Block",
+              "src": "893:57:13",
+              "statements": [
+                {
+                  "expression": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 2132,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 2127,
+                          "name": "models",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2058,
+                          "src": "911:6:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                            "typeString": "mapping(address => struct Activity.Model storage ref)"
+                          }
+                        },
+                        "id": 2129,
+                        "indexExpression": {
+                          "id": 2128,
+                          "name": "user",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2122,
+                          "src": "918:4:13",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "911:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Model_$2053_storage",
+                          "typeString": "struct Activity.Model storage ref"
+                        }
+                      },
+                      "id": 2130,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "924:14:13",
+                      "memberName": "defaultNumbers",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2052,
+                      "src": "911:27:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">",
+                    "rightExpression": {
+                      "hexValue": "30",
+                      "id": 2131,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "941:1:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "911:31:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 2126,
+                  "id": 2133,
+                  "nodeType": "Return",
+                  "src": "904:38:13"
+                }
+              ]
+            },
+            "functionSelector": "d8689e13",
+            "id": 2135,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isDefaulter",
+            "nameLocation": "839:11:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2123,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2122,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "859:4:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2135,
+                  "src": "851:12:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2121,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "851:7:13",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "850:14:13"
+            },
+            "returnParameters": {
+              "id": 2126,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2125,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2135,
+                  "src": "887:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2124,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "887:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "886:6:13"
+            },
+            "scope": 2149,
+            "src": "830:120:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 2147,
+              "nodeType": "Block",
+              "src": "1023:38:13",
+              "statements": [
+                {
+                  "expression": {
+                    "baseExpression": {
+                      "id": 2143,
+                      "name": "models",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2058,
+                      "src": "1041:6:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Model_$2053_storage_$",
+                        "typeString": "mapping(address => struct Activity.Model storage ref)"
+                      }
+                    },
+                    "id": 2145,
+                    "indexExpression": {
+                      "id": 2144,
+                      "name": "user",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2137,
+                      "src": "1048:4:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "1041:12:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Model_$2053_storage",
+                      "typeString": "struct Activity.Model storage ref"
+                    }
+                  },
+                  "functionReturnParameters": 2142,
+                  "id": 2146,
+                  "nodeType": "Return",
+                  "src": "1034:19:13"
+                }
+              ]
+            },
+            "functionSelector": "3df18d2a",
+            "id": 2148,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "model",
+            "nameLocation": "967:5:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2138,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2137,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "981:4:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2148,
+                  "src": "973:12:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2136,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "973:7:13",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "972:14:13"
+            },
+            "returnParameters": {
+              "id": 2142,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2141,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2148,
+                  "src": "1009:12:13",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Model_$2053_memory_ptr",
+                    "typeString": "struct Activity.Model"
+                  },
+                  "typeName": {
+                    "id": 2140,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 2139,
+                      "name": "Model",
+                      "nameLocations": [
+                        "1009:5:13"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 2053,
+                      "src": "1009:5:13"
+                    },
+                    "referencedDeclaration": 2053,
+                    "src": "1009:5:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Model_$2053_storage_ptr",
+                      "typeString": "struct Activity.Model"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1008:14:13"
+            },
+            "scope": 2149,
+            "src": "958:103:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2150,
+        "src": "72:994:13",
+        "usedErrors": []
+      }
+    ],
+    "src": "37:1031:13"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {
+    "4002": {
+      "events": {},
+      "links": {},
+      "address": "0x2a3cFe3d2988075FcCCf54CC0b07Fdf4d4f83391",
+      "transactionHash": "0xe301d80e5dcb30a81997a5663537c2442281acb4fd4880a30dcb2e1bdcf764f1"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x2FF8173911f488F9d01509dD648872FAc4322d2B",
+      "transactionHash": "0x64e8fe512873781d53023950eb49c466d1767c265496fa2783e87a67dec823ec"
+    }
+  },
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-02-11T06:38:09.087Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
