@@ -18,7 +18,7 @@ abstract contract SimpleInterest is ISimpleInterest {
         return principal + accrued;
     }
 
-    function percentageOf(uint256 total, uint256 percent)
+    function percentageOf(uint256 total, uint16 percent)
         public
         pure
         virtual
@@ -26,6 +26,18 @@ abstract contract SimpleInterest is ISimpleInterest {
     {
         if (percent == 0) return total;
         return (total * percent) / 100;
+    }
+
+    function percentageInverseOf(uint256 total, uint16 percent)
+        public
+        pure
+        virtual
+        returns (uint256)
+    {
+        require(percent >= 100);
+        uint16 diff = percent - 100;
+        uint16 percentage = 100 - diff;
+        return percentageOf(total, percentage);
     }
 
     function minimumBetween(uint256 a, uint256 b)

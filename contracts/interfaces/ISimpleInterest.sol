@@ -8,7 +8,11 @@ interface ISimpleInterest {
         uint256 interest
     ) external returns (uint256);
 
-    function percentageOf(uint256 total, uint256 percent)
+    function percentageOf(uint256 total, uint16 percent)
+        external
+        returns (uint256);
+
+    function percentageInverseOf(uint256 total, uint16 percent)
         external
         returns (uint256);
 }

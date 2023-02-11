@@ -2,15 +2,6 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 library AssetLibrary {
-    enum Type {
-        NATIVE,
-        WBTC,
-        WETH,
-        USDT,
-        USDC,
-        DAI
-    }
-
     struct Pool {
         address token;
         uint256 amount;

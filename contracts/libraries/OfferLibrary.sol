@@ -11,12 +11,12 @@ library OfferLibrary {
 
     struct LendingOffer {
         uint256 offerId;
-        AssetLibrary.Type principalType;
+        address principalType;
         uint256 currentPrincipal;
         uint256 initialPrincipal;
         uint256 interest;
         uint daysToMaturity;
-        AssetLibrary.Type[] collateralTypes;
+        address[] collateralTypes;
         uint160 expiresAt;
         uint160 createdAt;
         address lender;
@@ -24,10 +24,12 @@ library OfferLibrary {
 
     struct BorrowingOffer {
         uint256 offerId;
-        AssetLibrary.Type principalType;
-        AssetLibrary.Type collateralType;
+        address principalType;
+        address collateralType;
         uint256 currentCollateral;
         uint256 initialCollateral;
+        uint256 currentPrincipal;
+        uint256 initialPrincipal;
         uint256 interest;
         uint daysToMaturity;
         uint160 expiresAt;

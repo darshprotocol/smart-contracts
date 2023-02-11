@@ -7,8 +7,6 @@ import "../libraries/RequestLibrary.sol";
 
 interface IOfferManager {
 
-    function belongsTo(uint256 offerId, address provider, OfferLibrary.Type offerType) external view returns(bool);
-
     function getLendingOffer(uint256 offerId) external view returns(OfferLibrary.LendingOffer memory);
 
     function getBorrowingOffer(uint256 offerId) external view returns(OfferLibrary.BorrowingOffer memory);

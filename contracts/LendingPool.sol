@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./Activity.sol";
-import "./TrustScore.sol";
-
-import "./data/TokenFeed.sol";
-
 import "./libraries/Errors.sol";
 import "./libraries/AssetLibrary.sol";
 
 import "./math/SimpleInterest.sol";
 
 import "./interfaces/IPriceFeed.sol";
+import "./interfaces/ILoanToValueRatio.sol";
 
 import "./managers/LoanManager.sol";
 import "./managers/OfferManager.sol";
@@ -29,15 +25,16 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     address deployer;
 
-    Activity private _activity;
-    TokenFeed private _tokenFeed;
     IPriceFeed private _priceFeed;
-    TrustScore private _trustScore;
+    ILoanToValueRatio private _ltv;
 
     // managers
     PoolManager private _poolManager;
     LoanManager private _loanManager;
     OfferManager private _offerManager;
+
+    address public constant nativeAddress =
+        0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
     constructor(
         address poolManager_,
@@ -53,37 +50,31 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     // @lenders
     function createLendingOffer(
-        AssetLibrary.Type principalType,
+        address principalType,
         uint256 _principal, // only for ERC20 assets
         uint256 interest,
         uint256 daysToMaturity,
         uint256 daysToExpire,
-        AssetLibrary.Type[] memory collateralTypes
+        address[] memory collateralTypes
     ) public payable {
-        uint256 principal;
-
-        /* checks if the lender is a defaulter */
-        require(!_activity.isDefaulter(_msgSender()), "ERR_UNSAFE_LENDER");
+        uint256 principalAmount;
 
         require(collateralTypes.length > 0, "ERR_NO_COLLATERAL_TYPES");
 
-        /* derive the address of the principal from data repository */
-        address principalToken = _tokenFeed.getTokenAddress(principalType);
-
         /* extract tokens from lender */
-        if (principalToken == _tokenFeed.nativeAddress()) {
-            principal = msg.value;
+        if (principalType == nativeAddress) {
+            principalAmount = msg.value;
         } else {
-            principal = _principal;
-            ERC20(principalToken).transferFrom(
+            principalAmount = _principal;
+            ERC20(principalType).transferFrom(
                 _msgSender(),
                 address(this),
-                principal
+                principalAmount
             );
         }
 
         require(
-            _poolManager.deposit(_msgSender(), principalToken, principal),
+            _poolManager.deposit(_msgSender(), principalType, principalAmount),
             "ERR_POOL_MANAGER_DEPOSIT"
         );
 
@@ -91,7 +82,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         require(
             _offerManager.createLendingOffer(
                 principalType,
-                principal,
+                principalAmount,
                 interest,
                 daysToMaturity,
                 daysToExpire,
@@ -103,7 +94,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     }
 
     // @lenders
-    function acceptBorrowingOffer(uint256 offerId, uint256 desiredPercentage)
+    function acceptBorrowingOffer(uint256 offerId, uint16 desiredPercentage)
         public
         payable
     {
@@ -112,59 +103,46 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
         // platform safety
         require(offer.expiresAt > block.timestamp, "ERR_OFFER_EXPIRED");
-        require(!_activity.isDefaulter(offer.borrower), "ERR_UNSAFE_BORROWER");
         require(_msgSender() != offer.borrower, "ERR_CANT_BORROW_OWN");
 
         // percentage must be 25, 50, 75 or 100
         require(desiredPercentage <= 100, "OVER_PERCENTAGE");
         require(desiredPercentage % 25 == 0, "ERR_PERCENTAGE");
 
-        uint256 collateral = percentageOf(
+        uint256 collateralAmount = percentageOf(
             offer.initialCollateral,
             desiredPercentage
         );
 
+        uint256 principalAmount = percentageOf(
+            offer.initialPrincipal,
+            desiredPercentage
+        );
+
         // verify if the remain offer is enough
-        require(offer.currentCollateral >= collateral);
-
-        /* derive the address of the asset types from data repository */
-        address principalToken = _tokenFeed.getTokenAddress(
-            offer.principalType
+        require(
+            offer.currentCollateral >= collateralAmount &&
+                offer.currentPrincipal >= principalAmount,
+            "ERR_COLLATERAL_BALANCE"
         );
-        address collateralToken = _tokenFeed.getTokenAddress(
-            offer.collateralType
-        );
-
-        /* get the trust factor of the borrower */
-        uint256 pendingLoans = _activity.pendingLoans(offer.borrower);
-        (, uint256 percentage) = _trustScore.inverseTrustGrade(
-            offer.borrower,
-            pendingLoans
-        );
-
-        /* calculate the collateral amount */
-        uint256 priceInFullPrincipal = _priceFeed.exchangeRate(
-            collateralToken,
-            principalToken,
-            collateral
-        );
-
-        uint256 principal = percentageOf(priceInFullPrincipal, percentage);
 
         /* extract principal from lender */
         /* transfer principal to borrower */
-        if (principalToken == _tokenFeed.nativeAddress()) {
+        if (offer.principalType == nativeAddress) {
             // if principal is native coin
-            require(msg.value >= principal);
-            payable(offer.borrower).transfer(principal);
+            require(msg.value >= principalAmount);
+            payable(offer.borrower).transfer(principalAmount);
         } else {
             // if principal is ERC20
-            ERC20(principalToken).transferFrom(
+            ERC20(offer.principalType).transferFrom(
                 _msgSender(),
                 address(this),
-                principal
+                principalAmount
             );
-            ERC20(principalToken).transfer(offer.borrower, principal);
+            ERC20(offer.principalType).transfer(
+                offer.borrower,
+                principalAmount
+            );
         }
 
         /* register the loan from the loan manager */
@@ -174,8 +152,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
                 OfferLibrary.Type.BORROWING_OFFER,
                 offer.principalType,
                 offer.collateralType,
-                principal,
-                collateral,
+                principalAmount,
+                collateralAmount,
                 offer.interest,
                 offer.daysToMaturity,
                 offer.borrower,
@@ -184,7 +162,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             "ERR_LOAN_MANAGER_CREATE"
         );
 
-        _offerManager._afterOfferBorrowingLoan(offerId, collateral);
+        _offerManager._afterOfferBorrowingLoan(offerId, collateralAmount);
     }
 
     // @lenders
@@ -192,66 +170,36 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         RequestLibrary.BorrowingRequest memory request = _offerManager
             .getBorrowingRequest(requestId);
 
-        // platform safety
-        require(
-            !_activity.isDefaulter(request.borrower),
-            "ERR_UNSAFE_BORROWER"
-        );
         require(request.expiresAt > block.timestamp, "ERR_REQUEST_EXPIRED");
-        require(
-            _offerManager.belongsTo(
-                request.offerId,
-                _msgSender(),
-                OfferLibrary.Type.LENDING_OFFER
-            ),
-            "ERR_ONLY_LENDER"
-        );
 
         OfferLibrary.LendingOffer memory offer = _offerManager.getLendingOffer(
             request.offerId
         );
-
-        /* derive the address of the asset types from data repository */
-        address principalToken = _tokenFeed.getTokenAddress(
-            offer.principalType
-        );
-        address collateralToken = _tokenFeed.getTokenAddress(
-            request.collateralType
-        );
-
-        /* get the trust factor of the borrower */
-        uint256 pendingLoans = _activity.pendingLoans(request.borrower);
-        (, uint256 percentage) = _trustScore.inverseTrustGrade(
-            request.borrower,
-            pendingLoans
-        );
-
-        /* calculate the collateral amount */
-        uint256 priceInFullPrincipal = _priceFeed.exchangeRate(
-            collateralToken,
-            principalToken,
-            request.collateral
-        );
-
-        uint256 principal = percentageOf(priceInFullPrincipal, percentage);
+        require(offer.lender == _msgSender(), "ERR_ONLY_LENDER");
 
         // verify if the remain offer is enough
-        require(offer.currentPrincipal >= principal, "ERR_INSUFICIENT");
+        require(
+            offer.currentPrincipal >= request.principalAmount,
+            "ERR_INSUFICIENT"
+        );
 
         /* extract principal from lender */
         /* transfer principal to borrower */
-        if (principalToken == _tokenFeed.nativeAddress()) {
+        if (offer.principalType == nativeAddress) {
             // if principal is native coin
-            require(msg.value >= principal);
-            payable(request.borrower).transfer(principal);
+            require(msg.value >= request.principalAmount);
+            payable(request.borrower).transfer(request.principalAmount);
         } else {
             // if principal is ERC20
-            ERC20(principalToken).transferFrom(
+            ERC20(offer.principalType).transferFrom(
                 _msgSender(),
                 address(this),
-                principal
+                request.principalAmount
             );
-            ERC20(principalToken).transfer(request.borrower, principal);
+            ERC20(offer.principalType).transfer(
+                request.borrower,
+                request.principalAmount
+            );
         }
 
         /* register the loan from the loan manager */
@@ -261,8 +209,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
                 OfferLibrary.Type.LENDING_OFFER,
                 offer.principalType,
                 request.collateralType,
-                principal,
-                request.collateral,
+                request.principalAmount,
+                request.collateralAmount,
                 request.interest,
                 request.daysToMaturity,
                 request.borrower,
@@ -271,41 +219,53 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             "ERR_LOAN_MANAGER_CREATE"
         );
 
-        _offerManager._afterOfferLendingLoan(offer.offerId, principal);
+        _offerManager._afterOfferLendingLoan(
+            offer.offerId,
+            request.principalAmount
+        );
     }
 
     // @borrower
     function createBorrowingOffer(
-        AssetLibrary.Type principalType,
-        AssetLibrary.Type collateralType,
+        address principalType,
+        address collateralType,
         uint256 _collateral, // for ERC20 assets
         uint256 interest,
         uint256 daysToMaturity,
         uint256 daysToExpire
     ) public payable {
-        uint256 collateral;
-
-        /* checks if the borrower is a defaulter */
-        require(!_activity.isDefaulter(_msgSender()), "ERR_UNSAFE_BORROWER");
-
-        /* derive the address of the collateral from data repository */
-        address collateralToken = _tokenFeed.getTokenAddress(collateralType);
+        uint256 collateralAmount;
 
         /* extract collateral from borrower */
-        if (collateralToken == _tokenFeed.nativeAddress()) {
-            collateral = msg.value;
+        if (collateralType == nativeAddress) {
+            collateralAmount = msg.value;
         } else {
-            collateral = _collateral;
-            ERC20(collateralToken).transferFrom(
+            collateralAmount = _collateral;
+            ERC20(collateralType).transferFrom(
                 _msgSender(),
                 address(this),
-                collateral
+                collateralAmount
             );
         }
 
+        uint16 ltv = _ltv.getLTV(_msgSender());
+
+        uint256 principalPrice = _priceFeed.exchangeRate(
+            collateralType,
+            principalType,
+            collateralAmount
+        );
+
+        uint256 principalAmount = percentageInverseOf(principalPrice, ltv) /
+            _ltv.getBase();
+
         /* deposit tokens to vault */
         require(
-            _poolManager.deposit(_msgSender(), collateralToken, collateral),
+            _poolManager.deposit(
+                _msgSender(),
+                collateralType,
+                collateralAmount
+            ),
             "ERR_POOL_MANAGER_DEPOSIT"
         );
 
@@ -314,7 +274,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             _offerManager.createBorrowingOffer(
                 principalType,
                 collateralType,
-                collateral,
+                collateralAmount,
+                principalAmount,
                 interest,
                 daysToMaturity,
                 daysToExpire,
@@ -327,13 +288,14 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     // @borrower
     function acceptLendingOffer(
         uint256 offerId,
-        uint256 desiredPercentage,
-        AssetLibrary.Type collateralType
+        uint16 desiredPercentage,
+        address collateralType
     ) public payable {
         OfferLibrary.LendingOffer memory offer = _offerManager.getLendingOffer(
             offerId
         );
 
+        require(offer.expiresAt > block.timestamp, "ERR_OFFER_EXPIRED");
         // percentage must be 25, 50, 75 or 100
         require(desiredPercentage <= 100, "OVER_PERCENTAGE");
         require(desiredPercentage % 25 == 0, "ERR_PERCENTAGE");
@@ -347,72 +309,67 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
         require(supported, "ERR_COLLATERAL_NOT_SUPPORTED");
 
-        require(offer.expiresAt > block.timestamp, "ERR_OFFER_EXPIRED");
-
-        uint256 desiredAmount = percentageOf(
+        uint256 principalAmount = percentageOf(
             offer.initialPrincipal,
             desiredPercentage
         );
 
         require(
-            desiredAmount <= offer.currentPrincipal,
+            principalAmount <= offer.currentPrincipal,
             "ERR_INSUFFICIENT_AMOUNT"
         );
 
-        /* checks if the lender is a defaulter */
-        /* checks if the borrower is a defaulter */
-        require(!_activity.isDefaulter(offer.lender), "ERR_UNSAFE_LENDER");
-        require(!_activity.isDefaulter(_msgSender()), "ERR_UNSAFE_BORROWER");
-
-        /* derive the address of the asset types from data repository */
-        address principalToken = _tokenFeed.getTokenAddress(
-            offer.principalType
-        );
-        address collateralToken = _tokenFeed.getTokenAddress(collateralType);
-
         /* get the trust factor of the borrower */
-        uint256 pendingLoans = _activity.pendingLoans(_msgSender());
-        (, uint256 percentage) = _trustScore.trustGrade(
-            _msgSender(),
-            pendingLoans
-        );
+        uint16 ltv = _ltv.getLTV(_msgSender());
 
         /* calculate the collateral amount */
         uint256 priceInFullCollateral = _priceFeed.exchangeRate(
-            principalToken,
-            collateralToken,
-            desiredAmount
+            offer.principalType,
+            collateralType,
+            principalAmount
         );
 
-        uint256 collateral = percentageOf(priceInFullCollateral, percentage);
+        uint256 collateralAmount = percentageOf(priceInFullCollateral, ltv) /
+            _ltv.getBase();
 
         /* extract collateral tokens from borrower */
-        if (collateralToken == _tokenFeed.nativeAddress()) {
-            require(collateral >= msg.value, "ERR_COLLATERAL_AMOUNT");
+        if (collateralType == nativeAddress) {
+            require(collateralAmount >= msg.value, "ERR_COLLATERAL_AMOUNT");
         } else {
-            ERC20(collateralToken).transferFrom(
+            ERC20(collateralType).transferFrom(
                 _msgSender(),
                 address(this),
-                collateral
+                collateralAmount
             );
         }
 
         require(
-            _poolManager.deposit(_msgSender(), collateralToken, collateral),
+            _poolManager.deposit(
+                _msgSender(),
+                collateralType,
+                collateralAmount
+            ),
             "ERR_POOL_MANAGER_DEPOSIT"
         );
 
         /* transfer the asset to borrower */
-        _poolManager.withdraw(_msgSender(), principalToken, desiredAmount);
+        _poolManager.withdraw(
+            _msgSender(),
+            offer.principalType,
+            principalAmount
+        );
 
-        if (principalToken == _tokenFeed.nativeAddress()) {
-            payable(_msgSender()).transfer(desiredAmount);
+        if (offer.principalType == nativeAddress) {
+            payable(_msgSender()).transfer(principalAmount);
         } else {
-            ERC20(principalToken).safeTransfer(_msgSender(), desiredAmount);
+            ERC20(offer.principalType).safeTransfer(
+                _msgSender(),
+                principalAmount
+            );
         }
 
         /* update offer balance */
-        _offerManager._afterOfferLendingLoan(offerId, desiredAmount);
+        _offerManager._afterOfferLendingLoan(offerId, principalAmount);
 
         /* register the loan */
         _loanManager.createLoan(
@@ -420,17 +377,16 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             OfferLibrary.Type.LENDING_OFFER,
             offer.principalType,
             collateralType,
-            desiredAmount,
-            collateral,
+            principalAmount,
+            collateralAmount,
             offer.interest,
             offer.daysToMaturity,
             _msgSender(),
             offer.lender
         );
 
-        /* update experience */
         // amount in USD
-        _activity.incrementBorrowed(_msgSender(), 0);
+        // _activity.borrowLoan(_msgSender(), 0);
     }
 
     // @borrower
@@ -438,57 +394,47 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         RequestLibrary.LendingRequest memory request = _offerManager
             .getLendingRequest(requestId);
 
-        // platform safety
-        require(!_activity.isDefaulter(request.lender), "ERR_UNSAFE_LENDER");
         require(request.expiresAt > block.timestamp, "ERR_REQUEST_EXPIRED");
-        require(
-            _offerManager.belongsTo(
-                request.offerId,
-                _msgSender(),
-                OfferLibrary.Type.BORROWING_OFFER
-            ),
-            "ERR_ONLY_BORROWER"
-        );
+        // require(request.borrower == _msgSender(), "ERR_ONLY_BORROWER");
 
         OfferLibrary.BorrowingOffer memory offer = _offerManager
             .getBorrowingOffer(request.offerId);
 
-        /* derive the address of the asset types from data repository */
-        address principalToken = _tokenFeed.getTokenAddress(
-            offer.principalType
-        );
-        address collateralToken = _tokenFeed.getTokenAddress(
-            offer.collateralType
-        );
-
-        uint256 collateral = percentageOf(
+        uint256 collateralAmount = percentageOf(
             offer.initialCollateral,
             request.desiredPercentage
         );
 
-        uint256 principal = _priceFeed.exchangeRate(
-            collateralToken,
-            principalToken,
+        uint256 principalNormalAmount = _priceFeed.exchangeRate(
+            offer.collateralType,
+            offer.principalType,
             offer.initialCollateral
         );
 
+        uint16 ltv = _ltv.getLTV(_msgSender());
+
+        uint256 principalAmount = percentageInverseOf(
+            principalNormalAmount,
+            ltv
+        ) / _ltv.getBase();
+
         // verify if the remain offer is enough
-        require(offer.currentCollateral >= collateral, "ERR_INSUFICIENT");
+        require(offer.currentCollateral >= collateralAmount, "ERR_INSUFICIENT");
 
         /* extract principal from lender */
         /* transfer principal to borrower */
-        if (principalToken == _tokenFeed.nativeAddress()) {
+        if (offer.principalType == nativeAddress) {
             // if principal is native coin
-            require(msg.value >= principal);
-            payable(_msgSender()).transfer(principal);
+            require(msg.value >= principalAmount);
+            payable(_msgSender()).transfer(principalAmount);
         } else {
             // if principal is ERC20
-            ERC20(principalToken).transferFrom(
+            ERC20(offer.principalType).transferFrom(
                 _msgSender(),
                 address(this),
-                principal
+                principalAmount
             );
-            ERC20(principalToken).transfer(_msgSender(), principal);
+            ERC20(offer.principalType).transfer(_msgSender(), principalAmount);
         }
 
         /* register the loan from the loan manager */
@@ -498,8 +444,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
                 OfferLibrary.Type.LENDING_OFFER,
                 offer.principalType,
                 offer.collateralType,
-                principal,
-                collateral,
+                principalAmount,
+                collateralAmount,
                 request.interest,
                 request.daysToMaturity,
                 _msgSender(),
@@ -508,7 +454,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             "ERR_LOAN_MANAGER_CREATE"
         );
 
-        _offerManager._afterOfferLendingLoan(offer.offerId, principal);
+        _offerManager._afterOfferLendingLoan(offer.offerId, principalAmount);
     }
 
     function repayLoan(uint256 loanId) public payable {
@@ -534,19 +480,13 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         // update ledger book
         _loanManager.repayLoanAll(loanId);
 
-        /* derive the address of the collateral from data repository */
-        address principalToken = _tokenFeed.getTokenAddress(loan.principalType);
-        address collateralToken = _tokenFeed.getTokenAddress(
-            loan.collateralType
-        );
-
         /* extract pay back amount */
-        if (principalToken == _tokenFeed.nativeAddress()) {
+        if (loan.principalType == nativeAddress) {
             // if principal is native coin
             require(msg.value >= repayAmount);
         } else {
             // if principal is ERC20 token
-            ERC20(principalToken).transferFrom(
+            ERC20(loan.principalType).transferFrom(
                 _msgSender(),
                 address(this),
                 repayAmount
@@ -554,12 +494,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* transfer collateral */
-        if (collateralToken == _tokenFeed.nativeAddress()) {
+        if (loan.collateralType == nativeAddress) {
             // if collateral is native coin
             payable(_msgSender()).transfer(loan.currentCollateral);
         } else {
             // if collateral is ERC20 token
-            ERC20(collateralToken).transfer(
+            ERC20(loan.collateralType).transfer(
                 _msgSender(),
                 loan.currentCollateral
             );
@@ -575,18 +515,6 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     function setPriceFeed(address priceFeed_) public onlyOwner {
         _priceFeed = IPriceFeed(priceFeed_);
-    }
-
-    function setTokenFeed(address tokenFeed_) public onlyOwner {
-        _tokenFeed = TokenFeed(tokenFeed_);
-    }
-
-    function setTrustScore(address trustScore_) public onlyOwner {
-        _trustScore = TrustScore(trustScore_);
-    }
-
-    function setActivity(address activity_) public onlyOwner {
-        _activity = Activity(activity_);
     }
 
     function changeOwner(address newOwner) public onlyOwner {

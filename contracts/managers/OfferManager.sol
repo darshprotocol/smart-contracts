@@ -34,12 +34,12 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
     event LendingOfferCreated(
         uint256 offerId,
-        AssetLibrary.Type principalType,
+        address principalType,
         uint256 currentPrincipal,
         uint256 initialPrincipal,
         uint256 interest,
         uint daysToMaturity,
-        AssetLibrary.Type[] collateralTypes,
+        address[] collateralTypes,
         uint160 expiresAt,
         uint160 createdAt,
         address lender
@@ -47,8 +47,8 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
     event BorrowingOfferCreated(
         uint256 offerId,
-        AssetLibrary.Type principalType,
-        AssetLibrary.Type collateralType,
+        address principalType,
+        address collateralType,
         uint256 initialCollateral,
         uint256 currentCollateral,
         uint256 interest,
@@ -63,12 +63,12 @@ contract OfferManager is IOfferManager, Ownable2Step {
     event RequestClosed(uint256 requestId, RequestLibrary.Type requestType);
 
     function createLendingOffer(
-        AssetLibrary.Type principalType,
+        address principalType,
         uint256 principal,
         uint256 interest,
         uint256 daysToMaturity,
         uint256 daysToExpire,
-        AssetLibrary.Type[] memory collateralTypes,
+        address[] memory collateralTypes,
         address lender
     ) public onlyLendingPool returns (uint256) {
         // onlyOwner
@@ -131,9 +131,10 @@ contract OfferManager is IOfferManager, Ownable2Step {
     }
 
     function createBorrowingOffer(
-        AssetLibrary.Type principalType,
-        AssetLibrary.Type collateralType,
+        address principalType,
+        address collateralType,
         uint256 collateral,
+        uint256 principalNeeded,
         uint256 interest,
         uint256 daysToMaturity,
         uint256 daysToExpire,
@@ -152,6 +153,8 @@ contract OfferManager is IOfferManager, Ownable2Step {
             collateralType,
             collateral, // currentCollateral
             collateral, // initialCollateral
+            principalNeeded, // currentPrincipal
+            principalNeeded, // initialPrincipal
             interest,
             daysToMaturity,
             expiresAt,
@@ -228,20 +231,6 @@ contract OfferManager is IOfferManager, Ownable2Step {
         returns (RequestLibrary.LendingRequest memory)
     {
         return lendingRequests[requestId];
-    }
-
-    function belongsTo(
-        uint256 offerId,
-        address provider,
-        OfferLibrary.Type offerType
-    ) public view override returns (bool) {
-        if (offerType == OfferLibrary.Type.LENDING_OFFER) {
-            return lendingOffers[offerId].lender == provider;
-        }
-        if (offerType == OfferLibrary.Type.BORROWING_OFFER) {
-            return borrowingOffers[offerId].borrower == provider;
-        }
-        return false;
     }
 
     function setLendingPool(address address_) public onlyOwner {

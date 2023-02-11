@@ -13,7 +13,8 @@ library RequestLibrary {
     struct LendingRequest {
         uint requestId;
         uint interest;
-        uint desiredPercentage;
+        uint256 principalAmount;
+        uint16 desiredPercentage;
         uint daysToMaturity;
         uint expiresAt;
         uint createdAt;
@@ -23,8 +24,9 @@ library RequestLibrary {
 
     struct BorrowingRequest {
         uint requestId;
-        uint256 collateral;
-        AssetLibrary.Type collateralType;
+        address collateralType;
+        uint256 collateralAmount;
+        uint256 principalAmount;
         uint interest;
         uint daysToMaturity;
         uint expiresAt;
