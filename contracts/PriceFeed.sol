@@ -17,6 +17,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract PriceFeed is Ownable2Step, IPriceFeed {
     mapping(address => address) feedAddresses;
+    address USD = 0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128;
 
     event PriceFeedAdded(
         uint256 timestamp,
@@ -49,6 +50,15 @@ contract PriceFeed is Ownable2Step, IPriceFeed {
         require(answer > 0, "ERR_ZERO_ANSWER");
 
         return (uint256(answer), uint8(decimal));
+    }
+
+    function amountInUSD(address token, uint256 amount)
+        public
+        view
+        override
+        returns (uint256)
+    {
+        return exchangeRate(token, USD, amount);
     }
 
     function exchangeRate(

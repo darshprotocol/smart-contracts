@@ -15,7 +15,11 @@ contract TrustScore is Ownable2Step, ITrustScore {
         uint16 result;
 
         // repaymentTimes
-        if (activity.repaymentTimes > 30) {
+        if (_activity.pendingLoansCount(user) > 1) {
+            result += 8;
+        } else if (_activity.pendingLoansCount(user) == 1) {
+            result += 4;
+        } else if (activity.repaymentTimes > 30) {
             result += 0;
         } else if (activity.repaymentTimes > 21) {
             result += 1;
@@ -30,7 +34,9 @@ contract TrustScore is Ownable2Step, ITrustScore {
         }
 
         // repaymentVolume
-        if (activity.repaymentVolume > 2000 * 1e18) {
+        if (_activity.pendingLoansCount(user) > 0) {
+            result += 15;
+        } else if (activity.repaymentVolume > 2000 * 1e18) {
             result += 0;
         } else if (activity.repaymentVolume > 1600 * 1e18) {
             result += 3;
@@ -53,7 +59,11 @@ contract TrustScore is Ownable2Step, ITrustScore {
         }
 
         // borrowedTimes
-        if (activity.borrowedTimes > 26) {
+        if (_activity.pendingLoansCount(user) > 1) {
+            result += 7;
+        } else if (_activity.pendingLoansCount(user) == 1) {
+            result += 4;
+        } else if (activity.borrowedTimes > 26) {
             result += 0;
         } else if (activity.borrowedTimes > 18) {
             result += 1;
@@ -68,7 +78,9 @@ contract TrustScore is Ownable2Step, ITrustScore {
         }
 
         // borrowedVolume
-        if (activity.borrowedVolume > 2000 * 1e18) {
+        if (_activity.pendingLoansCount(user) > 0) {
+            result += 10;
+        } else if (activity.borrowedVolume > 2000 * 1e18) {
             result += 0;
         } else if (activity.borrowedVolume > 1600 * 1e18) {
             result += 1;

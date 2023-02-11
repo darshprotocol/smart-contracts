@@ -36,16 +36,17 @@ contract Activity is Ownable2Step {
 
     mapping(address => ActivityModel) private activities;
 
-    function borrowLoan(address user, uint256 amountBorrowedInUSD)
+    function _borrowLoan(address user, uint256 amountBorrowedInUSD)
         external
         onlyLendingPool
     {
         ActivityModel storage activity = activities[user];
         activity.borrowedTimes += 1;
         activity.borrowedVolume += amountBorrowedInUSD;
+        activity.lastActive = uint160(block.timestamp);
     }
 
-    function repayLoan(
+    function _repayLoan(
         address user,
         uint256 amountPaidInUSD,
         uint256 interestPaidInUSD
@@ -57,7 +58,7 @@ contract Activity is Ownable2Step {
         activity.lastActive = uint160(block.timestamp);
     }
 
-    function dropCollateral(address user, uint256 amountInUSD)
+    function _dropCollateral(address user, uint256 amountInUSD)
         external
         onlyLendingPool
     {
@@ -65,7 +66,7 @@ contract Activity is Ownable2Step {
         activity.collateralVolume += amountInUSD;
     }
 
-    function pendingLoansCount(address user) external view returns (uint256) {
+    function pendingLoansCount(address user) external view returns (uint16) {
         return activities[user].borrowedTimes - activities[user].repaymentTimes;
     }
 

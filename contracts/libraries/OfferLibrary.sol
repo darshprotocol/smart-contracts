@@ -11,7 +11,7 @@ library OfferLibrary {
 
     struct LendingOffer {
         uint256 offerId;
-        address principalType;
+        address principalToken;
         uint256 currentPrincipal;
         uint256 initialPrincipal;
         uint256 interest;
@@ -24,8 +24,8 @@ library OfferLibrary {
 
     struct BorrowingOffer {
         uint256 offerId;
-        address principalType;
-        address collateralType;
+        address principalToken;
+        address collateralToken;
         uint256 currentCollateral;
         uint256 initialCollateral;
         uint256 currentPrincipal;

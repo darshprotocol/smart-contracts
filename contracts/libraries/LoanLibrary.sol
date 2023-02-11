@@ -15,8 +15,8 @@ library LoanLibrary {
         uint256 offerId;
         LoanLibrary.State state;
         OfferLibrary.Type offerType;
-        address principalType;
-        address collateralType;
+        address principalToken;
+        address collateralToken;
         uint256 initialPrincipal;
         uint256 currentPrincipal;
         uint256 initialCollateral;

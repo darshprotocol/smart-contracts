@@ -4,6 +4,10 @@ pragma solidity >=0.7.0 <0.9.0;
 interface IPriceFeed {
     function getLatestPriceUSD(address) external returns (uint256, uint8);
 
+    function amountInUSD(address token, uint256 amount)
+        external
+        returns (uint256);
+
     function exchangeRate(
         address base,
         address quote,

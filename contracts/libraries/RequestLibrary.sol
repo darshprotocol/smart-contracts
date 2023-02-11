@@ -24,7 +24,7 @@ library RequestLibrary {
 
     struct BorrowingRequest {
         uint requestId;
-        address collateralType;
+        address collateralToken;
         uint256 collateralAmount;
         uint256 principalAmount;
         uint interest;
