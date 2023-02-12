@@ -6,6 +6,7 @@ import "./../interfaces/ISimpleInterest.sol";
 abstract contract SimpleInterest is ISimpleInterest {
     /// @dev The units of precision equal to the minimum interest.
     uint256 public constant INTEREST_RATE_DENOMINATOR = 1e18;
+    uint16 public constant PERCENT = 100;
 
     function getFullInterestAmount(
         uint256 principal,
@@ -13,7 +14,7 @@ abstract contract SimpleInterest is ISimpleInterest {
         uint256 interest
     ) public pure virtual returns (uint256) {
         uint256 accrued = (principal * interest * durationSecs) /
-            INTEREST_RATE_DENOMINATOR;
+            INTEREST_RATE_DENOMINATOR / PERCENT;
 
         return principal + accrued;
     }
@@ -25,7 +26,7 @@ abstract contract SimpleInterest is ISimpleInterest {
         returns (uint256)
     {
         if (percent == 0) return total;
-        return (total * percent) / 100;
+        return (total * percent) / PERCENT;
     }
 
     function percentageInverseOf(uint256 total, uint160 percent)
@@ -34,9 +35,9 @@ abstract contract SimpleInterest is ISimpleInterest {
         virtual
         returns (uint256)
     {
-        require(percent >= 100);
-        uint160 diff = percent - 100;
-        uint160 percentage = 100 - diff;
+        require(percent >= PERCENT);
+        uint160 diff = percent - PERCENT;
+        uint160 percentage = PERCENT - diff;
         return percentageOf(total, percentage);
     }
 

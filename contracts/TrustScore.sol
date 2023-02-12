@@ -213,11 +213,11 @@ contract TrustScore is Ownable2Step, ITrustScore {
             result += 50;
         }
 
-        // lastActive - 10 marks
+        // lastActive - 5 ~ 10 marks
         uint160 currentTime = uint160(block.timestamp);
 
         if (activity.lastActive == 0) {
-            result += 10;
+            result += 5;
         } else if ((activity.lastActive + 15 days) < currentTime) {
             result += 0;
         } else if ((activity.lastActive + 25 days) < currentTime) {

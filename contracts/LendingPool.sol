@@ -605,11 +605,9 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     // @borrower
     function repayLoan(uint256 loanId, uint16 percentage) public payable {
-        LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
+        _checkPercentage(percentage);
 
-        // percentage must be 25, 50, 75 or 100
-        require(percentage <= 100, "OVER_PERCENTAGE");
-        require(percentage % 25 == 0, "ERR_PERCENTAGE");
+        LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         // verify the borrower is the repayer
         require(loan.borrower == _msgSender(), "ERR_NOT_BORROWER");

@@ -77,29 +77,20 @@ contract("CreateLendingOffer", async accounts => {
         console.log(x.toNumber());
     })
     it("borrowOffer", async () => {
-        const dai = await DAI.deployed()
-        await dai.transfer(accounts[1], "10000000000000000000")
-        await dai.approve(LendingPool.address, "10000000000000000000", { from: accounts[1] })
-        const borrowing = await LendingPool.deployed()
-        await borrowing.acceptLendingOffer(1, 75, DAI.address, { from: accounts[1] })
-    })
-    it("checkRepayment", async () => {
-        const lendingPool = await LendingPool.deployed()
-        const createdAt = 1675515317
-        const now = Math.floor(Date.now() / 1000)
-        const ellapsed = (now + 10) - createdAt
-        const ftmAmount = "500000000000000000" // 0.5 ftm
-        const payback = await lendingPool.getFullInterestAmount(ftmAmount, ellapsed, "385802400000")
-        console.log(Number(payback));
+        // const dai = await DAI.deployed()
+        // await dai.transfer(accounts[1], "10000000000000000000")
+        // await dai.approve(LendingPool.address, "10000000000000000000", { from: accounts[1] })
+        // const borrowing = await LendingPool.deployed()
+        // await borrowing.acceptLendingOffer(1, 75, DAI.address, { from: accounts[1] })
     })
     it("repayLoan", async () => {
-        // const lendingPool = await LendingPool.deployed()
-        // const createdAt = 1675515317
-        // const now = Math.floor(Date.now() / 1000)
-        // const ellapsed = (now + 10) - createdAt
-        // const ftmAmount = "500000000000000000" // 0.5 ftm
-        // const payback = await lendingPool.getFullInterestAmount(ftmAmount, ellapsed, "385802400000")
-        // console.log(Number(payback));
-        // await lendingPool.repayLoan(1, { value: payback, from: accounts[1] });
+        const lendingPool = await LendingPool.deployed()
+        const createdAt = 1676239028
+        const now = Math.floor(Date.now() / 1000)
+        const ellapsed = (now + 10) - createdAt
+        const ftmAmount = "7500000000000000000" // 0.75 ftm
+        const payback = await lendingPool.getFullInterestAmount(ftmAmount, ellapsed, "385802400000")
+        console.log(Number(payback));
+        await lendingPool.repayLoan(1, 50, { value: payback, from: accounts[1] });
     })
 })
