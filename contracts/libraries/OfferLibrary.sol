@@ -16,7 +16,7 @@ library OfferLibrary {
         uint256 initialPrincipal;
         uint256 interest;
         uint daysToMaturity;
-        address[] collateralTypes;
+        address[] collateralTokens;
         uint160 expiresAt;
         uint160 createdAt;
         address lender;

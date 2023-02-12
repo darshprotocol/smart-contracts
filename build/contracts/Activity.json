@@ -62,8 +62,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -76,8 +75,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -175,8 +173,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -195,8 +192,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -254,6 +250,16 @@
               "internalType": "uint256",
               "name": "defaultedVolume",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "firstBorrowAt",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint16",
+              "name": "stars",
+              "type": "uint16"
             }
           ],
           "internalType": "struct Activity.ActivityModel",
@@ -262,8 +268,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -279,21 +284,21 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferStarted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountBorrowedInUSD\",\"type\":\"uint256\"}],\"name\":\"_borrowLoan\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountInUSD\",\"type\":\"uint256\"}],\"name\":\"_dropCollateral\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountPaidInUSD\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interestPaidInUSD\",\"type\":\"uint256\"}],\"name\":\"_repayLoan\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"getActivity\",\"outputs\":[{\"components\":[{\"internalType\":\"uint16\",\"name\":\"repaymentTimes\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"borrowedTimes\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"borrowedVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"repaymentVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint160\",\"name\":\"lastActive\",\"type\":\"uint160\"},{\"internalType\":\"uint256\",\"name\":\"collateralVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interestPaidVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"defaultedTimes\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"defaultedVolume\",\"type\":\"uint256\"}],\"internalType\":\"struct Activity.ActivityModel\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"isDefaulter\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"pendingLoansCount\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"address_\",\"type\":\"address\"}],\"name\":\"setLendingPool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"acceptOwnership()\":{\"details\":\"The new owner accepts the ownership transfer.\"},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"pendingOwner()\":{\"details\":\"Returns the address of the pending owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Activity.sol\":\"Activity\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0xee2b6bc803215b66037612da0fe9f23ec3c99ff89db4ff05449a8df17c9befc5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://127be279bb6b2f6106127ea6b431cfc879f9018dd76b7575841821be9eef3488\",\"dweb:/ipfs/QmfXqvL6sKx256hrVuQcSnNtirZrpm4JUbDFXwGHKgrrXU\"]},\"@openzeppelin/contracts/access/Ownable2Step.sol\":{\"keccak256\":\"0xcb3486322c36755440f6f07ce94c23c0fffe1f628a79fd50f8f501007de8ebc6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5abe306336e45520a971708e3fb0def42c20adf50a14f19a8b2849611e04b2bd\",\"dweb:/ipfs/QmQYysdtGUqyyz5a14FnxDq3QszsddtkeJ7cNammhvLcNP\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0x81d5fc973a522c8909d60be6a201869d46aa47b030b8813f60616404628c2b94\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9755b505799e622d964a843a8ed1fd60fedffca230178e5cb95ae9280df4dcd2\",\"dweb:/ipfs/QmRkhUYUUgRZ2QYJjmtQct2ubyYwS3bdUMhbuFYM12VfYn\"]},\"project:/contracts/Activity.sol\":{\"keccak256\":\"0x1c897af47d63cc52615104060a531e7635cc0c2f81b4f4411154a2ca9281dcd2\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://1a8c15b5c06093f4f1d02f1926eb865c2c74359bf9bb236acfdd9ab7842b2a1b\",\"dweb:/ipfs/QmQgN7rdygEUnMUKpvnM78ebiDMUWkNMyWDeuMHyP9H5Kk\"]}},\"version\":1}",
-  "bytecode": "0x6080806040523461006357600180546001600160a01b03199081169091556000805433928116831782556001600160a01b0316907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09080a361071c90816100698239f35b600080fdfe6080604090808252600436101561001557600080fd5b600091823560e01c9182630c01fb72146105a057508163113aa8b11461055b578163129ec31a1461050a57816347aea77c1461049757816366d13fb614610371578163715018a61461030c578163720722fd1461026e57816379ba5097146101af5781638da5cb5b14610187578163d8689e1314610144578163e30c397814610117575063f2fde38b146100a857600080fd5b34610114576020366003190112610114576100c1610606565b6100c9610621565b600180546001600160a01b0319166001600160a01b0392831690811790915582549091167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e227008380a380f35b80fd5b90503461014057816003193601126101405760015490516001600160a01b039091168152602090f35b5080fd5b9050346101405760203660031901126101405760209161ffff9060069083906001600160a01b03610173610606565b168152600386522001541615159051908152f35b905034610140578160031936011261014057905490516001600160a01b039091168152602090f35b905034610140578160031936011261014057600154906001600160a01b0390338284160361021957506001600160a01b031991821660015582543392811683178455167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08380a380f35b5162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b6064820152608490fd5b90503461014057606036600319011261014057610289610606565b6002546001600160a01b039290831633036103085782600392168452816020528320805461ffff6102bb818316610679565b169061ffff1916178155600281016102d660243582546106a2565b9055600581016102e960443582546106a2565b9055019042166bffffffffffffffffffffffff60a01b82541617905580f35b8380fd5b8234610114578060031936011261011457610325610621565b600180546001600160a01b03199081169091558154908116825581906001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b9050346101405760203660031901126101405761012091610390610606565b826103996106af565b9280845280602085015280828501528060608501528060808501528060a08501528060c08501528060e0850152806101008095015260018060a01b038093168152600360205220906103e96106af565b8281935461ffff938482169788855285602086019360101c168352600184015490808601918252600285015490606087019182528360038701541692608088019384528860048801549660a08a019788528c600760058b01549a60c08d019b8c5260e0856006830154169d019c8d5201549c019b8c5283519d8e52511660208d015251908b01525160608a0152511660808801525160a08701525160c0860152511660e08401525190820152f35b9050346101405780600319360112610140576104b1610606565b6002546001600160a01b039290831633036103085782600392168452816020528320805463ffff00006104ea61ffff8360101c16610679565b60101b169063ffff00001916178155600181016102e960243582546106a2565b905034610140578060031936011261014057610524610606565b6002549091906001600160a01b03908116330361030857600492168352600360205282200161055660243582546106a2565b905580f35b823461011457602036600319011261011457610575610606565b61057d610621565b60018060a01b03166bffffffffffffffffffffffff60a01b600254161760025580f35b915034610602576020366003190112610602576001600160a01b036105c3610606565b168352600360205282205461ffff9080821660109190911c8216038181116105ee5760209350168152f35b634e487b7160e01b84526011600452602484fd5b8280fd5b600435906001600160a01b038216820361061c57565b600080fd5b6000546001600160a01b0316330361063557565b606460405162461bcd60e51b815260206004820152602060248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152fd5b90600161ffff8093160191821161068c57565b634e487b7160e01b600052601160045260246000fd5b9190820180921161068c57565b60405190610120820182811067ffffffffffffffff8211176106d057604052565b634e487b7160e01b600052604160045260246000fdfea26469706673582212203e76c895a73393d324db14ad6191b2e288015a32125dd8e7d766d4182aca1c8b64736f6c63430008110033",
-  "deployedBytecode": "0x6080604090808252600436101561001557600080fd5b600091823560e01c9182630c01fb72146105a057508163113aa8b11461055b578163129ec31a1461050a57816347aea77c1461049757816366d13fb614610371578163715018a61461030c578163720722fd1461026e57816379ba5097146101af5781638da5cb5b14610187578163d8689e1314610144578163e30c397814610117575063f2fde38b146100a857600080fd5b34610114576020366003190112610114576100c1610606565b6100c9610621565b600180546001600160a01b0319166001600160a01b0392831690811790915582549091167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e227008380a380f35b80fd5b90503461014057816003193601126101405760015490516001600160a01b039091168152602090f35b5080fd5b9050346101405760203660031901126101405760209161ffff9060069083906001600160a01b03610173610606565b168152600386522001541615159051908152f35b905034610140578160031936011261014057905490516001600160a01b039091168152602090f35b905034610140578160031936011261014057600154906001600160a01b0390338284160361021957506001600160a01b031991821660015582543392811683178455167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08380a380f35b5162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b6064820152608490fd5b90503461014057606036600319011261014057610289610606565b6002546001600160a01b039290831633036103085782600392168452816020528320805461ffff6102bb818316610679565b169061ffff1916178155600281016102d660243582546106a2565b9055600581016102e960443582546106a2565b9055019042166bffffffffffffffffffffffff60a01b82541617905580f35b8380fd5b8234610114578060031936011261011457610325610621565b600180546001600160a01b03199081169091558154908116825581906001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b9050346101405760203660031901126101405761012091610390610606565b826103996106af565b9280845280602085015280828501528060608501528060808501528060a08501528060c08501528060e0850152806101008095015260018060a01b038093168152600360205220906103e96106af565b8281935461ffff938482169788855285602086019360101c168352600184015490808601918252600285015490606087019182528360038701541692608088019384528860048801549660a08a019788528c600760058b01549a60c08d019b8c5260e0856006830154169d019c8d5201549c019b8c5283519d8e52511660208d015251908b01525160608a0152511660808801525160a08701525160c0860152511660e08401525190820152f35b9050346101405780600319360112610140576104b1610606565b6002546001600160a01b039290831633036103085782600392168452816020528320805463ffff00006104ea61ffff8360101c16610679565b60101b169063ffff00001916178155600181016102e960243582546106a2565b905034610140578060031936011261014057610524610606565b6002549091906001600160a01b03908116330361030857600492168352600360205282200161055660243582546106a2565b905580f35b823461011457602036600319011261011457610575610606565b61057d610621565b60018060a01b03166bffffffffffffffffffffffff60a01b600254161760025580f35b915034610602576020366003190112610602576001600160a01b036105c3610606565b168352600360205282205461ffff9080821660109190911c8216038181116105ee5760209350168152f35b634e487b7160e01b84526011600452602484fd5b8280fd5b600435906001600160a01b038216820361061c57565b600080fd5b6000546001600160a01b0316330361063557565b606460405162461bcd60e51b815260206004820152602060248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152fd5b90600161ffff8093160191821161068c57565b634e487b7160e01b600052601160045260246000fd5b9190820180921161068c57565b60405190610120820182811067ffffffffffffffff8211176106d057604052565b634e487b7160e01b600052604160045260246000fdfea26469706673582212203e76c895a73393d324db14ad6191b2e288015a32125dd8e7d766d4182aca1c8b64736f6c63430008110033",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferStarted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountBorrowedInUSD\",\"type\":\"uint256\"}],\"name\":\"_borrowLoan\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountInUSD\",\"type\":\"uint256\"}],\"name\":\"_dropCollateral\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountPaidInUSD\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interestPaidInUSD\",\"type\":\"uint256\"}],\"name\":\"_repayLoan\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"getActivity\",\"outputs\":[{\"components\":[{\"internalType\":\"uint16\",\"name\":\"repaymentTimes\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"borrowedTimes\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"borrowedVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"repaymentVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint160\",\"name\":\"lastActive\",\"type\":\"uint160\"},{\"internalType\":\"uint256\",\"name\":\"collateralVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interestPaidVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"defaultedTimes\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"defaultedVolume\",\"type\":\"uint256\"},{\"internalType\":\"uint160\",\"name\":\"firstBorrowAt\",\"type\":\"uint160\"},{\"internalType\":\"uint16\",\"name\":\"stars\",\"type\":\"uint16\"}],\"internalType\":\"struct Activity.ActivityModel\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"isDefaulter\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"pendingLoansCount\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"address_\",\"type\":\"address\"}],\"name\":\"setLendingPool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"acceptOwnership()\":{\"details\":\"The new owner accepts the ownership transfer.\"},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"pendingOwner()\":{\"details\":\"Returns the address of the pending owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Activity.sol\":\"Activity\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0xee2b6bc803215b66037612da0fe9f23ec3c99ff89db4ff05449a8df17c9befc5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://127be279bb6b2f6106127ea6b431cfc879f9018dd76b7575841821be9eef3488\",\"dweb:/ipfs/QmfXqvL6sKx256hrVuQcSnNtirZrpm4JUbDFXwGHKgrrXU\"]},\"@openzeppelin/contracts/access/Ownable2Step.sol\":{\"keccak256\":\"0xcb3486322c36755440f6f07ce94c23c0fffe1f628a79fd50f8f501007de8ebc6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5abe306336e45520a971708e3fb0def42c20adf50a14f19a8b2849611e04b2bd\",\"dweb:/ipfs/QmQYysdtGUqyyz5a14FnxDq3QszsddtkeJ7cNammhvLcNP\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0x81d5fc973a522c8909d60be6a201869d46aa47b030b8813f60616404628c2b94\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9755b505799e622d964a843a8ed1fd60fedffca230178e5cb95ae9280df4dcd2\",\"dweb:/ipfs/QmRkhUYUUgRZ2QYJjmtQct2ubyYwS3bdUMhbuFYM12VfYn\"]},\"project:/contracts/Activity.sol\":{\"keccak256\":\"0x940f155fb6e661e708c67504cfa32d131051340e90eae1db5344e85212118f82\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://fa20350375f4b3daa466388bea8f1a0224db8680be689cccbee1c25115dc1fd0\",\"dweb:/ipfs/Qma2CnG8XrdVntFyUJtkDDn5jAwtqhkHPTLoNdvoa7MJW3\"]}},\"version\":1}",
+  "bytecode": "0x6080806040523461006357600180546001600160a01b03199081169091556000805433928116831782556001600160a01b0316907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09080a361077c90816100698239f35b600080fdfe608080604052600436101561001357600080fd5b600090813560e01c9081630c01fb72146105fd57508063113aa8b1146105b8578063129ec31a1461056957806347aea77c146104f457806366d13fb614610369578063715018a614610304578063720722fd1461026557806379ba5097146101a85780638da5cb5b14610181578063d8689e131461013d578063e30c3978146101145763f2fde38b146100a557600080fd5b34610111576020366003190112610111576100be610666565b6100c6610681565b600180546001600160a01b0319166001600160a01b0392831690811790915582549091167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e227008380a380f35b80fd5b50346101115780600319360112610111576001546040516001600160a01b039091168152602090f35b50346101115760203660031901126101115760209061ffff906006906040906001600160a01b0361016c610666565b16815260038552200154161515604051908152f35b5034610111578060031936011261011157546040516001600160a01b039091168152602090f35b50346101115780600319360112610111576001546001600160a01b03338183160361020e576001600160a01b031991821660015582543392811683178455167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08380a380f35b60405162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b6064820152608490fd5b50346101115760603660031901126101115761027f610666565b6002546001600160a01b0391908216330361030057811682526003602052600360408320805461ffff6102b38183166106d9565b169061ffff1916178155600281016102ce6024358254610702565b9055600581016102e16044358254610702565b9055019042166bffffffffffffffffffffffff60a01b82541617905580f35b8280fd5b503461011157806003193601126101115761031d610681565b600180546001600160a01b03199081169091558154908116825581906001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b503461011157602036600319011261011157604061016091610389610666565b8161014061039561070f565b82815282602082015282868201528260608201528260808201528260a08201528260c08201528260e08201528261010082015282610120820152015260018060a01b0316815260036020522061ffff6101406103ef61070f565b8260088554958287168452828760101c166020850152600181015460408501526002810154606085015260018060a01b036003820154166080850152600481015460a0850152600581015460c08501528260068201541660e08501526007810154610100850152015460018060a01b03811661012084015260a01c16828201528260405194168452826020820151166020850152604081015160408501526060810151606085015260018060a01b03608082015116608085015260a081015160a085015260c081015160c08501528260e08201511660e085015261010081015161010085015260018060a01b0361012082015116610120850152015116610140820152f35b50346101115760403660031901126101115761050e610666565b6002546001600160a01b0391908216330361030057811682526003602052600360408320805463ffff000061054961ffff8360101c166106d9565b60101b169063ffff00001916178155600181016102e16024358254610702565b503461011157604036600319011261011157610583610666565b6002546001600160a01b0391908216330361030057811682526003602052600360408320600481016102e16024358254610702565b5034610111576020366003190112610111576105d2610666565b6105da610681565b60018060a01b03166bffffffffffffffffffffffff60a01b600254161760025580f35b905034610662576020366003190112610662576001600160a01b03610620610666565b168252600360205261ffff80604084205460101c1681604085205416900381811161064e5760209350168152f35b634e487b7160e01b84526011600452602484fd5b5080fd5b600435906001600160a01b038216820361067c57565b600080fd5b6000546001600160a01b0316330361069557565b606460405162461bcd60e51b815260206004820152602060248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152fd5b90600161ffff809316019182116106ec57565b634e487b7160e01b600052601160045260246000fd5b919082018092116106ec57565b60405190610160820182811067ffffffffffffffff82111761073057604052565b634e487b7160e01b600052604160045260246000fdfea26469706673582212203d4e0f6de87bf0a508a9392dc2bf31aa04a3bdda500b0524a06e3c62483f844064736f6c63430008110033",
+  "deployedBytecode": "0x608080604052600436101561001357600080fd5b600090813560e01c9081630c01fb72146105fd57508063113aa8b1146105b8578063129ec31a1461056957806347aea77c146104f457806366d13fb614610369578063715018a614610304578063720722fd1461026557806379ba5097146101a85780638da5cb5b14610181578063d8689e131461013d578063e30c3978146101145763f2fde38b146100a557600080fd5b34610111576020366003190112610111576100be610666565b6100c6610681565b600180546001600160a01b0319166001600160a01b0392831690811790915582549091167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e227008380a380f35b80fd5b50346101115780600319360112610111576001546040516001600160a01b039091168152602090f35b50346101115760203660031901126101115760209061ffff906006906040906001600160a01b0361016c610666565b16815260038552200154161515604051908152f35b5034610111578060031936011261011157546040516001600160a01b039091168152602090f35b50346101115780600319360112610111576001546001600160a01b03338183160361020e576001600160a01b031991821660015582543392811683178455167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08380a380f35b60405162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b6064820152608490fd5b50346101115760603660031901126101115761027f610666565b6002546001600160a01b0391908216330361030057811682526003602052600360408320805461ffff6102b38183166106d9565b169061ffff1916178155600281016102ce6024358254610702565b9055600581016102e16044358254610702565b9055019042166bffffffffffffffffffffffff60a01b82541617905580f35b8280fd5b503461011157806003193601126101115761031d610681565b600180546001600160a01b03199081169091558154908116825581906001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b503461011157602036600319011261011157604061016091610389610666565b8161014061039561070f565b82815282602082015282868201528260608201528260808201528260a08201528260c08201528260e08201528261010082015282610120820152015260018060a01b0316815260036020522061ffff6101406103ef61070f565b8260088554958287168452828760101c166020850152600181015460408501526002810154606085015260018060a01b036003820154166080850152600481015460a0850152600581015460c08501528260068201541660e08501526007810154610100850152015460018060a01b03811661012084015260a01c16828201528260405194168452826020820151166020850152604081015160408501526060810151606085015260018060a01b03608082015116608085015260a081015160a085015260c081015160c08501528260e08201511660e085015261010081015161010085015260018060a01b0361012082015116610120850152015116610140820152f35b50346101115760403660031901126101115761050e610666565b6002546001600160a01b0391908216330361030057811682526003602052600360408320805463ffff000061054961ffff8360101c166106d9565b60101b169063ffff00001916178155600181016102e16024358254610702565b503461011157604036600319011261011157610583610666565b6002546001600160a01b0391908216330361030057811682526003602052600360408320600481016102e16024358254610702565b5034610111576020366003190112610111576105d2610666565b6105da610681565b60018060a01b03166bffffffffffffffffffffffff60a01b600254161760025580f35b905034610662576020366003190112610662576001600160a01b03610620610666565b168252600360205261ffff80604084205460101c1681604085205416900381811161064e5760209350168152f35b634e487b7160e01b84526011600452602484fd5b5080fd5b600435906001600160a01b038216820361067c57565b600080fd5b6000546001600160a01b0316330361069557565b606460405162461bcd60e51b815260206004820152602060248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152fd5b90600161ffff809316019182116106ec57565b634e487b7160e01b600052601160045260246000fd5b919082018092116106ec57565b60405190610160820182811067ffffffffffffffff82111761073057604052565b634e487b7160e01b600052604160045260246000fdfea26469706673582212203d4e0f6de87bf0a508a9392dc2bf31aa04a3bdda500b0524a06e3c62483f844064736f6c63430008110033",
   "immutableReferences": {},
   "generatedSources": [],
   "deployedGeneratedSources": [],
-  "sourceMap": "133:2541:21:-:0;;;;;;;;;;-1:-1:-1;;;;;;133:2541:21;;;;;;-1:-1:-1;133:2541:21;;736:10:14;133:2541:21;;;;;;;-1:-1:-1;;;;;133:2541:21;;2653:40:1;;-1:-1:-1;2653:40:1;133:2541:21;;;;;;;;;;",
-  "deployedSourceMap": "133:2541:21:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;133:2541:21;;;;;;:::i;:::-;1097:65:1;;:::i;:::-;133:2541:21;;;-1:-1:-1;;;;;;133:2541:21;-1:-1:-1;;;;;133:2541:21;;;;;;;;;;;;;;1303:43:2;133:2541:21;;1303:43:2;133:2541:21;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2541:21;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;133:2541:21;;;;;;;;2291:31;;133:2541;;-1:-1:-1;;;;;133:2541:21;;:::i;:::-;;;;;;;;2291:31;133:2541;;2291:35;;133:2541;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2541:21;;;;;;;;;;;;;;;;;;;;;;953:13:2;133:2541:21;;-1:-1:-1;;;;;133:2541:21;736:10:14;133:2541:21;;;1880:24:2;133:2541:21;;-1:-1:-1;;;;;;;133:2541:21;;;953:13:2;133:2541:21;;;736:10:14;133:2541:21;;;;;;;;2653:40:1;133:2541:21;;2653:40:1;133:2541:21;;;;-1:-1:-1;;;133:2541:21;;;;;;;;;;;;;;;;;-1:-1:-1;;;133:2541:21;;;;;;;;;;;;;;;-1:-1:-1;;133:2541:21;;;;;;:::i;:::-;2639:11;133:2541;-1:-1:-1;;;;;133:2541:21;;;;2625:10;:25;133:2541;;;;;;;;;;;;;;;;1590:28;133:2541;;;1590:28;:::i;:::-;133:2541;;;;;;;;2639:11;1629:24;;:43;133:2541;;;;1629:43;:::i;:::-;133:2541;;1683:27;;;:48;133:2541;;;;1683:48;:::i;:::-;133:2541;;1742:19;1772:15;;133:2541;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1097:65:1;;:::i;:::-;1627:20:2;133:2541:21;;-1:-1:-1;;;;;;133:2541:21;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2541:21;2653:40:1;133:2541:21;;2653:40:1;133:2541:21;;;;;;;;;;-1:-1:-1;;133:2541:21;;;;;;;;:::i;:::-;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;2639:11;133:2541;-1:-1:-1;;;;;133:2541:21;;;;2625:10;:25;133:2541;;;;;;;;;;;;;;;;1217:27;133:2541;;;;;1217:27;:::i;:::-;133:2541;;;;;;;;;;;1255:23;;:46;133:2541;;;;1255:46;:::i;133:2541::-;;;;;;;;;;;;;;;;:::i;:::-;2639:11;133:2541;;;;-1:-1:-1;;;;;133:2541:21;;;2625:10;:25;133:2541;;;;;;;;;;;;1983:25;:40;133:2541;;;;1983:40;:::i;:::-;133:2541;;;;;;;;;;;-1:-1:-1;;133:2541:21;;;;;;:::i;:::-;1097:65:1;;:::i;:::-;133:2541:21;;;;;;;;;2541:22;133:2541;;;2541:22;133:2541;;;;;;;;;;;-1:-1:-1;;133:2541:21;;;;-1:-1:-1;;;;;133:2541:21;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;133:2541:21;;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2541:21;;;;;;:::o;:::-;;;;1408:132:1;1316:6;133:2541:21;-1:-1:-1;;;;;133:2541:21;736:10:14;1472:23:1;133:2541:21;;1408:132:1:o;133:2541:21:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;",
-  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\nimport \"@openzeppelin/contracts/access/Ownable2Step.sol\";\r\n\r\ncontract Activity is Ownable2Step {\r\n    address lendingPool;\r\n\r\n    constructor() Ownable2Step() {}\r\n\r\n    /*\r\n        The activity contract keeps record of every\r\n        users wallet address activity on the lending pool.\r\n\r\n        These data and other externally sourced data are used to calculate\r\n        the creditworthiness of a borrower's wallet address.\r\n    */\r\n\r\n    struct ActivityModel {\r\n        // frequency\r\n        uint16 repaymentTimes;\r\n        uint16 borrowedTimes;\r\n        // volume\r\n        uint256 borrowedVolume;\r\n        uint256 repaymentVolume;\r\n        // active\r\n        uint160 lastActive;\r\n        // collateral\r\n        uint256 collateralVolume;\r\n        // interest\r\n        uint256 interestPaidVolume;\r\n        // defaulting\r\n        uint16 defaultedTimes;\r\n        uint256 defaultedVolume;\r\n    }\r\n\r\n    mapping(address => ActivityModel) private activities;\r\n\r\n    function _borrowLoan(address user, uint256 amountBorrowedInUSD)\r\n        external\r\n        onlyLendingPool\r\n    {\r\n        ActivityModel storage activity = activities[user];\r\n        activity.borrowedTimes += 1;\r\n        activity.borrowedVolume += amountBorrowedInUSD;\r\n        activity.lastActive = uint160(block.timestamp);\r\n    }\r\n\r\n    function _repayLoan(\r\n        address user,\r\n        uint256 amountPaidInUSD,\r\n        uint256 interestPaidInUSD\r\n    ) external onlyLendingPool {\r\n        ActivityModel storage activity = activities[user];\r\n        activity.repaymentTimes += 1;\r\n        activity.repaymentVolume += amountPaidInUSD;\r\n        activity.interestPaidVolume += interestPaidInUSD;\r\n        activity.lastActive = uint160(block.timestamp);\r\n    }\r\n\r\n    function _dropCollateral(address user, uint256 amountInUSD)\r\n        external\r\n        onlyLendingPool\r\n    {\r\n        ActivityModel storage activity = activities[user];\r\n        activity.collateralVolume += amountInUSD;\r\n    }\r\n\r\n    function pendingLoansCount(address user) external view returns (uint16) {\r\n        return activities[user].borrowedTimes - activities[user].repaymentTimes;\r\n    }\r\n\r\n    function isDefaulter(address user) external view returns (bool) {\r\n        return activities[user].defaultedTimes > 0;\r\n    }\r\n\r\n    function getActivity(address user) external view returns(ActivityModel memory) {\r\n        return activities[user];\r\n    }\r\n\r\n    function setLendingPool(address address_) public onlyOwner {\r\n        lendingPool = address_;\r\n    }\r\n\r\n    modifier onlyLendingPool() {\r\n        require(msg.sender == lendingPool);\r\n        _;\r\n    }\r\n}\r\n",
+  "sourceMap": "133:2708:21:-:0;;;;;;;;;;-1:-1:-1;;;;;;133:2708:21;;;;;;-1:-1:-1;133:2708:21;;736:10:14;133:2708:21;;;;;;;-1:-1:-1;;;;;133:2708:21;;2653:40:1;;-1:-1:-1;2653:40:1;133:2708:21;;;;;;;;;;",
+  "deployedSourceMap": "133:2708:21:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;133:2708:21;;;;;;:::i;:::-;1097:65:1;;:::i;:::-;133:2708:21;;;-1:-1:-1;;;;;;133:2708:21;-1:-1:-1;;;;;133:2708:21;;;;;;;;;;;;;;1303:43:2;133:2708:21;;1303:43:2;133:2708:21;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2708:21;;;;;;;;;;;;;;;-1:-1:-1;;133:2708:21;;;;;;;;2458:31;;133:2708;;-1:-1:-1;;;;;133:2708:21;;:::i;:::-;;;;;;;;2458:31;133:2708;;2458:35;;133:2708;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2708:21;;;;;;;;;;;;;;;;;;;;;953:13:2;133:2708:21;-1:-1:-1;;;;;736:10:14;133:2708:21;;;1880:24:2;133:2708:21;;-1:-1:-1;;;;;;133:2708:21;;;953:13:2;133:2708:21;;;736:10:14;133:2708:21;;;;;;;;2653:40:1;133:2708:21;;2653:40:1;133:2708:21;;;;;-1:-1:-1;;;133:2708:21;;;;;;;;;;;;;;;;;-1:-1:-1;;;133:2708:21;;;;;;;;;;;;;;-1:-1:-1;;133:2708:21;;;;;;:::i;:::-;2806:11;133:2708;-1:-1:-1;;;;;133:2708:21;;;;2792:10;:25;133:2708;;;;;;;;;;;;;;;;1700:28;133:2708;;;1700:28;:::i;:::-;133:2708;;;;;;;;2806:11;1739:24;;:43;133:2708;;;;1739:43;:::i;:::-;133:2708;;1793:27;;;:48;133:2708;;;;1793:48;:::i;:::-;133:2708;;1852:19;1882:15;;133:2708;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1097:65:1;;:::i;:::-;1627:20:2;133:2708:21;;-1:-1:-1;;;;;;133:2708:21;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2708:21;2653:40:1;133:2708:21;;2653:40:1;133:2708:21;;;;;;;;;-1:-1:-1;;133:2708:21;;;;;;;;;:::i;:::-;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;133:2708:21;;;;;;:::i;:::-;2806:11;133:2708;-1:-1:-1;;;;;133:2708:21;;;;2792:10;:25;133:2708;;;;;;;;;;;;;;;;1327:27;133:2708;;;;;1327:27;:::i;:::-;133:2708;;;;;;;;;;;1365:23;;:46;133:2708;;;;1365:46;:::i;133:2708::-;;;;;;;-1:-1:-1;;133:2708:21;;;;;;:::i;:::-;2806:11;133:2708;-1:-1:-1;;;;;133:2708:21;;;;2792:10;:25;133:2708;;;;;;;;;;;;;;2093:25;;:40;133:2708;;;;2093:40;:::i;133:2708::-;;;;;;;-1:-1:-1;;133:2708:21;;;;;;:::i;:::-;1097:65:1;;:::i;:::-;133:2708:21;;;;;;;;;2708:22;133:2708;;;2708:22;133:2708;;;;;;;;;;;-1:-1:-1;;133:2708:21;;;;-1:-1:-1;;;;;133:2708:21;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;133:2708:21;;;;;;;;;;;;;;;;-1:-1:-1;;;;;133:2708:21;;;;;;:::o;:::-;;;;1408:132:1;1316:6;133:2708:21;-1:-1:-1;;;;;133:2708:21;736:10:14;1472:23:1;133:2708:21;;1408:132:1:o;133:2708:21:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;",
+  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\nimport \"@openzeppelin/contracts/access/Ownable2Step.sol\";\r\n\r\ncontract Activity is Ownable2Step {\r\n    address lendingPool;\r\n\r\n    constructor() Ownable2Step() {}\r\n\r\n    /*\r\n        The activity contract keeps record of every\r\n        users wallet address activity on the lending pool.\r\n\r\n        These data and other externally sourced data are used to calculate\r\n        the creditworthiness of a borrower's wallet address.\r\n    */\r\n\r\n    struct ActivityModel {\r\n        // frequency\r\n        uint16 repaymentTimes;\r\n        uint16 borrowedTimes;\r\n        // volume\r\n        uint256 borrowedVolume;\r\n        uint256 repaymentVolume;\r\n        // active\r\n        uint160 lastActive;\r\n        // collateral\r\n        uint256 collateralVolume;\r\n        // interest\r\n        uint256 interestPaidVolume;\r\n        // defaulting\r\n        uint16 defaultedTimes;\r\n        uint256 defaultedVolume;\r\n        // first borrow date\r\n        uint160 firstBorrowAt;\r\n        // hero stars collected\r\n        uint16 stars;\r\n    }\r\n\r\n    mapping(address => ActivityModel) activities;\r\n\r\n    function _borrowLoan(address user, uint256 amountBorrowedInUSD)\r\n        external\r\n        onlyLendingPool\r\n    {\r\n        ActivityModel storage activity = activities[user];\r\n        activity.borrowedTimes += 1;\r\n        activity.borrowedVolume += amountBorrowedInUSD;\r\n        activity.lastActive = uint160(block.timestamp);\r\n    }\r\n\r\n    function _repayLoan(\r\n        address user,\r\n        uint256 amountPaidInUSD,\r\n        uint256 interestPaidInUSD\r\n    ) external onlyLendingPool {\r\n        ActivityModel storage activity = activities[user];\r\n        activity.repaymentTimes += 1;\r\n        activity.repaymentVolume += amountPaidInUSD;\r\n        activity.interestPaidVolume += interestPaidInUSD;\r\n        activity.lastActive = uint160(block.timestamp);\r\n    }\r\n\r\n    function _dropCollateral(address user, uint256 amountInUSD)\r\n        external\r\n        onlyLendingPool\r\n    {\r\n        ActivityModel storage activity = activities[user];\r\n        activity.collateralVolume += amountInUSD;\r\n        activity.lastActive = uint160(block.timestamp);\r\n    }\r\n\r\n    function pendingLoansCount(address user) external view returns (uint16) {\r\n        return activities[user].borrowedTimes - activities[user].repaymentTimes;\r\n    }\r\n\r\n    function isDefaulter(address user) external view returns (bool) {\r\n        return activities[user].defaultedTimes > 0;\r\n    }\r\n\r\n    function getActivity(address user) external view returns(ActivityModel memory) {\r\n        return activities[user];\r\n    }\r\n\r\n    function setLendingPool(address address_) public onlyOwner {\r\n        lendingPool = address_;\r\n    }\r\n\r\n    modifier onlyLendingPool() {\r\n        require(msg.sender == lendingPool);\r\n        _;\r\n    }\r\n}\r\n",
   "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\Activity.sol",
   "ast": {
     "absolutePath": "project:/contracts/Activity.sol",
     "exportedSymbols": {
       "Activity": [
-        4438
+        4452
       ],
       "Context": [
         2760
@@ -305,7 +310,7 @@
         241
       ]
     },
-    "id": 4439,
+    "id": 4453,
     "license": "GPL-3.0",
     "nodeType": "SourceUnit",
     "nodes": [
@@ -329,7 +334,7 @@
         "id": 4225,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 4439,
+        "scope": 4453,
         "sourceUnit": 242,
         "src": "72:57:21",
         "symbolAliases": [],
@@ -358,9 +363,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 4438,
+        "id": 4452,
         "linearizedBaseContracts": [
-          4438,
+          4452,
           241,
           158,
           2760
@@ -376,7 +381,7 @@
             "name": "lendingPool",
             "nameLocation": "182:11:21",
             "nodeType": "VariableDeclaration",
-            "scope": 4438,
+            "scope": 4452,
             "src": "174:19:21",
             "stateVariable": true,
             "storageLocation": "default",
@@ -441,7 +446,7 @@
               "parameters": [],
               "src": "231:0:21"
             },
-            "scope": 4438,
+            "scope": 4452,
             "src": "202:31:21",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -449,7 +454,7 @@
           },
           {
             "canonicalName": "Activity.ActivityModel",
-            "id": 4254,
+            "id": 4258,
             "members": [
               {
                 "constant": false,
@@ -458,7 +463,7 @@
                 "name": "repaymentTimes",
                 "nameLocation": "573:14:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "566:21:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -485,7 +490,7 @@
                 "name": "borrowedTimes",
                 "nameLocation": "605:13:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "598:20:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -512,7 +517,7 @@
                 "name": "borrowedVolume",
                 "nameLocation": "656:14:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "648:22:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -539,7 +544,7 @@
                 "name": "repaymentVolume",
                 "nameLocation": "689:15:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "681:23:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -566,7 +571,7 @@
                 "name": "lastActive",
                 "nameLocation": "742:10:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "734:18:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -593,7 +598,7 @@
                 "name": "collateralVolume",
                 "nameLocation": "794:16:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "786:24:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -620,7 +625,7 @@
                 "name": "interestPaidVolume",
                 "nameLocation": "850:18:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "842:26:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -647,7 +652,7 @@
                 "name": "defaultedTimes",
                 "nameLocation": "909:14:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "902:21:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -674,7 +679,7 @@
                 "name": "defaultedVolume",
                 "nameLocation": "942:15:21",
                 "nodeType": "VariableDeclaration",
-                "scope": 4254,
+                "scope": 4258,
                 "src": "934:23:21",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -693,142 +698,196 @@
                   }
                 },
                 "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4255,
+                "mutability": "mutable",
+                "name": "firstBorrowAt",
+                "nameLocation": "1006:13:21",
+                "nodeType": "VariableDeclaration",
+                "scope": 4258,
+                "src": "998:21:21",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint160",
+                  "typeString": "uint160"
+                },
+                "typeName": {
+                  "id": 4254,
+                  "name": "uint160",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "998:7:21",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint160",
+                    "typeString": "uint160"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4257,
+                "mutability": "mutable",
+                "name": "stars",
+                "nameLocation": "1070:5:21",
+                "nodeType": "VariableDeclaration",
+                "scope": 4258,
+                "src": "1063:12:21",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 4256,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1063:6:21",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "visibility": "internal"
               }
             ],
             "name": "ActivityModel",
             "nameLocation": "519:13:21",
             "nodeType": "StructDefinition",
-            "scope": 4438,
-            "src": "512:453:21",
+            "scope": 4452,
+            "src": "512:571:21",
             "visibility": "public"
           },
           {
             "constant": false,
-            "id": 4259,
+            "id": 4263,
             "mutability": "mutable",
             "name": "activities",
-            "nameLocation": "1015:10:21",
+            "nameLocation": "1125:10:21",
             "nodeType": "VariableDeclaration",
-            "scope": 4438,
-            "src": "973:52:21",
+            "scope": 4452,
+            "src": "1091:44:21",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
               "typeString": "mapping(address => struct Activity.ActivityModel)"
             },
             "typeName": {
-              "id": 4258,
+              "id": 4262,
               "keyType": {
-                "id": 4255,
+                "id": 4259,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "981:7:21",
+                "src": "1099:7:21",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "973:33:21",
+              "src": "1091:33:21",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
                 "typeString": "mapping(address => struct Activity.ActivityModel)"
               },
               "valueType": {
-                "id": 4257,
+                "id": 4261,
                 "nodeType": "UserDefinedTypeName",
                 "pathNode": {
-                  "id": 4256,
+                  "id": 4260,
                   "name": "ActivityModel",
                   "nameLocations": [
-                    "992:13:21"
+                    "1110:13:21"
                   ],
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 4254,
-                  "src": "992:13:21"
+                  "referencedDeclaration": 4258,
+                  "src": "1110:13:21"
                 },
-                "referencedDeclaration": 4254,
-                "src": "992:13:21",
+                "referencedDeclaration": 4258,
+                "src": "1110:13:21",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                  "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                   "typeString": "struct Activity.ActivityModel"
                 }
               }
             },
-            "visibility": "private"
+            "visibility": "internal"
           },
           {
             "body": {
-              "id": 4297,
+              "id": 4301,
               "nodeType": "Block",
-              "src": "1146:220:21",
+              "src": "1256:220:21",
               "statements": [
                 {
                   "assignments": [
-                    4270
+                    4274
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4270,
+                      "id": 4274,
                       "mutability": "mutable",
                       "name": "activity",
-                      "nameLocation": "1179:8:21",
+                      "nameLocation": "1289:8:21",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4297,
-                      "src": "1157:30:21",
+                      "scope": 4301,
+                      "src": "1267:30:21",
                       "stateVariable": false,
                       "storageLocation": "storage",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                        "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                         "typeString": "struct Activity.ActivityModel"
                       },
                       "typeName": {
-                        "id": 4269,
+                        "id": 4273,
                         "nodeType": "UserDefinedTypeName",
                         "pathNode": {
-                          "id": 4268,
+                          "id": 4272,
                           "name": "ActivityModel",
                           "nameLocations": [
-                            "1157:13:21"
+                            "1267:13:21"
                           ],
                           "nodeType": "IdentifierPath",
-                          "referencedDeclaration": 4254,
-                          "src": "1157:13:21"
+                          "referencedDeclaration": 4258,
+                          "src": "1267:13:21"
                         },
-                        "referencedDeclaration": 4254,
-                        "src": "1157:13:21",
+                        "referencedDeclaration": 4258,
+                        "src": "1267:13:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel"
                         }
                       },
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4274,
+                  "id": 4278,
                   "initialValue": {
                     "baseExpression": {
-                      "id": 4271,
+                      "id": 4275,
                       "name": "activities",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4259,
-                      "src": "1190:10:21",
+                      "referencedDeclaration": 4263,
+                      "src": "1300:10:21",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
                         "typeString": "mapping(address => struct Activity.ActivityModel storage ref)"
                       }
                     },
-                    "id": 4273,
+                    "id": 4277,
                     "indexExpression": {
-                      "id": 4272,
+                      "id": 4276,
                       "name": "user",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4261,
-                      "src": "1201:4:21",
+                      "referencedDeclaration": 4265,
+                      "src": "1311:4:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -839,45 +898,45 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1190:16:21",
+                    "src": "1300:16:21",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_ActivityModel_$4254_storage",
+                      "typeIdentifier": "t_struct$_ActivityModel_$4258_storage",
                       "typeString": "struct Activity.ActivityModel storage ref"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1157:49:21"
+                  "src": "1267:49:21"
                 },
                 {
                   "expression": {
-                    "id": 4279,
+                    "id": 4283,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 4275,
+                        "id": 4279,
                         "name": "activity",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4270,
-                        "src": "1217:8:21",
+                        "referencedDeclaration": 4274,
+                        "src": "1327:8:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel storage pointer"
                         }
                       },
-                      "id": 4277,
+                      "id": 4281,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "1226:13:21",
+                      "memberLocation": "1336:13:21",
                       "memberName": "borrowedTimes",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4239,
-                      "src": "1217:22:21",
+                      "src": "1327:22:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint16",
                         "typeString": "uint16"
@@ -887,60 +946,60 @@
                     "operator": "+=",
                     "rightHandSide": {
                       "hexValue": "31",
-                      "id": 4278,
+                      "id": 4282,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "1243:1:21",
+                      "src": "1353:1:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_1_by_1",
                         "typeString": "int_const 1"
                       },
                       "value": "1"
                     },
-                    "src": "1217:27:21",
+                    "src": "1327:27:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint16",
                       "typeString": "uint16"
                     }
                   },
-                  "id": 4280,
+                  "id": 4284,
                   "nodeType": "ExpressionStatement",
-                  "src": "1217:27:21"
+                  "src": "1327:27:21"
                 },
                 {
                   "expression": {
-                    "id": 4285,
+                    "id": 4289,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 4281,
+                        "id": 4285,
                         "name": "activity",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4270,
-                        "src": "1255:8:21",
+                        "referencedDeclaration": 4274,
+                        "src": "1365:8:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel storage pointer"
                         }
                       },
-                      "id": 4283,
+                      "id": 4287,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "1264:14:21",
+                      "memberLocation": "1374:14:21",
                       "memberName": "borrowedVolume",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4241,
-                      "src": "1255:23:21",
+                      "src": "1365:23:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -949,57 +1008,57 @@
                     "nodeType": "Assignment",
                     "operator": "+=",
                     "rightHandSide": {
-                      "id": 4284,
+                      "id": 4288,
                       "name": "amountBorrowedInUSD",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4263,
-                      "src": "1282:19:21",
+                      "referencedDeclaration": 4267,
+                      "src": "1392:19:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1255:46:21",
+                    "src": "1365:46:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 4286,
+                  "id": 4290,
                   "nodeType": "ExpressionStatement",
-                  "src": "1255:46:21"
+                  "src": "1365:46:21"
                 },
                 {
                   "expression": {
-                    "id": 4295,
+                    "id": 4299,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 4287,
+                        "id": 4291,
                         "name": "activity",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4270,
-                        "src": "1312:8:21",
+                        "referencedDeclaration": 4274,
+                        "src": "1422:8:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel storage pointer"
                         }
                       },
-                      "id": 4289,
+                      "id": 4293,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "1321:10:21",
+                      "memberLocation": "1431:10:21",
                       "memberName": "lastActive",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4245,
-                      "src": "1312:19:21",
+                      "src": "1422:19:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint160",
                         "typeString": "uint160"
@@ -1011,26 +1070,26 @@
                       "arguments": [
                         {
                           "expression": {
-                            "id": 4292,
+                            "id": 4296,
                             "name": "block",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 4294967292,
-                            "src": "1342:5:21",
+                            "src": "1452:5:21",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_block",
                               "typeString": "block"
                             }
                           },
-                          "id": 4293,
+                          "id": 4297,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "1348:9:21",
+                          "memberLocation": "1458:9:21",
                           "memberName": "timestamp",
                           "nodeType": "MemberAccess",
-                          "src": "1342:15:21",
+                          "src": "1452:15:21",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -1044,26 +1103,26 @@
                             "typeString": "uint256"
                           }
                         ],
-                        "id": 4291,
+                        "id": 4295,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "lValueRequested": false,
                         "nodeType": "ElementaryTypeNameExpression",
-                        "src": "1334:7:21",
+                        "src": "1444:7:21",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_uint160_$",
                           "typeString": "type(uint160)"
                         },
                         "typeName": {
-                          "id": 4290,
+                          "id": 4294,
                           "name": "uint160",
                           "nodeType": "ElementaryTypeName",
-                          "src": "1334:7:21",
+                          "src": "1444:7:21",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 4294,
+                      "id": 4298,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1072,63 +1131,63 @@
                       "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "1334:24:21",
+                      "src": "1444:24:21",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint160",
                         "typeString": "uint160"
                       }
                     },
-                    "src": "1312:46:21",
+                    "src": "1422:46:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint160",
                       "typeString": "uint160"
                     }
                   },
-                  "id": 4296,
+                  "id": 4300,
                   "nodeType": "ExpressionStatement",
-                  "src": "1312:46:21"
+                  "src": "1422:46:21"
                 }
               ]
             },
             "functionSelector": "47aea77c",
-            "id": 4298,
+            "id": 4302,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 4266,
+                "id": 4270,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 4265,
+                  "id": 4269,
                   "name": "onlyLendingPool",
                   "nameLocations": [
-                    "1125:15:21"
+                    "1235:15:21"
                   ],
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 4437,
-                  "src": "1125:15:21"
+                  "referencedDeclaration": 4451,
+                  "src": "1235:15:21"
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1125:15:21"
+                "src": "1235:15:21"
               }
             ],
             "name": "_borrowLoan",
-            "nameLocation": "1043:11:21",
+            "nameLocation": "1153:11:21",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4264,
+              "id": 4268,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4261,
+                  "id": 4265,
                   "mutability": "mutable",
                   "name": "user",
-                  "nameLocation": "1063:4:21",
+                  "nameLocation": "1173:4:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4298,
-                  "src": "1055:12:21",
+                  "scope": 4302,
+                  "src": "1165:12:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1136,10 +1195,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4260,
+                    "id": 4264,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1055:7:21",
+                    "src": "1165:7:21",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1150,13 +1209,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 4263,
+                  "id": 4267,
                   "mutability": "mutable",
                   "name": "amountBorrowedInUSD",
-                  "nameLocation": "1077:19:21",
+                  "nameLocation": "1187:19:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4298,
-                  "src": "1069:27:21",
+                  "scope": 4302,
+                  "src": "1179:27:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1164,10 +1223,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4262,
+                    "id": 4266,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1069:7:21",
+                    "src": "1179:7:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1176,91 +1235,91 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1054:43:21"
+              "src": "1164:43:21"
             },
             "returnParameters": {
-              "id": 4267,
+              "id": 4271,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1146:0:21"
+              "src": "1256:0:21"
             },
-            "scope": 4438,
-            "src": "1034:332:21",
+            "scope": 4452,
+            "src": "1144:332:21",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 4344,
+              "id": 4348,
               "nodeType": "Block",
-              "src": "1519:277:21",
+              "src": "1629:277:21",
               "statements": [
                 {
                   "assignments": [
-                    4311
+                    4315
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4311,
+                      "id": 4315,
                       "mutability": "mutable",
                       "name": "activity",
-                      "nameLocation": "1552:8:21",
+                      "nameLocation": "1662:8:21",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4344,
-                      "src": "1530:30:21",
+                      "scope": 4348,
+                      "src": "1640:30:21",
                       "stateVariable": false,
                       "storageLocation": "storage",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                        "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                         "typeString": "struct Activity.ActivityModel"
                       },
                       "typeName": {
-                        "id": 4310,
+                        "id": 4314,
                         "nodeType": "UserDefinedTypeName",
                         "pathNode": {
-                          "id": 4309,
+                          "id": 4313,
                           "name": "ActivityModel",
                           "nameLocations": [
-                            "1530:13:21"
+                            "1640:13:21"
                           ],
                           "nodeType": "IdentifierPath",
-                          "referencedDeclaration": 4254,
-                          "src": "1530:13:21"
+                          "referencedDeclaration": 4258,
+                          "src": "1640:13:21"
                         },
-                        "referencedDeclaration": 4254,
-                        "src": "1530:13:21",
+                        "referencedDeclaration": 4258,
+                        "src": "1640:13:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel"
                         }
                       },
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4315,
+                  "id": 4319,
                   "initialValue": {
                     "baseExpression": {
-                      "id": 4312,
+                      "id": 4316,
                       "name": "activities",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4259,
-                      "src": "1563:10:21",
+                      "referencedDeclaration": 4263,
+                      "src": "1673:10:21",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
                         "typeString": "mapping(address => struct Activity.ActivityModel storage ref)"
                       }
                     },
-                    "id": 4314,
+                    "id": 4318,
                     "indexExpression": {
-                      "id": 4313,
+                      "id": 4317,
                       "name": "user",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4300,
-                      "src": "1574:4:21",
+                      "referencedDeclaration": 4304,
+                      "src": "1684:4:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -1271,45 +1330,45 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1563:16:21",
+                    "src": "1673:16:21",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_ActivityModel_$4254_storage",
+                      "typeIdentifier": "t_struct$_ActivityModel_$4258_storage",
                       "typeString": "struct Activity.ActivityModel storage ref"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1530:49:21"
+                  "src": "1640:49:21"
                 },
                 {
                   "expression": {
-                    "id": 4320,
+                    "id": 4324,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 4316,
+                        "id": 4320,
                         "name": "activity",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4311,
-                        "src": "1590:8:21",
+                        "referencedDeclaration": 4315,
+                        "src": "1700:8:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel storage pointer"
                         }
                       },
-                      "id": 4318,
+                      "id": 4322,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "1599:14:21",
+                      "memberLocation": "1709:14:21",
                       "memberName": "repaymentTimes",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4237,
-                      "src": "1590:23:21",
+                      "src": "1700:23:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint16",
                         "typeString": "uint16"
@@ -1319,60 +1378,60 @@
                     "operator": "+=",
                     "rightHandSide": {
                       "hexValue": "31",
-                      "id": 4319,
+                      "id": 4323,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "1617:1:21",
+                      "src": "1727:1:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_1_by_1",
                         "typeString": "int_const 1"
                       },
                       "value": "1"
                     },
-                    "src": "1590:28:21",
+                    "src": "1700:28:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint16",
                       "typeString": "uint16"
                     }
                   },
-                  "id": 4321,
+                  "id": 4325,
                   "nodeType": "ExpressionStatement",
-                  "src": "1590:28:21"
+                  "src": "1700:28:21"
                 },
                 {
                   "expression": {
-                    "id": 4326,
+                    "id": 4330,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 4322,
+                        "id": 4326,
                         "name": "activity",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4311,
-                        "src": "1629:8:21",
+                        "referencedDeclaration": 4315,
+                        "src": "1739:8:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel storage pointer"
                         }
                       },
-                      "id": 4324,
+                      "id": 4328,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "1638:15:21",
+                      "memberLocation": "1748:15:21",
                       "memberName": "repaymentVolume",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4243,
-                      "src": "1629:24:21",
+                      "src": "1739:24:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1381,57 +1440,57 @@
                     "nodeType": "Assignment",
                     "operator": "+=",
                     "rightHandSide": {
-                      "id": 4325,
+                      "id": 4329,
                       "name": "amountPaidInUSD",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4302,
-                      "src": "1657:15:21",
+                      "referencedDeclaration": 4306,
+                      "src": "1767:15:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1629:43:21",
+                    "src": "1739:43:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 4327,
+                  "id": 4331,
                   "nodeType": "ExpressionStatement",
-                  "src": "1629:43:21"
+                  "src": "1739:43:21"
                 },
                 {
                   "expression": {
-                    "id": 4332,
+                    "id": 4336,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 4328,
+                        "id": 4332,
                         "name": "activity",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4311,
-                        "src": "1683:8:21",
+                        "referencedDeclaration": 4315,
+                        "src": "1793:8:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel storage pointer"
                         }
                       },
-                      "id": 4330,
+                      "id": 4334,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "1692:18:21",
+                      "memberLocation": "1802:18:21",
                       "memberName": "interestPaidVolume",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4249,
-                      "src": "1683:27:21",
+                      "src": "1793:27:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1440,57 +1499,57 @@
                     "nodeType": "Assignment",
                     "operator": "+=",
                     "rightHandSide": {
-                      "id": 4331,
+                      "id": 4335,
                       "name": "interestPaidInUSD",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4304,
-                      "src": "1714:17:21",
+                      "referencedDeclaration": 4308,
+                      "src": "1824:17:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1683:48:21",
+                    "src": "1793:48:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 4333,
+                  "id": 4337,
                   "nodeType": "ExpressionStatement",
-                  "src": "1683:48:21"
+                  "src": "1793:48:21"
                 },
                 {
                   "expression": {
-                    "id": 4342,
+                    "id": 4346,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 4334,
+                        "id": 4338,
                         "name": "activity",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4311,
-                        "src": "1742:8:21",
+                        "referencedDeclaration": 4315,
+                        "src": "1852:8:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel storage pointer"
                         }
                       },
-                      "id": 4336,
+                      "id": 4340,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "1751:10:21",
+                      "memberLocation": "1861:10:21",
                       "memberName": "lastActive",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4245,
-                      "src": "1742:19:21",
+                      "src": "1852:19:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint160",
                         "typeString": "uint160"
@@ -1502,26 +1561,26 @@
                       "arguments": [
                         {
                           "expression": {
-                            "id": 4339,
+                            "id": 4343,
                             "name": "block",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 4294967292,
-                            "src": "1772:5:21",
+                            "src": "1882:5:21",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_block",
                               "typeString": "block"
                             }
                           },
-                          "id": 4340,
+                          "id": 4344,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "1778:9:21",
+                          "memberLocation": "1888:9:21",
                           "memberName": "timestamp",
                           "nodeType": "MemberAccess",
-                          "src": "1772:15:21",
+                          "src": "1882:15:21",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -1535,26 +1594,26 @@
                             "typeString": "uint256"
                           }
                         ],
-                        "id": 4338,
+                        "id": 4342,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "lValueRequested": false,
                         "nodeType": "ElementaryTypeNameExpression",
-                        "src": "1764:7:21",
+                        "src": "1874:7:21",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_uint160_$",
                           "typeString": "type(uint160)"
                         },
                         "typeName": {
-                          "id": 4337,
+                          "id": 4341,
                           "name": "uint160",
                           "nodeType": "ElementaryTypeName",
-                          "src": "1764:7:21",
+                          "src": "1874:7:21",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 4341,
+                      "id": 4345,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1563,63 +1622,63 @@
                       "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "1764:24:21",
+                      "src": "1874:24:21",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint160",
                         "typeString": "uint160"
                       }
                     },
-                    "src": "1742:46:21",
+                    "src": "1852:46:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint160",
                       "typeString": "uint160"
                     }
                   },
-                  "id": 4343,
+                  "id": 4347,
                   "nodeType": "ExpressionStatement",
-                  "src": "1742:46:21"
+                  "src": "1852:46:21"
                 }
               ]
             },
             "functionSelector": "720722fd",
-            "id": 4345,
+            "id": 4349,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 4307,
+                "id": 4311,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 4306,
+                  "id": 4310,
                   "name": "onlyLendingPool",
                   "nameLocations": [
-                    "1503:15:21"
+                    "1613:15:21"
                   ],
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 4437,
-                  "src": "1503:15:21"
+                  "referencedDeclaration": 4451,
+                  "src": "1613:15:21"
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1503:15:21"
+                "src": "1613:15:21"
               }
             ],
             "name": "_repayLoan",
-            "nameLocation": "1383:10:21",
+            "nameLocation": "1493:10:21",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4305,
+              "id": 4309,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4300,
+                  "id": 4304,
                   "mutability": "mutable",
                   "name": "user",
-                  "nameLocation": "1412:4:21",
+                  "nameLocation": "1522:4:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4345,
-                  "src": "1404:12:21",
+                  "scope": 4349,
+                  "src": "1514:12:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1627,10 +1686,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4299,
+                    "id": 4303,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1404:7:21",
+                    "src": "1514:7:21",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1641,13 +1700,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 4302,
+                  "id": 4306,
                   "mutability": "mutable",
                   "name": "amountPaidInUSD",
-                  "nameLocation": "1435:15:21",
+                  "nameLocation": "1545:15:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4345,
-                  "src": "1427:23:21",
+                  "scope": 4349,
+                  "src": "1537:23:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1655,10 +1714,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4301,
+                    "id": 4305,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1427:7:21",
+                    "src": "1537:7:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1668,13 +1727,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 4304,
+                  "id": 4308,
                   "mutability": "mutable",
                   "name": "interestPaidInUSD",
-                  "nameLocation": "1469:17:21",
+                  "nameLocation": "1579:17:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4345,
-                  "src": "1461:25:21",
+                  "scope": 4349,
+                  "src": "1571:25:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1682,10 +1741,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4303,
+                    "id": 4307,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1461:7:21",
+                    "src": "1571:7:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1694,91 +1753,91 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1393:100:21"
+              "src": "1503:100:21"
             },
             "returnParameters": {
-              "id": 4308,
+              "id": 4312,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1519:0:21"
+              "src": "1629:0:21"
             },
-            "scope": 4438,
-            "src": "1374:422:21",
+            "scope": 4452,
+            "src": "1484:422:21",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 4367,
+              "id": 4381,
               "nodeType": "Block",
-              "src": "1912:119:21",
+              "src": "2022:176:21",
               "statements": [
                 {
                   "assignments": [
-                    4356
+                    4360
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4356,
+                      "id": 4360,
                       "mutability": "mutable",
                       "name": "activity",
-                      "nameLocation": "1945:8:21",
+                      "nameLocation": "2055:8:21",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4367,
-                      "src": "1923:30:21",
+                      "scope": 4381,
+                      "src": "2033:30:21",
                       "stateVariable": false,
                       "storageLocation": "storage",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                        "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                         "typeString": "struct Activity.ActivityModel"
                       },
                       "typeName": {
-                        "id": 4355,
+                        "id": 4359,
                         "nodeType": "UserDefinedTypeName",
                         "pathNode": {
-                          "id": 4354,
+                          "id": 4358,
                           "name": "ActivityModel",
                           "nameLocations": [
-                            "1923:13:21"
+                            "2033:13:21"
                           ],
                           "nodeType": "IdentifierPath",
-                          "referencedDeclaration": 4254,
-                          "src": "1923:13:21"
+                          "referencedDeclaration": 4258,
+                          "src": "2033:13:21"
                         },
-                        "referencedDeclaration": 4254,
-                        "src": "1923:13:21",
+                        "referencedDeclaration": 4258,
+                        "src": "2033:13:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel"
                         }
                       },
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4360,
+                  "id": 4364,
                   "initialValue": {
                     "baseExpression": {
-                      "id": 4357,
+                      "id": 4361,
                       "name": "activities",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4259,
-                      "src": "1956:10:21",
+                      "referencedDeclaration": 4263,
+                      "src": "2066:10:21",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
                         "typeString": "mapping(address => struct Activity.ActivityModel storage ref)"
                       }
                     },
-                    "id": 4359,
+                    "id": 4363,
                     "indexExpression": {
-                      "id": 4358,
+                      "id": 4362,
                       "name": "user",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4347,
-                      "src": "1967:4:21",
+                      "referencedDeclaration": 4351,
+                      "src": "2077:4:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -1789,45 +1848,45 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "1956:16:21",
+                    "src": "2066:16:21",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_ActivityModel_$4254_storage",
+                      "typeIdentifier": "t_struct$_ActivityModel_$4258_storage",
                       "typeString": "struct Activity.ActivityModel storage ref"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1923:49:21"
+                  "src": "2033:49:21"
                 },
                 {
                   "expression": {
-                    "id": 4365,
+                    "id": 4369,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 4361,
+                        "id": 4365,
                         "name": "activity",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4356,
-                        "src": "1983:8:21",
+                        "referencedDeclaration": 4360,
+                        "src": "2093:8:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                           "typeString": "struct Activity.ActivityModel storage pointer"
                         }
                       },
-                      "id": 4363,
+                      "id": 4367,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "1992:16:21",
+                      "memberLocation": "2102:16:21",
                       "memberName": "collateralVolume",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4247,
-                      "src": "1983:25:21",
+                      "src": "2093:25:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1836,67 +1895,186 @@
                     "nodeType": "Assignment",
                     "operator": "+=",
                     "rightHandSide": {
-                      "id": 4364,
+                      "id": 4368,
                       "name": "amountInUSD",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4349,
-                      "src": "2012:11:21",
+                      "referencedDeclaration": 4353,
+                      "src": "2122:11:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "1983:40:21",
+                    "src": "2093:40:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 4366,
+                  "id": 4370,
                   "nodeType": "ExpressionStatement",
-                  "src": "1983:40:21"
+                  "src": "2093:40:21"
+                },
+                {
+                  "expression": {
+                    "id": 4379,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 4371,
+                        "name": "activity",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4360,
+                        "src": "2144:8:21",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
+                          "typeString": "struct Activity.ActivityModel storage pointer"
+                        }
+                      },
+                      "id": 4373,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberLocation": "2153:10:21",
+                      "memberName": "lastActive",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4245,
+                      "src": "2144:19:21",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint160",
+                        "typeString": "uint160"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "arguments": [
+                        {
+                          "expression": {
+                            "id": 4376,
+                            "name": "block",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 4294967292,
+                            "src": "2174:5:21",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_block",
+                              "typeString": "block"
+                            }
+                          },
+                          "id": 4377,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberLocation": "2180:9:21",
+                          "memberName": "timestamp",
+                          "nodeType": "MemberAccess",
+                          "src": "2174:15:21",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        ],
+                        "id": 4375,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "lValueRequested": false,
+                        "nodeType": "ElementaryTypeNameExpression",
+                        "src": "2166:7:21",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_uint160_$",
+                          "typeString": "type(uint160)"
+                        },
+                        "typeName": {
+                          "id": 4374,
+                          "name": "uint160",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "2166:7:21",
+                          "typeDescriptions": {}
+                        }
+                      },
+                      "id": 4378,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "nameLocations": [],
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "2166:24:21",
+                      "tryCall": false,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint160",
+                        "typeString": "uint160"
+                      }
+                    },
+                    "src": "2144:46:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint160",
+                      "typeString": "uint160"
+                    }
+                  },
+                  "id": 4380,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2144:46:21"
                 }
               ]
             },
             "functionSelector": "129ec31a",
-            "id": 4368,
+            "id": 4382,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 4352,
+                "id": 4356,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 4351,
+                  "id": 4355,
                   "name": "onlyLendingPool",
                   "nameLocations": [
-                    "1891:15:21"
+                    "2001:15:21"
                   ],
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 4437,
-                  "src": "1891:15:21"
+                  "referencedDeclaration": 4451,
+                  "src": "2001:15:21"
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1891:15:21"
+                "src": "2001:15:21"
               }
             ],
             "name": "_dropCollateral",
-            "nameLocation": "1813:15:21",
+            "nameLocation": "1923:15:21",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4350,
+              "id": 4354,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4347,
+                  "id": 4351,
                   "mutability": "mutable",
                   "name": "user",
-                  "nameLocation": "1837:4:21",
+                  "nameLocation": "1947:4:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4368,
-                  "src": "1829:12:21",
+                  "scope": 4382,
+                  "src": "1939:12:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1904,10 +2082,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4346,
+                    "id": 4350,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1829:7:21",
+                    "src": "1939:7:21",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1918,13 +2096,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 4349,
+                  "id": 4353,
                   "mutability": "mutable",
                   "name": "amountInUSD",
-                  "nameLocation": "1851:11:21",
+                  "nameLocation": "1961:11:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4368,
-                  "src": "1843:19:21",
+                  "scope": 4382,
+                  "src": "1953:19:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1932,10 +2110,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4348,
+                    "id": 4352,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1843:7:21",
+                    "src": "1953:7:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1944,25 +2122,25 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1828:35:21"
+              "src": "1938:35:21"
             },
             "returnParameters": {
-              "id": 4353,
+              "id": 4357,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1912:0:21"
+              "src": "2022:0:21"
             },
-            "scope": 4438,
-            "src": "1804:227:21",
+            "scope": 4452,
+            "src": "1914:284:21",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 4385,
+              "id": 4399,
               "nodeType": "Block",
-              "src": "2111:90:21",
+              "src": "2278:90:21",
               "statements": [
                 {
                   "expression": {
@@ -1970,7 +2148,7 @@
                       "typeIdentifier": "t_uint16",
                       "typeString": "uint16"
                     },
-                    "id": 4383,
+                    "id": 4397,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1978,25 +2156,25 @@
                     "leftExpression": {
                       "expression": {
                         "baseExpression": {
-                          "id": 4375,
+                          "id": 4389,
                           "name": "activities",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4259,
-                          "src": "2129:10:21",
+                          "referencedDeclaration": 4263,
+                          "src": "2296:10:21",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
                             "typeString": "mapping(address => struct Activity.ActivityModel storage ref)"
                           }
                         },
-                        "id": 4377,
+                        "id": 4391,
                         "indexExpression": {
-                          "id": 4376,
+                          "id": 4390,
                           "name": "user",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4370,
-                          "src": "2140:4:21",
+                          "referencedDeclaration": 4384,
+                          "src": "2307:4:21",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -2007,22 +2185,22 @@
                         "isPure": false,
                         "lValueRequested": false,
                         "nodeType": "IndexAccess",
-                        "src": "2129:16:21",
+                        "src": "2296:16:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage",
                           "typeString": "struct Activity.ActivityModel storage ref"
                         }
                       },
-                      "id": 4378,
+                      "id": 4392,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "2146:13:21",
+                      "memberLocation": "2313:13:21",
                       "memberName": "borrowedTimes",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4239,
-                      "src": "2129:30:21",
+                      "src": "2296:30:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint16",
                         "typeString": "uint16"
@@ -2033,180 +2211,14 @@
                     "rightExpression": {
                       "expression": {
                         "baseExpression": {
-                          "id": 4379,
-                          "name": "activities",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 4259,
-                          "src": "2162:10:21",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
-                            "typeString": "mapping(address => struct Activity.ActivityModel storage ref)"
-                          }
-                        },
-                        "id": 4381,
-                        "indexExpression": {
-                          "id": 4380,
-                          "name": "user",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 4370,
-                          "src": "2173:4:21",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        },
-                        "isConstant": false,
-                        "isLValue": true,
-                        "isPure": false,
-                        "lValueRequested": false,
-                        "nodeType": "IndexAccess",
-                        "src": "2162:16:21",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage",
-                          "typeString": "struct Activity.ActivityModel storage ref"
-                        }
-                      },
-                      "id": 4382,
-                      "isConstant": false,
-                      "isLValue": true,
-                      "isPure": false,
-                      "lValueRequested": false,
-                      "memberLocation": "2179:14:21",
-                      "memberName": "repaymentTimes",
-                      "nodeType": "MemberAccess",
-                      "referencedDeclaration": 4237,
-                      "src": "2162:31:21",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_uint16",
-                        "typeString": "uint16"
-                      }
-                    },
-                    "src": "2129:64:21",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint16",
-                      "typeString": "uint16"
-                    }
-                  },
-                  "functionReturnParameters": 4374,
-                  "id": 4384,
-                  "nodeType": "Return",
-                  "src": "2122:71:21"
-                }
-              ]
-            },
-            "functionSelector": "0c01fb72",
-            "id": 4386,
-            "implemented": true,
-            "kind": "function",
-            "modifiers": [],
-            "name": "pendingLoansCount",
-            "nameLocation": "2048:17:21",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 4371,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 4370,
-                  "mutability": "mutable",
-                  "name": "user",
-                  "nameLocation": "2074:4:21",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 4386,
-                  "src": "2066:12:21",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 4369,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2066:7:21",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "2065:14:21"
-            },
-            "returnParameters": {
-              "id": 4374,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 4373,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nameLocation": "-1:-1:-1",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 4386,
-                  "src": "2103:6:21",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint16",
-                    "typeString": "uint16"
-                  },
-                  "typeName": {
-                    "id": 4372,
-                    "name": "uint16",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2103:6:21",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint16",
-                      "typeString": "uint16"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "2102:8:21"
-            },
-            "scope": 4438,
-            "src": "2039:162:21",
-            "stateMutability": "view",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
-            "body": {
-              "id": 4400,
-              "nodeType": "Block",
-              "src": "2273:61:21",
-              "statements": [
-                {
-                  "expression": {
-                    "commonType": {
-                      "typeIdentifier": "t_uint16",
-                      "typeString": "uint16"
-                    },
-                    "id": 4398,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftExpression": {
-                      "expression": {
-                        "baseExpression": {
                           "id": 4393,
                           "name": "activities",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4259,
-                          "src": "2291:10:21",
+                          "referencedDeclaration": 4263,
+                          "src": "2329:10:21",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
                             "typeString": "mapping(address => struct Activity.ActivityModel storage ref)"
                           }
                         },
@@ -2216,8 +2228,8 @@
                           "name": "user",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4388,
-                          "src": "2302:4:21",
+                          "referencedDeclaration": 4384,
+                          "src": "2340:4:21",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -2228,9 +2240,9 @@
                         "isPure": false,
                         "lValueRequested": false,
                         "nodeType": "IndexAccess",
-                        "src": "2291:16:21",
+                        "src": "2329:16:21",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_ActivityModel_$4254_storage",
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage",
                           "typeString": "struct Activity.ActivityModel storage ref"
                         }
                       },
@@ -2239,68 +2251,50 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "2308:14:21",
-                      "memberName": "defaultedTimes",
+                      "memberLocation": "2346:14:21",
+                      "memberName": "repaymentTimes",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 4251,
-                      "src": "2291:31:21",
+                      "referencedDeclaration": 4237,
+                      "src": "2329:31:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint16",
                         "typeString": "uint16"
                       }
                     },
-                    "nodeType": "BinaryOperation",
-                    "operator": ">",
-                    "rightExpression": {
-                      "hexValue": "30",
-                      "id": 4397,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "2325:1:21",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_0_by_1",
-                        "typeString": "int_const 0"
-                      },
-                      "value": "0"
-                    },
-                    "src": "2291:35:21",
+                    "src": "2296:64:21",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_bool",
-                      "typeString": "bool"
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
                     }
                   },
-                  "functionReturnParameters": 4392,
-                  "id": 4399,
+                  "functionReturnParameters": 4388,
+                  "id": 4398,
                   "nodeType": "Return",
-                  "src": "2284:42:21"
+                  "src": "2289:71:21"
                 }
               ]
             },
-            "functionSelector": "d8689e13",
-            "id": 4401,
+            "functionSelector": "0c01fb72",
+            "id": 4400,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
-            "name": "isDefaulter",
-            "nameLocation": "2218:11:21",
+            "name": "pendingLoansCount",
+            "nameLocation": "2215:17:21",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4389,
+              "id": 4385,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4388,
+                  "id": 4384,
                   "mutability": "mutable",
                   "name": "user",
-                  "nameLocation": "2238:4:21",
+                  "nameLocation": "2241:4:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4401,
-                  "src": "2230:12:21",
+                  "scope": 4400,
+                  "src": "2233:12:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2308,10 +2302,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4387,
+                    "id": 4383,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2230:7:21",
+                    "src": "2233:7:21",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2321,21 +2315,205 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2229:14:21"
+              "src": "2232:14:21"
             },
             "returnParameters": {
-              "id": 4392,
+              "id": 4388,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4391,
+                  "id": 4387,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4401,
-                  "src": "2267:4:21",
+                  "scope": 4400,
+                  "src": "2270:6:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 4386,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2270:6:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2269:8:21"
+            },
+            "scope": 4452,
+            "src": "2206:162:21",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 4414,
+              "nodeType": "Block",
+              "src": "2440:61:21",
+              "statements": [
+                {
+                  "expression": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    },
+                    "id": 4412,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 4407,
+                          "name": "activities",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 4263,
+                          "src": "2458:10:21",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
+                            "typeString": "mapping(address => struct Activity.ActivityModel storage ref)"
+                          }
+                        },
+                        "id": 4409,
+                        "indexExpression": {
+                          "id": 4408,
+                          "name": "user",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 4402,
+                          "src": "2469:4:21",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "2458:16:21",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_ActivityModel_$4258_storage",
+                          "typeString": "struct Activity.ActivityModel storage ref"
+                        }
+                      },
+                      "id": 4410,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberLocation": "2475:14:21",
+                      "memberName": "defaultedTimes",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4251,
+                      "src": "2458:31:21",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint16",
+                        "typeString": "uint16"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": ">",
+                    "rightExpression": {
+                      "hexValue": "30",
+                      "id": 4411,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "2492:1:21",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "2458:35:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 4406,
+                  "id": 4413,
+                  "nodeType": "Return",
+                  "src": "2451:42:21"
+                }
+              ]
+            },
+            "functionSelector": "d8689e13",
+            "id": 4415,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isDefaulter",
+            "nameLocation": "2385:11:21",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4403,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4402,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "2405:4:21",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4415,
+                  "src": "2397:12:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4401,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2397:7:21",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2396:14:21"
+            },
+            "returnParameters": {
+              "id": 4406,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4405,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4415,
+                  "src": "2434:4:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2343,10 +2521,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 4390,
+                    "id": 4404,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2267:4:21",
+                    "src": "2434:4:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -2355,42 +2533,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2266:6:21"
+              "src": "2433:6:21"
             },
-            "scope": 4438,
-            "src": "2209:125:21",
+            "scope": 4452,
+            "src": "2376:125:21",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 4413,
+              "id": 4427,
               "nodeType": "Block",
-              "src": "2421:42:21",
+              "src": "2588:42:21",
               "statements": [
                 {
                   "expression": {
                     "baseExpression": {
-                      "id": 4409,
+                      "id": 4423,
                       "name": "activities",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4259,
-                      "src": "2439:10:21",
+                      "referencedDeclaration": 4263,
+                      "src": "2606:10:21",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4254_storage_$",
+                        "typeIdentifier": "t_mapping$_t_address_$_t_struct$_ActivityModel_$4258_storage_$",
                         "typeString": "mapping(address => struct Activity.ActivityModel storage ref)"
                       }
                     },
-                    "id": 4411,
+                    "id": 4425,
                     "indexExpression": {
-                      "id": 4410,
+                      "id": 4424,
                       "name": "user",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4403,
-                      "src": "2450:4:21",
+                      "referencedDeclaration": 4417,
+                      "src": "2617:4:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -2401,40 +2579,40 @@
                     "isPure": false,
                     "lValueRequested": false,
                     "nodeType": "IndexAccess",
-                    "src": "2439:16:21",
+                    "src": "2606:16:21",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_ActivityModel_$4254_storage",
+                      "typeIdentifier": "t_struct$_ActivityModel_$4258_storage",
                       "typeString": "struct Activity.ActivityModel storage ref"
                     }
                   },
-                  "functionReturnParameters": 4408,
-                  "id": 4412,
+                  "functionReturnParameters": 4422,
+                  "id": 4426,
                   "nodeType": "Return",
-                  "src": "2432:23:21"
+                  "src": "2599:23:21"
                 }
               ]
             },
             "functionSelector": "66d13fb6",
-            "id": 4414,
+            "id": 4428,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "getActivity",
-            "nameLocation": "2351:11:21",
+            "nameLocation": "2518:11:21",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4404,
+              "id": 4418,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4403,
+                  "id": 4417,
                   "mutability": "mutable",
                   "name": "user",
-                  "nameLocation": "2371:4:21",
+                  "nameLocation": "2538:4:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4414,
-                  "src": "2363:12:21",
+                  "scope": 4428,
+                  "src": "2530:12:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2442,10 +2620,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4402,
+                    "id": 4416,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2363:7:21",
+                    "src": "2530:7:21",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2455,78 +2633,78 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2362:14:21"
+              "src": "2529:14:21"
             },
             "returnParameters": {
-              "id": 4408,
+              "id": 4422,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4407,
+                  "id": 4421,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4414,
-                  "src": "2399:20:21",
+                  "scope": 4428,
+                  "src": "2566:20:21",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_ActivityModel_$4254_memory_ptr",
+                    "typeIdentifier": "t_struct$_ActivityModel_$4258_memory_ptr",
                     "typeString": "struct Activity.ActivityModel"
                   },
                   "typeName": {
-                    "id": 4406,
+                    "id": 4420,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 4405,
+                      "id": 4419,
                       "name": "ActivityModel",
                       "nameLocations": [
-                        "2399:13:21"
+                        "2566:13:21"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 4254,
-                      "src": "2399:13:21"
+                      "referencedDeclaration": 4258,
+                      "src": "2566:13:21"
                     },
-                    "referencedDeclaration": 4254,
-                    "src": "2399:13:21",
+                    "referencedDeclaration": 4258,
+                    "src": "2566:13:21",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_ActivityModel_$4254_storage_ptr",
+                      "typeIdentifier": "t_struct$_ActivityModel_$4258_storage_ptr",
                       "typeString": "struct Activity.ActivityModel"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "2398:22:21"
+              "src": "2565:22:21"
             },
-            "scope": 4438,
-            "src": "2342:121:21",
+            "scope": 4452,
+            "src": "2509:121:21",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 4425,
+              "id": 4439,
               "nodeType": "Block",
-              "src": "2530:41:21",
+              "src": "2697:41:21",
               "statements": [
                 {
                   "expression": {
-                    "id": 4423,
+                    "id": 4437,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 4421,
+                      "id": 4435,
                       "name": "lendingPool",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 4229,
-                      "src": "2541:11:21",
+                      "src": "2708:11:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -2535,67 +2713,67 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 4422,
+                      "id": 4436,
                       "name": "address_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4416,
-                      "src": "2555:8:21",
+                      "referencedDeclaration": 4430,
+                      "src": "2722:8:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "2541:22:21",
+                    "src": "2708:22:21",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 4424,
+                  "id": 4438,
                   "nodeType": "ExpressionStatement",
-                  "src": "2541:22:21"
+                  "src": "2708:22:21"
                 }
               ]
             },
             "functionSelector": "113aa8b1",
-            "id": 4426,
+            "id": 4440,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 4419,
+                "id": 4433,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 4418,
+                  "id": 4432,
                   "name": "onlyOwner",
                   "nameLocations": [
-                    "2520:9:21"
+                    "2687:9:21"
                   ],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 77,
-                  "src": "2520:9:21"
+                  "src": "2687:9:21"
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "2520:9:21"
+                "src": "2687:9:21"
               }
             ],
             "name": "setLendingPool",
-            "nameLocation": "2480:14:21",
+            "nameLocation": "2647:14:21",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4417,
+              "id": 4431,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4416,
+                  "id": 4430,
                   "mutability": "mutable",
                   "name": "address_",
-                  "nameLocation": "2503:8:21",
+                  "nameLocation": "2670:8:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4426,
-                  "src": "2495:16:21",
+                  "scope": 4440,
+                  "src": "2662:16:21",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2603,10 +2781,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4415,
+                    "id": 4429,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2495:7:21",
+                    "src": "2662:7:21",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2616,25 +2794,25 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2494:18:21"
+              "src": "2661:18:21"
             },
             "returnParameters": {
-              "id": 4420,
+              "id": 4434,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "2530:0:21"
+              "src": "2697:0:21"
             },
-            "scope": 4438,
-            "src": "2471:100:21",
+            "scope": 4452,
+            "src": "2638:100:21",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 4436,
+              "id": 4450,
               "nodeType": "Block",
-              "src": "2606:65:21",
+              "src": "2773:65:21",
               "statements": [
                 {
                   "expression": {
@@ -2644,33 +2822,33 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 4432,
+                        "id": 4446,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "expression": {
-                            "id": 4429,
+                            "id": 4443,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 4294967281,
-                            "src": "2625:3:21",
+                            "src": "2792:3:21",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 4430,
+                          "id": 4444,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "2629:6:21",
+                          "memberLocation": "2796:6:21",
                           "memberName": "sender",
                           "nodeType": "MemberAccess",
-                          "src": "2625:10:21",
+                          "src": "2792:10:21",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
@@ -2679,18 +2857,18 @@
                         "nodeType": "BinaryOperation",
                         "operator": "==",
                         "rightExpression": {
-                          "id": 4431,
+                          "id": 4445,
                           "name": "lendingPool",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4229,
-                          "src": "2639:11:21",
+                          "src": "2806:11:21",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           }
                         },
-                        "src": "2625:25:21",
+                        "src": "2792:25:21",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -2704,7 +2882,7 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4428,
+                      "id": 4442,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -2712,13 +2890,13 @@
                         4294967278
                       ],
                       "referencedDeclaration": 4294967278,
-                      "src": "2617:7:21",
+                      "src": "2784:7:21",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4433,
+                    "id": 4447,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2727,45 +2905,45 @@
                     "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "2617:34:21",
+                    "src": "2784:34:21",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4434,
+                  "id": 4448,
                   "nodeType": "ExpressionStatement",
-                  "src": "2617:34:21"
+                  "src": "2784:34:21"
                 },
                 {
-                  "id": 4435,
+                  "id": 4449,
                   "nodeType": "PlaceholderStatement",
-                  "src": "2662:1:21"
+                  "src": "2829:1:21"
                 }
               ]
             },
-            "id": 4437,
+            "id": 4451,
             "name": "onlyLendingPool",
-            "nameLocation": "2588:15:21",
+            "nameLocation": "2755:15:21",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 4427,
+              "id": 4441,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "2603:2:21"
+              "src": "2770:2:21"
             },
-            "src": "2579:92:21",
+            "src": "2746:92:21",
             "virtual": false,
             "visibility": "internal"
           }
         ],
-        "scope": 4439,
-        "src": "133:2541:21",
+        "scope": 4453,
+        "src": "133:2708:21",
         "usedErrors": []
       }
     ],
-    "src": "37:2639:21"
+    "src": "37:2806:21"
   },
   "compiler": {
     "name": "solc",
@@ -2814,8 +2992,8 @@
         }
       },
       "links": {},
-      "address": "0xAf2656fd6B11494954735e6Af5464093C7a8C7D7",
-      "transactionHash": "0x011f2ae73415d2ba7a444ac27cd2d0a0fbd2526806bdb9154de090044e32acfc"
+      "address": "0xF2e7B6AEd8621e56b46C7f42AdA8f22960E2B862",
+      "transactionHash": "0x37e12c69294feca45d3a24baf0210f56c1a6d59fcb138ff57eeb0b4819f83025"
     },
     "5777": {
       "events": {},
@@ -2825,8 +3003,7 @@
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-02-12T05:44:59.069Z",
-  "networkType": "ethereum",
+  "updatedAt": "2023-02-12T13:47:15.181Z",
   "devdoc": {
     "kind": "dev",
     "methods": {

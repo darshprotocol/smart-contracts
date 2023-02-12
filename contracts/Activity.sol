@@ -32,9 +32,13 @@ contract Activity is Ownable2Step {
         // defaulting
         uint16 defaultedTimes;
         uint256 defaultedVolume;
+        // first borrow date
+        uint160 firstBorrowAt;
+        // hero stars collected
+        uint16 stars;
     }
 
-    mapping(address => ActivityModel) private activities;
+    mapping(address => ActivityModel) activities;
 
     function _borrowLoan(address user, uint256 amountBorrowedInUSD)
         external
@@ -64,6 +68,7 @@ contract Activity is Ownable2Step {
     {
         ActivityModel storage activity = activities[user];
         activity.collateralVolume += amountInUSD;
+        activity.lastActive = uint160(block.timestamp);
     }
 
     function pendingLoansCount(address user) external view returns (uint16) {

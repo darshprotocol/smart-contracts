@@ -14,7 +14,7 @@ library RequestLibrary {
         uint requestId;
         uint interest;
         uint256 principalAmount;
-        uint16 desiredPercentage;
+        uint16 percentage;
         uint daysToMaturity;
         uint expiresAt;
         uint createdAt;

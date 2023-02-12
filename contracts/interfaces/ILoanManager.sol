@@ -8,9 +8,7 @@ import "../interfaces/ILoanManager.sol";
 interface ILoanManager {
     function getLoan(uint256 loanId) external returns (LoanLibrary.Loan memory);
 
-    function repayLoanAll(uint256 loanId) external returns (bool);
-
-    function repayLoanInstallment(
+    function repayLoan(
         uint256 loanId,
         uint256 principalPaid,
         uint256 collateralRetrieved
