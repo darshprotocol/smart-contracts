@@ -12,11 +12,31 @@ contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
     uint160 maxLTV;
 
     uint8 public base = 10;
+    uint256 public trustPrice0 = 1000 * 1e18;
+    uint256 public trustPrice1 = 3000 * 1e18;
 
     constructor() Ownable2Step() {}
 
     function getBase() public view override returns (uint8) {
         return base;
+    }
+
+    function getRelativeLTV(address user, uint256 amount)
+        public
+        view
+        override
+        returns (uint160)
+    {
+        uint160 ltv = getLTV(user);
+        
+        if (amount > trustPrice1) return maxLTV;
+
+        if (amount > trustPrice0) {
+            uint160 average = ((maxLTV + minLTV) / 2);
+            if (ltv <= average) return average;
+        }
+
+        return ltv;
     }
 
     function getLTV(address user) public view override returns (uint160) {

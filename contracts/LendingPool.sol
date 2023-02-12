@@ -311,16 +311,23 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        uint160 ltv = _ltv.getLTV(_msgSender());
-
-        uint256 principalPrice = _priceFeed.exchangeRate(
+        uint256 principalNormalAmount = _priceFeed.exchangeRate(
             collateralToken,
             principalToken,
             collateralAmount
         );
 
-        uint256 principalAmount = percentageInverseOf(principalPrice, ltv) /
-            _ltv.getBase();
+        uint256 principalAmountInUSD = _priceFeed.amountInUSD(
+            principalToken,
+            principalNormalAmount
+        );
+
+        uint160 ltv = _ltv.getRelativeLTV(_msgSender(), principalAmountInUSD);
+
+        uint256 principalAmount = percentageInverseOf(
+            principalNormalAmount,
+            ltv
+        ) / _ltv.getBase();
 
         /* delegate the collateral to borrower */
         _poolManager.deposit(_msgSender(), collateralToken, collateralAmount);
@@ -370,7 +377,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             percentage
         );
 
-        uint160 ltv = _ltv.getLTV(_msgSender());
+        uint256 principalPriceInUSD = _priceFeed.amountInUSD(
+            offer.principalToken,
+            principalAmount
+        );
+
+        uint160 ltv = _ltv.getRelativeLTV(_msgSender(), principalPriceInUSD);
 
         uint256 collateralNormalAmount = _priceFeed.exchangeRate(
             offer.principalToken,
@@ -439,8 +451,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             percentage
         );
 
-        /* get the trust factor of the borrower */
-        uint160 ltv = _ltv.getLTV(_msgSender());
+        uint256 principalPriceInUSD = _priceFeed.amountInUSD(
+            offer.principalToken,
+            principalAmount
+        );
+
+        uint160 ltv = _ltv.getRelativeLTV(_msgSender(), principalPriceInUSD);
 
         /* calculate the collateral amount */
         uint256 collateralNormalAmount = _priceFeed.exchangeRate(
