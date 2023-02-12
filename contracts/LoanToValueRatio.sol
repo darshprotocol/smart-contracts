@@ -8,8 +8,8 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
 contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
     ITrustScore private _trustScore;
 
-    uint16 minLTV;
-    uint16 maxLTV;
+    uint160 minLTV;
+    uint160 maxLTV;
 
     uint8 public base = 10;
 
@@ -19,18 +19,18 @@ contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
         return base;
     }
 
-    function getLTV(address user) public view override returns (uint16) {
+    function getLTV(address user) public view override returns (uint160) {
         // 0 ~ 100
         uint16 score = _trustScore.getScore(user);
-        uint16 range = maxLTV - minLTV;
-        uint16 scale = ((range * score) / 100);
+        uint160 range = maxLTV - minLTV;
+        uint160 scale = ((range * score) / 100);
         return minLTV + scale;
     }
 
     function setTrustScore(
         address trustScore_,
-        uint16 minLTV_,
-        uint16 maxLTV_
+        uint160 minLTV_,
+        uint160 maxLTV_
     ) public onlyOwner {
         require(minLTV_ < maxLTV_, "ERR_LTV");
         minLTV = minLTV_ * base;

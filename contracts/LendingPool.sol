@@ -40,11 +40,13 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
     constructor(
+        address ltv_,
         address activity_,
         address poolManager_,
         address loanManager_,
         address offerManager_
     ) ReentrancyGuard() {
+        _ltv = ILoanToValueRatio(ltv_);
         _activity = Activity(activity_);
         _poolManager = PoolManager(poolManager_);
         _loanManager = LoanManager(loanManager_);
@@ -266,7 +268,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        uint16 ltv = _ltv.getLTV(_msgSender());
+        uint160 ltv = _ltv.getLTV(_msgSender());
 
         uint256 principalPrice = _priceFeed.exchangeRate(
             collateralToken,
@@ -339,12 +341,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
 
         require(
-            principalAmount <= offer.currentPrincipal,
+            offer.currentPrincipal >= principalAmount,
             "ERR_INSUFFICIENT_AMOUNT"
         );
 
         /* get the trust factor of the borrower */
-        uint16 ltv = _ltv.getLTV(_msgSender());
+        uint160 ltv = _ltv.getLTV(_msgSender());
 
         /* calculate the collateral amount */
         uint256 collateralNormalAmount = _priceFeed.exchangeRate(
