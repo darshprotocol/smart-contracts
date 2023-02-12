@@ -490,12 +490,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* delegate the loan collateral to lender */
-        _poolManager.transfer(
-            _msgSender(),
-            offer.lender,
-            collateralToken,
-            collateralAmount
-        );
+        _poolManager.deposit(offer.lender, collateralToken, collateralAmount);
         /* undelegate the loan principal from lender */
         _poolManager.burn(offer.lender, offer.principalToken, principalAmount);
 
