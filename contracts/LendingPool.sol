@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 import "./Activity.sol";
 
 import "./libraries/Errors.sol";
-import "./libraries/AssetLibrary.sol";
+import "./libraries/PoolLibrary.sol";
 
 import "./math/SimpleInterest.sol";
 
@@ -40,14 +40,10 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
     constructor(
-        address ltv_,
-        address activity_,
         address poolManager_,
         address loanManager_,
         address offerManager_
     ) ReentrancyGuard() {
-        _ltv = ILoanToValueRatio(ltv_);
-        _activity = Activity(activity_);
         _poolManager = PoolManager(poolManager_);
         _loanManager = LoanManager(loanManager_);
         _offerManager = OfferManager(offerManager_);
@@ -60,9 +56,9 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint256 principalAmount_, // only for ERC20 assets
         address principalToken,
         address[] memory collateralTokens,
-        uint256 daysToMaturity,
+        uint16 daysToMaturity,
         uint256 interest,
-        uint256 daysToExpire
+        uint16 daysToExpire
     ) public payable {
         uint256 principalAmount;
 
@@ -80,40 +76,80 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        /* record principal to pool manager */
-        require(
-            _poolManager.deposit(_msgSender(), principalToken, principalAmount),
-            "ERR_POOL_MANAGER_DEPOSIT"
-        );
+        /* delegate principal to lender */
+        _poolManager.deposit(_msgSender(), principalToken, principalAmount);
 
         /* create the lending offer */
-        require(
-            _offerManager.createLendingOffer(
-                principalToken,
-                principalAmount,
-                interest,
-                daysToMaturity,
-                daysToExpire,
-                collateralTokens,
-                _msgSender()
-            ) > 0,
-            "ERR_OFFER_MANAGER_CREATE"
+        _offerManager.createLendingOffer(
+            principalToken,
+            principalAmount,
+            interest,
+            daysToMaturity,
+            daysToExpire,
+            collateralTokens,
+            _msgSender()
         );
     }
 
     // @lenders
-    function acceptBorrowingOffer(uint256 offerId, uint16 percentage)
+    function createLendingRequest(
+        uint160 offerId,
+        uint16 percentage,
+        uint16 daysToMaturity,
+        uint256 interest,
+        uint16 daysToExpire
+    ) public payable {
+        _checkPercentage(percentage);
+
+        OfferLibrary.LendingOffer memory offer = _offerManager.getLendingOffer(
+            offerId
+        );
+
+        uint256 principalAmount = percentageOf(
+            offer.initialPrincipal,
+            percentage
+        );
+
+        /* extract tokens from lender */
+        if (offer.principalToken == nativeAddress) {
+            require(msg.value >= principalAmount);
+        } else {
+            ERC20(offer.principalToken).transferFrom(
+                _msgSender(),
+                address(this),
+                principalAmount
+            );
+        }
+
+        /* delegate principal to lender */
+        _poolManager.deposit(
+            _msgSender(),
+            offer.principalToken,
+            principalAmount
+        );
+
+        /* create the lending request */
+        _offerManager.createLendingRequest(
+            percentage,
+            interest,
+            daysToMaturity,
+            daysToExpire,
+            _msgSender(),
+            offerId
+        );
+    }
+
+    // @lenders
+    function acceptBorrowingOffer(uint160 offerId, uint16 percentage)
         public
         payable
     {
+        _checkPercentage(percentage);
+
         OfferLibrary.BorrowingOffer memory offer = _offerManager
             .getBorrowingOffer(offerId);
 
         require(_msgSender() != offer.borrower, "ERR_CANT_BORROW_OWN");
-
-        // percentage must be 25, 50, 75 or 100
-        require(percentage <= 100, "OVER_PERCENTAGE");
-        require(percentage % 25 == 0, "ERR_PERCENTAGE");
 
         uint256 collateralAmount = percentageOf(
             offer.initialCollateral,
@@ -141,21 +177,34 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
+        /* delegate the loan collateral to lender */
+        _poolManager.transfer(
+            offer.borrower,
+            _msgSender(),
+            offer.collateralToken,
+            collateralAmount
+        );
+        /* undelegate the principal from lender */
+        _poolManager.burn(_msgSender(), offer.principalToken, principalAmount);
+
+        uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
+            offer.collateralToken,
+            collateralAmount
+        );
+
         /* register the loan from the loan manager */
-        require(
-            _loanManager.createLoan(
-                offer.offerId,
-                OfferLibrary.Type.BORROWING_OFFER,
-                offer.principalToken,
-                offer.collateralToken,
-                principalAmount,
-                collateralAmount,
-                offer.interest,
-                offer.daysToMaturity,
-                offer.borrower,
-                _msgSender()
-            ) > 0,
-            "ERR_LOAN_MANAGER_CREATE"
+        _loanManager.createLoan(
+            offer.offerId,
+            OfferLibrary.Type.BORROWING_OFFER,
+            offer.principalToken,
+            offer.collateralToken,
+            principalAmount,
+            collateralAmount,
+            collateralPriceInUSD,
+            offer.interest,
+            offer.daysToMaturity,
+            offer.borrower,
+            _msgSender()
         );
 
         // will revert the transaction if fail
@@ -174,7 +223,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     }
 
     // @lenders
-    function acceptBorrowingRequest(uint256 requestId) public payable {
+    function acceptBorrowingRequest(uint256 requestId) public {
         RequestLibrary.BorrowingRequest memory request = _offerManager
             .getBorrowingRequest(requestId);
 
@@ -184,24 +233,30 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
         require(offer.lender == _msgSender(), "ERR_ONLY_LENDER");
 
-        /* extract principal from lender */
+        uint256 principalAmount = percentageOf(
+            offer.initialPrincipal,
+            request.percentage
+        );
+
         /* transfer principal to borrower */
         if (offer.principalToken == nativeAddress) {
-            // if principal is native coin
-            require(msg.value >= request.principalAmount);
-            payable(request.borrower).transfer(request.principalAmount);
+            payable(request.borrower).transfer(principalAmount);
         } else {
-            // if principal is ERC20
-            ERC20(offer.principalToken).transferFrom(
-                _msgSender(),
-                address(this),
-                request.principalAmount
-            );
             ERC20(offer.principalToken).transfer(
                 request.borrower,
-                request.principalAmount
+                principalAmount
             );
         }
+
+        /* delegate the loan collateral to lender */
+        _poolManager.transfer(
+            request.borrower,
+            _msgSender(),
+            request.collateralToken,
+            request.collateralAmount
+        );
+        /* undelegate the principal from lender */
+        _poolManager.burn(_msgSender(), offer.principalToken, principalAmount);
 
         /* register the loan from the loan manager */
         _loanManager.createLoan(
@@ -209,8 +264,9 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             OfferLibrary.Type.LENDING_OFFER,
             offer.principalToken,
             request.collateralToken,
-            request.principalAmount,
+            principalAmount,
             request.collateralAmount,
+            request.collateralPriceInUSD,
             request.interest,
             request.daysToMaturity,
             request.borrower,
@@ -220,14 +276,14 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         // will revert the transaction if fail
         _offerManager._afterOfferBorrowingLoan(
             request.offerId,
-            request.principalAmount,
+            principalAmount,
             request.collateralAmount
         );
 
         // update activity
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
             offer.principalToken,
-            request.principalAmount
+            principalAmount
         );
         _activity._borrowLoan(request.borrower, amountBorrowedInUSD);
     }
@@ -238,8 +294,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         address collateralToken,
         uint256 collateralAmount_, // for ERC20 assets
         uint256 interest,
-        uint256 daysToMaturity,
-        uint256 daysToExpire
+        uint16 daysToMaturity,
+        uint16 daysToExpire
     ) public payable {
         uint256 collateralAmount;
 
@@ -266,7 +322,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint256 principalAmount = percentageInverseOf(principalPrice, ltv) /
             _ltv.getBase();
 
-        /* deposit tokens to vault */
+        /* delegate the collateral to borrower */
         _poolManager.deposit(_msgSender(), collateralToken, collateralAmount);
 
         /* create the offer */
@@ -290,31 +346,93 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     }
 
     // @borrower
-    function acceptLendingOffer(
-        uint256 offerId,
+    function createBorrowingRequest(
+        uint160 offerId,
         uint16 percentage,
-        address collateralToken
+        address collateralToken,
+        uint256 interest,
+        uint16 daysToMaturity,
+        uint16 daysToExpire
     ) public payable {
+        _checkPercentage(percentage);
+
         OfferLibrary.LendingOffer memory offer = _offerManager.getLendingOffer(
             offerId
         );
 
-        // percentage must be 25, 50, 75 or 100
-        require(percentage <= 100, "OVER_PERCENTAGE");
-        require(percentage % 25 == 0, "ERR_PERCENTAGE");
+        require(
+            _offerManager.isCollateralSupported(offerId, collateralToken),
+            "ERR_COLLATERAL_NOT_SUPPORTED"
+        );
 
-        bool supported = false;
-        for (
-            uint256 index = 0;
-            index < offer.collateralTokens.length;
-            index++
-        ) {
-            if (offer.collateralTokens[index] == collateralToken) {
-                supported = true;
-                break;
-            }
+        uint256 principalAmount = percentageOf(
+            offer.initialPrincipal,
+            percentage
+        );
+
+        uint160 ltv = _ltv.getLTV(_msgSender());
+
+        uint256 collateralNormalAmount = _priceFeed.exchangeRate(
+            offer.principalToken,
+            collateralToken,
+            principalAmount
+        );
+
+        uint256 collateralAmount = percentageOf(collateralNormalAmount, ltv) /
+            _ltv.getBase();
+
+        /* extract collateral from borrower */
+        if (collateralToken == nativeAddress) {
+            require(collateralAmount >= msg.value);
+        } else {
+            ERC20(collateralToken).transferFrom(
+                _msgSender(),
+                address(this),
+                collateralAmount
+            );
         }
-        require(supported, "ERR_COLLATERAL_NOT_SUPPORTED");
+
+        /* delegate the collateral to borrower */
+        _poolManager.deposit(_msgSender(), collateralToken, collateralAmount);
+
+        uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
+            collateralToken,
+            collateralAmount
+        );
+
+        /* create the request */
+        _offerManager.createBorrowingRequest(
+            percentage,
+            collateralToken,
+            collateralAmount,
+            collateralPriceInUSD,
+            interest,
+            daysToMaturity,
+            daysToExpire,
+            _msgSender(),
+            offerId
+        );
+
+        // update activity
+        _activity._dropCollateral(_msgSender(), collateralPriceInUSD);
+    }
+
+    // @borrower
+    function acceptLendingOffer(
+        uint160 offerId,
+        uint16 percentage,
+        address collateralToken
+    ) public payable {
+        _checkPercentage(percentage);
+
+        OfferLibrary.LendingOffer memory offer = _offerManager.getLendingOffer(
+            offerId
+        );
+
+        require(
+            _offerManager.isCollateralSupported(offerId, collateralToken),
+            "ERR_COLLATERAL_NOT_SUPPORTED"
+        );
 
         uint256 principalAmount = percentageOf(
             offer.initialPrincipal,
@@ -345,7 +463,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        /* transfer the asset to borrower */
+        /* transfer the principal to borrower */
         if (offer.principalToken == nativeAddress) {
             payable(_msgSender()).transfer(principalAmount);
         } else {
@@ -355,6 +473,21 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
+        /* delegate the loan collateral to lender */
+        _poolManager.transfer(
+            _msgSender(),
+            offer.lender,
+            collateralToken,
+            collateralAmount
+        );
+        /* undelegate the loan principal from lender */
+        _poolManager.burn(offer.lender, offer.principalToken, principalAmount);
+
+        uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
+            collateralToken,
+            collateralAmount
+        );
+
         /* register the loan */
         _loanManager.createLoan(
             offerId,
@@ -363,6 +496,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             collateralToken,
             principalAmount,
             collateralAmount,
+            collateralPriceInUSD,
             offer.interest,
             offer.daysToMaturity,
             _msgSender(),
@@ -400,15 +534,31 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             request.percentage
         );
 
-        /* extract principal from lender */
         /* transfer principal to borrower */
         if (offer.principalToken == nativeAddress) {
-            // if principal is native coin
             payable(_msgSender()).transfer(principalAmount);
         } else {
-            // if principal is ERC20
             ERC20(offer.principalToken).transfer(_msgSender(), principalAmount);
         }
+
+        /* delegate the loan collateral to lender */
+        _poolManager.transfer(
+            _msgSender(),
+            request.lender,
+            offer.collateralToken,
+            collateralAmount
+        );
+        /* undelegate the loan principal from lender */
+        _poolManager.burn(
+            request.lender,
+            offer.principalToken,
+            principalAmount
+        );
+
+        uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
+            offer.collateralToken,
+            collateralAmount
+        );
 
         /* register the loan from the loan manager */
         _loanManager.createLoan(
@@ -418,6 +568,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             offer.collateralToken,
             principalAmount,
             collateralAmount,
+            collateralPriceInUSD,
             request.interest,
             request.daysToMaturity,
             _msgSender(),
@@ -435,6 +586,13 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _activity._borrowLoan(_msgSender(), amountBorrowedInUSD);
     }
 
+    // @borrower
+    function reActivateOffer() public payable {}
+
+    // @borrower
+    function reActivateRequest() public payable {}
+
+    // @borrower
     function repayLoan(uint256 loanId, uint16 percentage) public payable {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
@@ -466,16 +624,13 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             loan.interest
         );
 
-        // update ledger book
-        // will fail if encounter an error
+        // will revert the transaction if fail
         _loanManager.repayLoan(loanId, principalAmount, collateralAmount);
 
         /* extract pay back amount */
         if (loan.principalToken == nativeAddress) {
-            // if principal is native coin
             require(msg.value >= repaymentPrincipalAmount);
         } else {
-            // if principal is ERC20 token
             ERC20(loan.principalToken).transferFrom(
                 _msgSender(),
                 address(this),
@@ -485,10 +640,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
         /* transfer collateral */
         if (loan.collateralToken == nativeAddress) {
-            // if collateral is native coin
             payable(_msgSender()).transfer(collateralAmount);
         } else {
-            // if collateral is ERC20 token
             ERC20(loan.collateralToken).transfer(
                 _msgSender(),
                 collateralAmount
@@ -509,11 +662,14 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _activity._repayLoan(_msgSender(), amountPaidInUSD, interestPaidInUSD);
     }
 
-    function repayLiquidatedLoan(uint256 loanId) public payable {
-        LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
+    function repayLiquidatedLoan(uint256 loanId) public payable {}
 
-        bool liquidated = loan.state == LoanLibrary.State.LIQUIDATED;
-        require(liquidated);
+    function setLTV(address ltv_) public onlyOwner {
+        _ltv = ILoanToValueRatio(ltv_);
+    }
+
+    function setActivity(address activity_) public onlyOwner {
+        _activity = Activity(activity_);
     }
 
     function setPriceFeed(address priceFeed_) public onlyOwner {
@@ -522,6 +678,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     function changeOwner(address newOwner) public onlyOwner {
         deployer = newOwner;
+    }
+
+    function _checkPercentage(uint16 percentage) private pure {
+        // percentage must be 25, 50, 75 or 100
+        require(percentage <= 100, "OVER_PERCENTAGE");
+        require(percentage % 25 == 0, "ERR_PERCENTAGE");
     }
 
     modifier onlyOwner() {

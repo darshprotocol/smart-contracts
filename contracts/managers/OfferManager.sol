@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "../libraries/AssetLibrary.sol";
+import "../libraries/PoolLibrary.sol";
 import "../libraries/OfferLibrary.sol";
 import "../libraries/RequestLibrary.sol";
 
@@ -33,12 +33,12 @@ contract OfferManager is IOfferManager, Ownable2Step {
     constructor() Ownable2Step() {}
 
     event LendingOfferCreated(
-        uint256 offerId,
+        uint160 offerId,
         address principalToken,
         uint256 currentPrincipal,
         uint256 initialPrincipal,
         uint256 interest,
-        uint256 daysToMaturity,
+        uint16 daysToMaturity,
         address[] collateralTokens,
         uint160 expiresAt,
         uint160 createdAt,
@@ -46,19 +46,19 @@ contract OfferManager is IOfferManager, Ownable2Step {
     );
 
     event BorrowingOfferCreated(
-        uint256 offerId,
+        uint160 offerId,
         address principalToken,
         address collateralToken,
         uint256 initialCollateral,
         uint256 currentCollateral,
         uint256 interest,
-        uint256 daysToMaturity,
+        uint16 daysToMaturity,
         uint160 expiresAt,
         uint160 createdAt,
         address borrower
     );
 
-    event OfferClosed(uint256 offerId, OfferLibrary.Type offerType);
+    event OfferClosed(uint160 offerId, OfferLibrary.Type offerType);
 
     event RequestClosed(uint256 requestId, RequestLibrary.Type requestType);
 
@@ -66,12 +66,11 @@ contract OfferManager is IOfferManager, Ownable2Step {
         address principalToken,
         uint256 principalAmount,
         uint256 interest,
-        uint256 daysToMaturity,
-        uint256 daysToExpire,
+        uint16 daysToMaturity,
+        uint16 daysToExpire,
         address[] memory collateralTokens,
         address lender
-    ) public onlyLendingPool returns (uint256) {
-        // onlyOwner
+    ) public onlyLendingPool returns (uint160) {
         lendingOfferIdTracker.increment();
         uint256 offerId = lendingOfferIdTracker.current();
 
@@ -80,7 +79,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint160 expiresAt = createdAt + duration;
 
         lendingOffers[offerId] = OfferLibrary.LendingOffer(
-            offerId,
+            uint160(offerId),
             principalToken,
             principalAmount, // currentPrincipal
             principalAmount, // initialPrincipal
@@ -92,23 +91,163 @@ contract OfferManager is IOfferManager, Ownable2Step {
             lender
         );
 
-        emit LendingOfferCreated(
-            offerId,
-            principalToken,
-            principalAmount, // currentPrincipal
-            principalAmount, // initialPrincipal
-            interest,
-            daysToMaturity,
-            collateralTokens,
-            expiresAt,
-            createdAt,
-            lender
-        );
-
-        return offerId;
+        _emitLendingOffer(uint160(offerId), lendingOffers[offerId]);
+        return uint160(offerId);
     }
 
-    function _afterOfferLendingLoan(uint256 offerId, uint256 principalAmount)
+    function createLendingRequest(
+        uint16 percentage,
+        uint256 interest,
+        uint16 daysToMaturity,
+        uint16 daysToExpire,
+        address lender,
+        uint160 offerId
+    ) public onlyLendingPool returns (uint160) {
+        lendingRequestIdTracker.increment();
+        uint256 requestId = lendingRequestIdTracker.current();
+
+        uint160 createdAt = uint160(block.timestamp);
+        uint160 duration = uint160((daysToExpire * 1 days));
+        uint160 expiresAt = createdAt + duration;
+
+        lendingRequests[offerId] = RequestLibrary.LendingRequest(
+            uint160(requestId),
+            percentage,
+            daysToMaturity,
+            expiresAt,
+            interest,
+            createdAt,
+            lender,
+            offerId
+        );
+
+        _emitLendingRequest(uint160(requestId), lendingRequests[requestId]);
+        return uint160(requestId);
+    }
+
+    function createBorrowingOffer(
+        address principalToken,
+        address collateralToken,
+        uint256 collateralAmount,
+        uint256 principalAmount,
+        uint256 interest,
+        uint16 daysToMaturity,
+        uint16 daysToExpire,
+        address borrower
+    ) public onlyLendingPool returns (uint160) {
+        borrowingOfferIdTracker.increment();
+        uint256 offerId = borrowingOfferIdTracker.current();
+
+        uint160 createdAt = uint160(block.timestamp);
+        uint160 duration = uint160((daysToExpire * 1 days));
+        uint160 expiresAt = createdAt + duration;
+
+        borrowingOffers[offerId] = OfferLibrary.BorrowingOffer(
+            uint160(offerId),
+            principalToken,
+            collateralToken,
+            collateralAmount, // currentCollateral
+            collateralAmount, // initialCollateral
+            principalAmount, // currentPrincipal
+            principalAmount, // initialPrincipal
+            interest,
+            daysToMaturity,
+            expiresAt,
+            createdAt,
+            borrower
+        );
+
+        _emitBorrowingOffer(uint160(offerId), borrowingOffers[offerId]);
+        return uint160(offerId);
+    }
+
+    function createBorrowingRequest(
+        uint16 percentage,
+        address collateralToken,
+        uint256 collateralAmount,
+        uint256 collateralPriceInUSD,
+        uint256 interest,
+        uint16 daysToMaturity,
+        uint16 daysToExpire,
+        address borrower,
+        uint160 offerId
+    ) public onlyLendingPool returns (uint160) {
+        borrowingRequestIdTracker.increment();
+        uint256 requestId = borrowingRequestIdTracker.current();
+
+        uint160 createdAt = uint160(block.timestamp);
+        uint160 duration = uint160((daysToExpire * 1 days));
+        uint160 expiresAt = createdAt + duration;
+
+        borrowingRequests[offerId] = RequestLibrary.BorrowingRequest(
+            uint160(requestId),
+            percentage,
+            collateralToken,
+            collateralAmount,
+            collateralPriceInUSD,
+            daysToMaturity,
+            expiresAt,
+            interest,
+            createdAt,
+            borrower,
+            offerId
+        );
+
+        _emitBorrowingRequest(uint160(requestId), borrowingRequests[requestId]);
+        return uint160(requestId);
+    }
+
+    // events
+
+    function _emitLendingOffer(
+        uint160 offerId,
+        OfferLibrary.LendingOffer memory offer
+    ) private {
+        emit LendingOfferCreated(
+            offerId,
+            offer.principalToken,
+            offer.currentPrincipal,
+            offer.initialPrincipal,
+            offer.interest,
+            offer.daysToMaturity,
+            offer.collateralTokens,
+            offer.expiresAt,
+            offer.createdAt,
+            offer.lender
+        );
+    }
+
+    function _emitBorrowingOffer(
+        uint160 offerId,
+        OfferLibrary.BorrowingOffer memory offer
+    ) private {
+        emit BorrowingOfferCreated(
+            offerId,
+            offer.principalToken,
+            offer.collateralToken,
+            offer.currentCollateral,
+            offer.initialCollateral,
+            offer.interest,
+            offer.daysToMaturity,
+            offer.expiresAt,
+            offer.createdAt,
+            offer.borrower
+        );
+    }
+
+    function _emitLendingRequest(
+        uint160 requestId,
+        RequestLibrary.LendingRequest memory request
+    ) private {}
+
+    function _emitBorrowingRequest(
+        uint160 requestId,
+        RequestLibrary.BorrowingRequest memory request
+    ) private {}
+
+    // updaters
+
+    function _afterOfferLendingLoan(uint160 offerId, uint256 principalAmount)
         public
         onlyLendingPool
     {
@@ -120,10 +259,12 @@ contract OfferManager is IOfferManager, Ownable2Step {
         require(offer.expiresAt > block.timestamp, "ERR_OFFER_EXPIRED");
 
         lendingOffers[offerId].currentPrincipal -= principalAmount;
+
+        _emitLendingOffer(offerId, offer);
     }
 
     function _afterOfferBorrowingLoan(
-        uint256 offerId,
+        uint160 offerId,
         uint256 principalAmount,
         uint256 collateralAmount
     ) public onlyLendingPool {
@@ -140,76 +281,31 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
         offer.currentPrincipal -= principalAmount;
         offer.currentCollateral -= collateralAmount;
+
+        _emitBorrowingOffer(offerId, offer);
     }
 
-    function createBorrowingOffer(
-        address principalToken,
-        address collateralToken,
-        uint256 collateral,
-        uint256 principalNeeded,
-        uint256 interest,
-        uint256 daysToMaturity,
-        uint256 daysToExpire,
-        address borrower
-    ) public onlyLendingPool returns (uint256) {
-        borrowingOfferIdTracker.increment();
-        uint256 offerId = borrowingOfferIdTracker.current();
-
-        uint160 createdAt = uint160(block.timestamp);
-        uint160 duration = uint160((daysToExpire * 1 days));
-        uint160 expiresAt = createdAt + duration;
-
-        borrowingOffers[offerId] = OfferLibrary.BorrowingOffer(
-            offerId,
-            principalToken,
-            collateralToken,
-            collateral, // currentCollateral
-            collateral, // initialCollateral
-            principalNeeded, // currentPrincipal
-            principalNeeded, // initialPrincipal
-            interest,
-            daysToMaturity,
-            expiresAt,
-            createdAt,
-            borrower
-        );
-
-        emit BorrowingOfferCreated(
-            offerId,
-            principalToken,
-            collateralToken,
-            collateral, // currentCollateral
-            collateral, // initialCollateral
-            interest,
-            daysToMaturity,
-            expiresAt,
-            createdAt,
-            borrower
-        );
-
-        return offerId;
-    }
-
-    function withdrawLendingOffer(
-        uint256 offerId,
-        address lender,
-        uint256 amount
-    ) public onlyLendingPool returns (bool) {
-        require(lender == lendingOffers[offerId].lender);
-        require(lendingOffers[offerId].currentPrincipal <= amount);
-        lendingOffers[offerId].currentPrincipal -= amount;
-
-        if (lendingOffers[offerId].currentPrincipal == 0) {
-            delete lendingOffers[offerId];
-            emit OfferClosed(offerId, OfferLibrary.Type.LENDING_OFFER);
+    function isCollateralSupported(uint160 offerId, address token)
+        public
+        view
+        returns (bool)
+    {
+        OfferLibrary.LendingOffer memory offer = lendingOffers[offerId];
+        bool supported = false;
+        for (
+            uint256 index = 0;
+            index < offer.collateralTokens.length;
+            index++
+        ) {
+            if (offer.collateralTokens[index] == token) {
+                supported = true;
+                break;
+            }
         }
-
-        return true;
+        return supported;
     }
 
-    function closeLendingRequest(uint256 requestId) public {}
-
-    function getLendingOffer(uint256 offerId)
+    function getLendingOffer(uint160 offerId)
         public
         view
         override
@@ -218,7 +314,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         return lendingOffers[offerId];
     }
 
-    function getBorrowingOffer(uint256 offerId)
+    function getBorrowingOffer(uint160 offerId)
         public
         view
         override

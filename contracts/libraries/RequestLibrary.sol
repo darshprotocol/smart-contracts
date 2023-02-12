@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./AssetLibrary.sol";
+import "./PoolLibrary.sol";
 
 library RequestLibrary {
 
@@ -11,28 +11,28 @@ library RequestLibrary {
     }
 
     struct LendingRequest {
-        uint requestId;
-        uint interest;
-        uint256 principalAmount;
+        uint160 requestId;
         uint16 percentage;
-        uint daysToMaturity;
-        uint expiresAt;
-        uint createdAt;
+        uint16 daysToMaturity;
+        uint160 expiresAt;
+        uint256 interest;
+        uint160 createdAt;
         address lender;
-        uint offerId;
+        uint160 offerId;
     }
 
     struct BorrowingRequest {
-        uint requestId;
+        uint160 requestId;
+        uint16 percentage;
         address collateralToken;
         uint256 collateralAmount;
-        uint256 principalAmount;
-        uint interest;
-        uint daysToMaturity;
-        uint expiresAt;
-        uint createdAt;
+        uint256 collateralPriceInUSD;
+        uint16 daysToMaturity;
+        uint160 expiresAt;
+        uint256 interest;
+        uint160 createdAt;
         address borrower;
-        uint offerId;
+        uint160 offerId;
     }
 
 }

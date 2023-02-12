@@ -2,19 +2,6 @@
   "contractName": "IPoolManager",
   "abi": [
     {
-      "inputs": [],
-      "name": "getAddress",
-      "outputs": [
-        {
-          "internalType": "address payable",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
@@ -39,7 +26,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"provider\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAddress\",\"outputs\":[{\"internalType\":\"address payable\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IPoolManager.sol\":\"IPoolManager\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/interfaces/IPoolManager.sol\":{\"keccak256\":\"0x39aac1240a93d37f6fa9d92c5b4b9578f05ada14f7c955e4aec46bf7dab41684\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://4de8d66681f9a2e390d8f2c1eb0f273c1dd947bb82e8b07d2eab68a891c1c37a\",\"dweb:/ipfs/QmYfr8XkURwDPNfpLKNV57JUNmcQokP41YQrnm5Y9AiGYw\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"provider\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IPoolManager.sol\":\"IPoolManager\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/interfaces/IPoolManager.sol\":{\"keccak256\":\"0x43996fbb12a69b4c648320606fc59ded7a8537aef69cb9ede3c223eae288e3f4\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://fbddc4fcf1d0e616c7a8fc776b8265ab403582ccdc6a030391d55aaca790a2b5\",\"dweb:/ipfs/QmQsJuNLHshWGU7SCAXq7XNSPV8k6zY514yoyBRiQXjxgP\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -47,21 +34,21 @@
   "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\ninterface IPoolManager {\r\n\r\n    function getAddress() external returns(address payable);\r\n    \r\n    function balanceOf(address provider, address token) external returns(uint256);\r\n\r\n}",
+  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\ninterface IPoolManager {\r\n    function balanceOf(address provider, address token)\r\n        external\r\n        returns (uint256);\r\n}\r\n",
   "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\interfaces\\IPoolManager.sol",
   "ast": {
     "absolutePath": "project:/contracts/interfaces/IPoolManager.sol",
     "exportedSymbols": {
       "IPoolManager": [
-        7161
+        7442
       ]
     },
-    "id": 7162,
+    "id": 7443,
     "license": "GPL-3.0",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7146,
+        "id": 7432,
         "literals": [
           "solidity",
           ">=",
@@ -81,92 +68,36 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 7161,
+        "id": 7442,
         "linearizedBaseContracts": [
-          7161
+          7442
         ],
         "name": "IPoolManager",
         "nameLocation": "82:12:32",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "functionSelector": "38cc4831",
-            "id": 7151,
-            "implemented": false,
-            "kind": "function",
-            "modifiers": [],
-            "name": "getAddress",
-            "nameLocation": "113:10:32",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 7147,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "123:2:32"
-            },
-            "returnParameters": {
-              "id": 7150,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 7149,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nameLocation": "-1:-1:-1",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 7151,
-                  "src": "143:15:32",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address_payable",
-                    "typeString": "address payable"
-                  },
-                  "typeName": {
-                    "id": 7148,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "143:15:32",
-                    "stateMutability": "payable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address_payable",
-                      "typeString": "address payable"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "142:17:32"
-            },
-            "scope": 7161,
-            "src": "104:56:32",
-            "stateMutability": "nonpayable",
-            "virtual": false,
-            "visibility": "external"
-          },
-          {
             "functionSelector": "f7888aec",
-            "id": 7160,
+            "id": 7441,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "balanceOf",
-            "nameLocation": "181:9:32",
+            "nameLocation": "111:9:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7156,
+              "id": 7437,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7153,
+                  "id": 7434,
                   "mutability": "mutable",
                   "name": "provider",
-                  "nameLocation": "199:8:32",
+                  "nameLocation": "129:8:32",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7160,
-                  "src": "191:16:32",
+                  "scope": 7441,
+                  "src": "121:16:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -174,10 +105,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7152,
+                    "id": 7433,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "191:7:32",
+                    "src": "121:7:32",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -188,13 +119,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 7155,
+                  "id": 7436,
                   "mutability": "mutable",
                   "name": "token",
-                  "nameLocation": "217:5:32",
+                  "nameLocation": "147:5:32",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7160,
-                  "src": "209:13:32",
+                  "scope": 7441,
+                  "src": "139:13:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -202,10 +133,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7154,
+                    "id": 7435,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "209:7:32",
+                    "src": "139:7:32",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -215,21 +146,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "190:33:32"
+              "src": "120:33:32"
             },
             "returnParameters": {
-              "id": 7159,
+              "id": 7440,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7158,
+                  "id": 7439,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7160,
-                  "src": "241:7:32",
+                  "scope": 7441,
+                  "src": "190:7:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -237,10 +168,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7157,
+                    "id": 7438,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "241:7:32",
+                    "src": "190:7:32",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -249,21 +180,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "240:9:32"
+              "src": "189:9:32"
             },
-            "scope": 7161,
-            "src": "172:78:32",
+            "scope": 7442,
+            "src": "102:97:32",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 7162,
-        "src": "72:183:32",
+        "scope": 7443,
+        "src": "72:130:32",
         "usedErrors": []
       }
     ],
-    "src": "37:218:32"
+    "src": "37:167:32"
   },
   "compiler": {
     "name": "solc",
@@ -271,7 +202,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-02-12T14:01:17.932Z",
+  "updatedAt": "2023-02-12T20:37:48.521Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

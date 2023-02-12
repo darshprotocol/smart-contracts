@@ -4,9 +4,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
+          "internalType": "uint160",
           "name": "offerId",
-          "type": "uint256"
+          "type": "uint160"
         }
       ],
       "name": "getLendingOffer",
@@ -14,9 +14,9 @@
         {
           "components": [
             {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "offerId",
-              "type": "uint256"
+              "type": "uint160"
             },
             {
               "internalType": "address",
@@ -39,9 +39,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint16",
               "name": "daysToMaturity",
-              "type": "uint256"
+              "type": "uint16"
             },
             {
               "internalType": "address[]",
@@ -75,9 +75,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
+          "internalType": "uint160",
           "name": "offerId",
-          "type": "uint256"
+          "type": "uint160"
         }
       ],
       "name": "getBorrowingOffer",
@@ -85,9 +85,9 @@
         {
           "components": [
             {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "offerId",
-              "type": "uint256"
+              "type": "uint160"
             },
             {
               "internalType": "address",
@@ -125,9 +125,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint16",
               "name": "daysToMaturity",
-              "type": "uint256"
+              "type": "uint16"
             },
             {
               "internalType": "uint160",
@@ -166,9 +166,14 @@
         {
           "components": [
             {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "requestId",
-              "type": "uint256"
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint16",
+              "name": "percentage",
+              "type": "uint16"
             },
             {
               "internalType": "address",
@@ -182,8 +187,18 @@
             },
             {
               "internalType": "uint256",
-              "name": "principalAmount",
+              "name": "collateralPriceInUSD",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "daysToMaturity",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint160",
+              "name": "expiresAt",
+              "type": "uint160"
             },
             {
               "internalType": "uint256",
@@ -191,19 +206,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
-              "name": "daysToMaturity",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "expiresAt",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "createdAt",
-              "type": "uint256"
+              "type": "uint160"
             },
             {
               "internalType": "address",
@@ -211,9 +216,9 @@
               "type": "address"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "offerId",
-              "type": "uint256"
+              "type": "uint160"
             }
           ],
           "internalType": "struct RequestLibrary.BorrowingRequest",
@@ -237,19 +242,9 @@
         {
           "components": [
             {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "requestId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "interest",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "principalAmount",
-              "type": "uint256"
+              "type": "uint160"
             },
             {
               "internalType": "uint16",
@@ -257,19 +252,24 @@
               "type": "uint16"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint16",
               "name": "daysToMaturity",
-              "type": "uint256"
+              "type": "uint16"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "expiresAt",
-              "type": "uint256"
+              "type": "uint160"
             },
             {
               "internalType": "uint256",
-              "name": "createdAt",
+              "name": "interest",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "createdAt",
+              "type": "uint160"
             },
             {
               "internalType": "address",
@@ -277,9 +277,9 @@
               "type": "address"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "offerId",
-              "type": "uint256"
+              "type": "uint160"
             }
           ],
           "internalType": "struct RequestLibrary.LendingRequest",
@@ -291,7 +291,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"offerId\",\"type\":\"uint256\"}],\"name\":\"getBorrowingOffer\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"offerId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"principalToken\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"collateralToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"currentCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"initialCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"currentPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"initialPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"daysToMaturity\",\"type\":\"uint256\"},{\"internalType\":\"uint160\",\"name\":\"expiresAt\",\"type\":\"uint160\"},{\"internalType\":\"uint160\",\"name\":\"createdAt\",\"type\":\"uint160\"},{\"internalType\":\"address\",\"name\":\"borrower\",\"type\":\"address\"}],\"internalType\":\"struct OfferLibrary.BorrowingOffer\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"}],\"name\":\"getBorrowingRequest\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"collateralToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"principalAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"daysToMaturity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"expiresAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"borrower\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"offerId\",\"type\":\"uint256\"}],\"internalType\":\"struct RequestLibrary.BorrowingRequest\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"offerId\",\"type\":\"uint256\"}],\"name\":\"getLendingOffer\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"offerId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"principalToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"currentPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"initialPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"daysToMaturity\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"collateralTokens\",\"type\":\"address[]\"},{\"internalType\":\"uint160\",\"name\":\"expiresAt\",\"type\":\"uint160\"},{\"internalType\":\"uint160\",\"name\":\"createdAt\",\"type\":\"uint160\"},{\"internalType\":\"address\",\"name\":\"lender\",\"type\":\"address\"}],\"internalType\":\"struct OfferLibrary.LendingOffer\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"}],\"name\":\"getLendingRequest\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"principalAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"percentage\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"daysToMaturity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"expiresAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"createdAt\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"lender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"offerId\",\"type\":\"uint256\"}],\"internalType\":\"struct RequestLibrary.LendingRequest\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IOfferManager.sol\":\"IOfferManager\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/interfaces/IOfferManager.sol\":{\"keccak256\":\"0x82fe1748cffa382ce95c5c613797b25f0e183124c5fc34b555eecd1712c1d8ff\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://3d4192c4f9a32c856214beedb6fcad3939789fecf0103290e04601737c6026c7\",\"dweb:/ipfs/QmTY4UTmbjh3vJayYPxnxn2GvcH8dccxZUwVDM7PqXxPDY\"]},\"project:/contracts/libraries/AssetLibrary.sol\":{\"keccak256\":\"0x644863e272795393a387c2f1b40f762f3c48a3c9b1634ef1e3f648086526256c\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://9e71bb4c61f11a28cc8766761366b3a31657581b6c0ab76cc872d6045254e5ce\",\"dweb:/ipfs/QmZ7ZNCv6AqskcgRCG4K67tWGzHAow7LW13nJBqgo7QPp8\"]},\"project:/contracts/libraries/OfferLibrary.sol\":{\"keccak256\":\"0xdb6731ffa42a76f7ed12b341f7669d497f99255c3d807b1c6b7263ac5976390f\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://5914e5409eae988ae6b43aee07d19fe2189857aa0579baf9e05dc5d7c04617e2\",\"dweb:/ipfs/QmUSDj8VHzWUN3BKDcDiaCCW65nEjG7k2jpGiDp5vbhnax\"]},\"project:/contracts/libraries/RequestLibrary.sol\":{\"keccak256\":\"0x2be77c77c91e86b91753e33042a14752b4d5f561e6e1171a81913d0877ed2ab6\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://f358a24e153d18b7934ac8874aa533fe12497a3e8a17abaa54f5118c3d688201\",\"dweb:/ipfs/QmcNccC8hg6HMm1qPSQWX2aZ7ZcguH5hqLxmpTijNeNZFf\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint160\",\"name\":\"offerId\",\"type\":\"uint160\"}],\"name\":\"getBorrowingOffer\",\"outputs\":[{\"components\":[{\"internalType\":\"uint160\",\"name\":\"offerId\",\"type\":\"uint160\"},{\"internalType\":\"address\",\"name\":\"principalToken\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"collateralToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"currentCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"initialCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"currentPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"initialPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"daysToMaturity\",\"type\":\"uint16\"},{\"internalType\":\"uint160\",\"name\":\"expiresAt\",\"type\":\"uint160\"},{\"internalType\":\"uint160\",\"name\":\"createdAt\",\"type\":\"uint160\"},{\"internalType\":\"address\",\"name\":\"borrower\",\"type\":\"address\"}],\"internalType\":\"struct OfferLibrary.BorrowingOffer\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"}],\"name\":\"getBorrowingRequest\",\"outputs\":[{\"components\":[{\"internalType\":\"uint160\",\"name\":\"requestId\",\"type\":\"uint160\"},{\"internalType\":\"uint16\",\"name\":\"percentage\",\"type\":\"uint16\"},{\"internalType\":\"address\",\"name\":\"collateralToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"collateralPriceInUSD\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"daysToMaturity\",\"type\":\"uint16\"},{\"internalType\":\"uint160\",\"name\":\"expiresAt\",\"type\":\"uint160\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint160\",\"name\":\"createdAt\",\"type\":\"uint160\"},{\"internalType\":\"address\",\"name\":\"borrower\",\"type\":\"address\"},{\"internalType\":\"uint160\",\"name\":\"offerId\",\"type\":\"uint160\"}],\"internalType\":\"struct RequestLibrary.BorrowingRequest\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint160\",\"name\":\"offerId\",\"type\":\"uint160\"}],\"name\":\"getLendingOffer\",\"outputs\":[{\"components\":[{\"internalType\":\"uint160\",\"name\":\"offerId\",\"type\":\"uint160\"},{\"internalType\":\"address\",\"name\":\"principalToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"currentPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"initialPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint16\",\"name\":\"daysToMaturity\",\"type\":\"uint16\"},{\"internalType\":\"address[]\",\"name\":\"collateralTokens\",\"type\":\"address[]\"},{\"internalType\":\"uint160\",\"name\":\"expiresAt\",\"type\":\"uint160\"},{\"internalType\":\"uint160\",\"name\":\"createdAt\",\"type\":\"uint160\"},{\"internalType\":\"address\",\"name\":\"lender\",\"type\":\"address\"}],\"internalType\":\"struct OfferLibrary.LendingOffer\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"}],\"name\":\"getLendingRequest\",\"outputs\":[{\"components\":[{\"internalType\":\"uint160\",\"name\":\"requestId\",\"type\":\"uint160\"},{\"internalType\":\"uint16\",\"name\":\"percentage\",\"type\":\"uint16\"},{\"internalType\":\"uint16\",\"name\":\"daysToMaturity\",\"type\":\"uint16\"},{\"internalType\":\"uint160\",\"name\":\"expiresAt\",\"type\":\"uint160\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint160\",\"name\":\"createdAt\",\"type\":\"uint160\"},{\"internalType\":\"address\",\"name\":\"lender\",\"type\":\"address\"},{\"internalType\":\"uint160\",\"name\":\"offerId\",\"type\":\"uint160\"}],\"internalType\":\"struct RequestLibrary.LendingRequest\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IOfferManager.sol\":\"IOfferManager\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/interfaces/IOfferManager.sol\":{\"keccak256\":\"0xfc4fc96c0ff5af5f79697482159d35789ab4565f51f1a6015441fc201e3a8196\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://eda9a202c811f50a0a9e31163b99db92ee752a0bbf4062e5285abb3a51e1fa61\",\"dweb:/ipfs/QmTYLvAegSMk8TRXMKDZGNuQgwrqFJNik8VTKkPk7uibq9\"]},\"project:/contracts/libraries/OfferLibrary.sol\":{\"keccak256\":\"0x79e8c5f39f5d7844ea3ee10f0f58d05d7495869a3aa6818197eea6f9b9ec53be\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://2e09668fef88097499309b2f456256f5c8f8286815bdc9811ca7b3e7590f4f85\",\"dweb:/ipfs/QmdfBubxni2V2nXLES2naa5UoARjtXBKPYJqiEoYNHt9Le\"]},\"project:/contracts/libraries/PoolLibrary.sol\":{\"keccak256\":\"0x3a5a79528d750ab970d7a72df8046a8d19a079e543607613f6a6974ac3a5d177\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://18adca9d5362223be3af79444fe74f859c14e0e4b762f145baf7c02a60915477\",\"dweb:/ipfs/QmP3Tr7PqbUpULKWCNAK8mXUikxmW7qMKfbb82fig5wUiC\"]},\"project:/contracts/libraries/RequestLibrary.sol\":{\"keccak256\":\"0x98b0c95a9ca1b2dfa048d6b6a22c8128414ec9efcdaf3c339829623d10811f3a\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://7089bca85554583c38fb8d52a4a6fbecde54af05c59834fd538107eda5a3d03e\",\"dweb:/ipfs/QmWHp2TeUrsTem6nwhfUCnaPA7pMuV7Zor3GBSirxJ7i74\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -299,30 +299,30 @@
   "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\nimport \"../libraries/AssetLibrary.sol\";\r\nimport \"../libraries/OfferLibrary.sol\";\r\nimport \"../libraries/RequestLibrary.sol\";\r\n\r\ninterface IOfferManager {\r\n\r\n    function getLendingOffer(uint256 offerId) external view returns(OfferLibrary.LendingOffer memory);\r\n\r\n    function getBorrowingOffer(uint256 offerId) external view returns(OfferLibrary.BorrowingOffer memory);\r\n\r\n    function getBorrowingRequest(uint256 requestId) external view returns (RequestLibrary.BorrowingRequest memory);\r\n   \r\n    function getLendingRequest(uint256 requestId) external view returns (RequestLibrary.LendingRequest memory);\r\n\r\n}",
+  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\nimport \"../libraries/PoolLibrary.sol\";\r\nimport \"../libraries/OfferLibrary.sol\";\r\nimport \"../libraries/RequestLibrary.sol\";\r\n\r\ninterface IOfferManager {\r\n\r\n    function getLendingOffer(uint160 offerId) external view returns(OfferLibrary.LendingOffer memory);\r\n\r\n    function getBorrowingOffer(uint160 offerId) external view returns(OfferLibrary.BorrowingOffer memory);\r\n\r\n    function getBorrowingRequest(uint256 requestId) external view returns (RequestLibrary.BorrowingRequest memory);\r\n   \r\n    function getLendingRequest(uint256 requestId) external view returns (RequestLibrary.LendingRequest memory);\r\n\r\n}",
   "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\interfaces\\IOfferManager.sol",
   "ast": {
     "absolutePath": "project:/contracts/interfaces/IOfferManager.sol",
     "exportedSymbols": {
-      "AssetLibrary": [
-        7258
-      ],
       "IOfferManager": [
-        7144
+        7430
       ],
       "OfferLibrary": [
-        7363
+        7623
+      ],
+      "PoolLibrary": [
+        7631
       ],
       "RequestLibrary": [
-        7410
+        7678
       ]
     },
-    "id": 7145,
+    "id": 7431,
     "license": "GPL-3.0",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7108,
+        "id": 7394,
         "literals": [
           "solidity",
           ">=",
@@ -336,38 +336,38 @@
         "src": "37:31:31"
       },
       {
-        "absolutePath": "project:/contracts/libraries/AssetLibrary.sol",
-        "file": "../libraries/AssetLibrary.sol",
-        "id": 7109,
+        "absolutePath": "project:/contracts/libraries/PoolLibrary.sol",
+        "file": "../libraries/PoolLibrary.sol",
+        "id": 7395,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7145,
-        "sourceUnit": 7259,
-        "src": "72:39:31",
+        "scope": 7431,
+        "sourceUnit": 7632,
+        "src": "72:38:31",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "project:/contracts/libraries/OfferLibrary.sol",
         "file": "../libraries/OfferLibrary.sol",
-        "id": 7110,
+        "id": 7396,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7145,
-        "sourceUnit": 7364,
-        "src": "113:39:31",
+        "scope": 7431,
+        "sourceUnit": 7624,
+        "src": "112:39:31",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "project:/contracts/libraries/RequestLibrary.sol",
         "file": "../libraries/RequestLibrary.sol",
-        "id": 7111,
+        "id": 7397,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7145,
-        "sourceUnit": 7411,
-        "src": "154:41:31",
+        "scope": 7431,
+        "sourceUnit": 7679,
+        "src": "153:41:31",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -378,224 +378,224 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 7144,
+        "id": 7430,
         "linearizedBaseContracts": [
-          7144
+          7430
         ],
         "name": "IOfferManager",
-        "nameLocation": "209:13:31",
+        "nameLocation": "208:13:31",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "functionSelector": "ab64a185",
-            "id": 7119,
+            "functionSelector": "19cec432",
+            "id": 7405,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getLendingOffer",
-            "nameLocation": "241:15:31",
+            "nameLocation": "240:15:31",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7114,
+              "id": 7400,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7113,
+                  "id": 7399,
                   "mutability": "mutable",
                   "name": "offerId",
-                  "nameLocation": "265:7:31",
+                  "nameLocation": "264:7:31",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7119,
-                  "src": "257:15:31",
+                  "scope": 7405,
+                  "src": "256:15:31",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
+                    "typeIdentifier": "t_uint160",
+                    "typeString": "uint160"
                   },
                   "typeName": {
-                    "id": 7112,
-                    "name": "uint256",
+                    "id": 7398,
+                    "name": "uint160",
                     "nodeType": "ElementaryTypeName",
-                    "src": "257:7:31",
+                    "src": "256:7:31",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
+                      "typeIdentifier": "t_uint160",
+                      "typeString": "uint160"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "256:17:31"
+              "src": "255:17:31"
             },
             "returnParameters": {
-              "id": 7118,
+              "id": 7404,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7117,
+                  "id": 7403,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7119,
-                  "src": "296:32:31",
+                  "scope": 7405,
+                  "src": "295:32:31",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_LendingOffer_$7337_memory_ptr",
+                    "typeIdentifier": "t_struct$_LendingOffer_$7597_memory_ptr",
                     "typeString": "struct OfferLibrary.LendingOffer"
                   },
                   "typeName": {
-                    "id": 7116,
+                    "id": 7402,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 7115,
+                      "id": 7401,
                       "name": "OfferLibrary.LendingOffer",
                       "nameLocations": [
-                        "296:12:31",
-                        "309:12:31"
+                        "295:12:31",
+                        "308:12:31"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 7337,
-                      "src": "296:25:31"
+                      "referencedDeclaration": 7597,
+                      "src": "295:25:31"
                     },
-                    "referencedDeclaration": 7337,
-                    "src": "296:25:31",
+                    "referencedDeclaration": 7597,
+                    "src": "295:25:31",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_LendingOffer_$7337_storage_ptr",
+                      "typeIdentifier": "t_struct$_LendingOffer_$7597_storage_ptr",
                       "typeString": "struct OfferLibrary.LendingOffer"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "295:34:31"
+              "src": "294:34:31"
             },
-            "scope": 7144,
-            "src": "232:98:31",
+            "scope": 7430,
+            "src": "231:98:31",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "bf1e6097",
-            "id": 7127,
+            "functionSelector": "2bdd7c77",
+            "id": 7413,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getBorrowingOffer",
-            "nameLocation": "347:17:31",
+            "nameLocation": "346:17:31",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7122,
+              "id": 7408,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7121,
+                  "id": 7407,
                   "mutability": "mutable",
                   "name": "offerId",
-                  "nameLocation": "373:7:31",
+                  "nameLocation": "372:7:31",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7127,
-                  "src": "365:15:31",
+                  "scope": 7413,
+                  "src": "364:15:31",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
+                    "typeIdentifier": "t_uint160",
+                    "typeString": "uint160"
                   },
                   "typeName": {
-                    "id": 7120,
-                    "name": "uint256",
+                    "id": 7406,
+                    "name": "uint160",
                     "nodeType": "ElementaryTypeName",
-                    "src": "365:7:31",
+                    "src": "364:7:31",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
+                      "typeIdentifier": "t_uint160",
+                      "typeString": "uint160"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "364:17:31"
+              "src": "363:17:31"
             },
             "returnParameters": {
-              "id": 7126,
+              "id": 7412,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7125,
+                  "id": 7411,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7127,
-                  "src": "404:34:31",
+                  "scope": 7413,
+                  "src": "403:34:31",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_BorrowingOffer_$7362_memory_ptr",
+                    "typeIdentifier": "t_struct$_BorrowingOffer_$7622_memory_ptr",
                     "typeString": "struct OfferLibrary.BorrowingOffer"
                   },
                   "typeName": {
-                    "id": 7124,
+                    "id": 7410,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 7123,
+                      "id": 7409,
                       "name": "OfferLibrary.BorrowingOffer",
                       "nameLocations": [
-                        "404:12:31",
-                        "417:14:31"
+                        "403:12:31",
+                        "416:14:31"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 7362,
-                      "src": "404:27:31"
+                      "referencedDeclaration": 7622,
+                      "src": "403:27:31"
                     },
-                    "referencedDeclaration": 7362,
-                    "src": "404:27:31",
+                    "referencedDeclaration": 7622,
+                    "src": "403:27:31",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_BorrowingOffer_$7362_storage_ptr",
+                      "typeIdentifier": "t_struct$_BorrowingOffer_$7622_storage_ptr",
                       "typeString": "struct OfferLibrary.BorrowingOffer"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "403:36:31"
+              "src": "402:36:31"
             },
-            "scope": 7144,
-            "src": "338:102:31",
+            "scope": 7430,
+            "src": "337:102:31",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "a8e2135c",
-            "id": 7135,
+            "id": 7421,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getBorrowingRequest",
-            "nameLocation": "457:19:31",
+            "nameLocation": "456:19:31",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7130,
+              "id": 7416,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7129,
+                  "id": 7415,
                   "mutability": "mutable",
                   "name": "requestId",
-                  "nameLocation": "485:9:31",
+                  "nameLocation": "484:9:31",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7135,
-                  "src": "477:17:31",
+                  "scope": 7421,
+                  "src": "476:17:31",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -603,10 +603,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7128,
+                    "id": 7414,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "477:7:31",
+                    "src": "476:7:31",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -615,81 +615,81 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "476:19:31"
+              "src": "475:19:31"
             },
             "returnParameters": {
-              "id": 7134,
+              "id": 7420,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7133,
+                  "id": 7419,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7135,
-                  "src": "519:38:31",
+                  "scope": 7421,
+                  "src": "518:38:31",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_BorrowingRequest_$7409_memory_ptr",
+                    "typeIdentifier": "t_struct$_BorrowingRequest_$7677_memory_ptr",
                     "typeString": "struct RequestLibrary.BorrowingRequest"
                   },
                   "typeName": {
-                    "id": 7132,
+                    "id": 7418,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 7131,
+                      "id": 7417,
                       "name": "RequestLibrary.BorrowingRequest",
                       "nameLocations": [
-                        "519:14:31",
-                        "534:16:31"
+                        "518:14:31",
+                        "533:16:31"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 7409,
-                      "src": "519:31:31"
+                      "referencedDeclaration": 7677,
+                      "src": "518:31:31"
                     },
-                    "referencedDeclaration": 7409,
-                    "src": "519:31:31",
+                    "referencedDeclaration": 7677,
+                    "src": "518:31:31",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_BorrowingRequest_$7409_storage_ptr",
+                      "typeIdentifier": "t_struct$_BorrowingRequest_$7677_storage_ptr",
                       "typeString": "struct RequestLibrary.BorrowingRequest"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "518:40:31"
+              "src": "517:40:31"
             },
-            "scope": 7144,
-            "src": "448:111:31",
+            "scope": 7430,
+            "src": "447:111:31",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "14c7eb49",
-            "id": 7143,
+            "id": 7429,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getLendingRequest",
-            "nameLocation": "579:17:31",
+            "nameLocation": "578:17:31",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7138,
+              "id": 7424,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7137,
+                  "id": 7423,
                   "mutability": "mutable",
                   "name": "requestId",
-                  "nameLocation": "605:9:31",
+                  "nameLocation": "604:9:31",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7143,
-                  "src": "597:17:31",
+                  "scope": 7429,
+                  "src": "596:17:31",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -697,10 +697,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7136,
+                    "id": 7422,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "597:7:31",
+                    "src": "596:7:31",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -709,66 +709,66 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "596:19:31"
+              "src": "595:19:31"
             },
             "returnParameters": {
-              "id": 7142,
+              "id": 7428,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7141,
+                  "id": 7427,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7143,
-                  "src": "639:36:31",
+                  "scope": 7429,
+                  "src": "638:36:31",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_LendingRequest_$7388_memory_ptr",
+                    "typeIdentifier": "t_struct$_LendingRequest_$7654_memory_ptr",
                     "typeString": "struct RequestLibrary.LendingRequest"
                   },
                   "typeName": {
-                    "id": 7140,
+                    "id": 7426,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 7139,
+                      "id": 7425,
                       "name": "RequestLibrary.LendingRequest",
                       "nameLocations": [
-                        "639:14:31",
-                        "654:14:31"
+                        "638:14:31",
+                        "653:14:31"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 7388,
-                      "src": "639:29:31"
+                      "referencedDeclaration": 7654,
+                      "src": "638:29:31"
                     },
-                    "referencedDeclaration": 7388,
-                    "src": "639:29:31",
+                    "referencedDeclaration": 7654,
+                    "src": "638:29:31",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_LendingRequest_$7388_storage_ptr",
+                      "typeIdentifier": "t_struct$_LendingRequest_$7654_storage_ptr",
                       "typeString": "struct RequestLibrary.LendingRequest"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "638:38:31"
+              "src": "637:38:31"
             },
-            "scope": 7144,
-            "src": "570:107:31",
+            "scope": 7430,
+            "src": "569:107:31",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 7145,
-        "src": "199:483:31",
+        "scope": 7431,
+        "src": "198:483:31",
         "usedErrors": []
       }
     ],
-    "src": "37:645:31"
+    "src": "37:644:31"
   },
   "compiler": {
     "name": "solc",
@@ -776,7 +776,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-02-12T14:01:17.930Z",
+  "updatedAt": "2023-02-12T20:37:48.519Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

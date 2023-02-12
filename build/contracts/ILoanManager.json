@@ -14,9 +14,9 @@
         {
           "components": [
             {
-              "internalType": "uint256",
+              "internalType": "uint160",
               "name": "offerId",
-              "type": "uint256"
+              "type": "uint160"
             },
             {
               "internalType": "enum LoanLibrary.State",
@@ -60,6 +60,11 @@
             },
             {
               "internalType": "uint256",
+              "name": "collateralPriceInUSD",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "interest",
               "type": "uint256"
             },
@@ -74,9 +79,9 @@
               "type": "uint160"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint8",
               "name": "numInstallmentsPaid",
-              "type": "uint256"
+              "type": "uint8"
             },
             {
               "internalType": "address",
@@ -146,7 +151,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"loanId\",\"type\":\"uint256\"}],\"name\":\"getLoan\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"offerId\",\"type\":\"uint256\"},{\"internalType\":\"enum LoanLibrary.State\",\"name\":\"state\",\"type\":\"uint8\"},{\"internalType\":\"enum OfferLibrary.Type\",\"name\":\"offerType\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"principalToken\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"collateralToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"initialPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"currentPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"initialCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"currentCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint160\",\"name\":\"startDate\",\"type\":\"uint160\"},{\"internalType\":\"uint160\",\"name\":\"maturityDate\",\"type\":\"uint160\"},{\"internalType\":\"uint256\",\"name\":\"numInstallmentsPaid\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"borrower\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"lender\",\"type\":\"address\"}],\"internalType\":\"struct LoanLibrary.Loan\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"loanId\",\"type\":\"uint256\"}],\"name\":\"liquidateLoan\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"loanId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"principalPaid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"collateralRetrieved\",\"type\":\"uint256\"}],\"name\":\"repayLoan\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/ILoanManager.sol\":\"ILoanManager\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/interfaces/ILoanManager.sol\":{\"keccak256\":\"0xee46d2453ca6e40e113e78d38d1ceb9cc5b3ca7e317ac388a2e7c61ce666f193\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://1f9e402b1159a54df49d25544631f534ac37272a285eb0713449db6dca490675\",\"dweb:/ipfs/QmexdJNBjEjosGRq7ZxnUVKnASM1t6HANWmWBtnXraVFQj\"]},\"project:/contracts/libraries/AssetLibrary.sol\":{\"keccak256\":\"0x644863e272795393a387c2f1b40f762f3c48a3c9b1634ef1e3f648086526256c\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://9e71bb4c61f11a28cc8766761366b3a31657581b6c0ab76cc872d6045254e5ce\",\"dweb:/ipfs/QmZ7ZNCv6AqskcgRCG4K67tWGzHAow7LW13nJBqgo7QPp8\"]},\"project:/contracts/libraries/LoanLibrary.sol\":{\"keccak256\":\"0xa4c265d5c10b22bedbb88344145c43fc09c53337a229dc9ec9ec4aea5d55751d\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://bbda529851f85ef67c680eb5d47cebbea0d2c63d4cebeab6002a80df816e79f8\",\"dweb:/ipfs/QmPS6fXwCfXCe9yeHS8RwZRVpvkQu5nYmK7kiV5PXjfAXC\"]},\"project:/contracts/libraries/OfferLibrary.sol\":{\"keccak256\":\"0xdb6731ffa42a76f7ed12b341f7669d497f99255c3d807b1c6b7263ac5976390f\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://5914e5409eae988ae6b43aee07d19fe2189857aa0579baf9e05dc5d7c04617e2\",\"dweb:/ipfs/QmUSDj8VHzWUN3BKDcDiaCCW65nEjG7k2jpGiDp5vbhnax\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"loanId\",\"type\":\"uint256\"}],\"name\":\"getLoan\",\"outputs\":[{\"components\":[{\"internalType\":\"uint160\",\"name\":\"offerId\",\"type\":\"uint160\"},{\"internalType\":\"enum LoanLibrary.State\",\"name\":\"state\",\"type\":\"uint8\"},{\"internalType\":\"enum OfferLibrary.Type\",\"name\":\"offerType\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"principalToken\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"collateralToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"initialPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"currentPrincipal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"initialCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"currentCollateral\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"collateralPriceInUSD\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interest\",\"type\":\"uint256\"},{\"internalType\":\"uint160\",\"name\":\"startDate\",\"type\":\"uint160\"},{\"internalType\":\"uint160\",\"name\":\"maturityDate\",\"type\":\"uint160\"},{\"internalType\":\"uint8\",\"name\":\"numInstallmentsPaid\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"borrower\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"lender\",\"type\":\"address\"}],\"internalType\":\"struct LoanLibrary.Loan\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"loanId\",\"type\":\"uint256\"}],\"name\":\"liquidateLoan\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"loanId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"principalPaid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"collateralRetrieved\",\"type\":\"uint256\"}],\"name\":\"repayLoan\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/ILoanManager.sol\":\"ILoanManager\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/interfaces/ILoanManager.sol\":{\"keccak256\":\"0xee46d2453ca6e40e113e78d38d1ceb9cc5b3ca7e317ac388a2e7c61ce666f193\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://1f9e402b1159a54df49d25544631f534ac37272a285eb0713449db6dca490675\",\"dweb:/ipfs/QmexdJNBjEjosGRq7ZxnUVKnASM1t6HANWmWBtnXraVFQj\"]},\"project:/contracts/libraries/LoanLibrary.sol\":{\"keccak256\":\"0x71ef0062bb57c1f8771ae2a625da08d1396d7f6db02db1cd0b642c88b77c2dcd\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://121178208500303829f42a08c12f96ac92bf2db3bb3e2906930f17177571110a\",\"dweb:/ipfs/QmcfkiuZ6MiLfvKGVkMSyoU3KLafWtQ9MATzhC4bZq81fB\"]},\"project:/contracts/libraries/OfferLibrary.sol\":{\"keccak256\":\"0x79e8c5f39f5d7844ea3ee10f0f58d05d7495869a3aa6818197eea6f9b9ec53be\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://2e09668fef88097499309b2f456256f5c8f8286815bdc9811ca7b3e7590f4f85\",\"dweb:/ipfs/QmdfBubxni2V2nXLES2naa5UoARjtXBKPYJqiEoYNHt9Le\"]},\"project:/contracts/libraries/PoolLibrary.sol\":{\"keccak256\":\"0x3a5a79528d750ab970d7a72df8046a8d19a079e543607613f6a6974ac3a5d177\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://18adca9d5362223be3af79444fe74f859c14e0e4b762f145baf7c02a60915477\",\"dweb:/ipfs/QmP3Tr7PqbUpULKWCNAK8mXUikxmW7qMKfbb82fig5wUiC\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -159,25 +164,25 @@
   "ast": {
     "absolutePath": "project:/contracts/interfaces/ILoanManager.sol",
     "exportedSymbols": {
-      "AssetLibrary": [
-        7258
-      ],
       "ILoanManager": [
-        7091
+        7377
       ],
       "LoanLibrary": [
-        7309
+        7569
       ],
       "OfferLibrary": [
-        7363
+        7623
+      ],
+      "PoolLibrary": [
+        7631
       ]
     },
-    "id": 7092,
+    "id": 7378,
     "license": "GPL-3.0",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7061,
+        "id": 7347,
         "literals": [
           "solidity",
           ">=",
@@ -193,11 +198,11 @@
       {
         "absolutePath": "project:/contracts/libraries/LoanLibrary.sol",
         "file": "../libraries/LoanLibrary.sol",
-        "id": 7062,
+        "id": 7348,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7092,
-        "sourceUnit": 7310,
+        "scope": 7378,
+        "sourceUnit": 7570,
         "src": "72:38:29",
         "symbolAliases": [],
         "unitAlias": ""
@@ -205,11 +210,11 @@
       {
         "absolutePath": "project:/contracts/libraries/OfferLibrary.sol",
         "file": "../libraries/OfferLibrary.sol",
-        "id": 7063,
+        "id": 7349,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7092,
-        "sourceUnit": 7364,
+        "scope": 7378,
+        "sourceUnit": 7624,
         "src": "112:39:29",
         "symbolAliases": [],
         "unitAlias": ""
@@ -217,11 +222,11 @@
       {
         "absolutePath": "project:/contracts/interfaces/ILoanManager.sol",
         "file": "../interfaces/ILoanManager.sol",
-        "id": 7064,
+        "id": 7350,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7092,
-        "sourceUnit": 7092,
+        "scope": 7378,
+        "sourceUnit": 7378,
         "src": "153:40:29",
         "symbolAliases": [],
         "unitAlias": ""
@@ -233,9 +238,9 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 7091,
+        "id": 7377,
         "linearizedBaseContracts": [
-          7091
+          7377
         ],
         "name": "ILoanManager",
         "nameLocation": "207:12:29",
@@ -243,7 +248,7 @@
         "nodes": [
           {
             "functionSelector": "504006ca",
-            "id": 7072,
+            "id": 7358,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -251,17 +256,17 @@
             "nameLocation": "236:7:29",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7067,
+              "id": 7353,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7066,
+                  "id": 7352,
                   "mutability": "mutable",
                   "name": "loanId",
                   "nameLocation": "252:6:29",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7072,
+                  "scope": 7358,
                   "src": "244:14:29",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -270,7 +275,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7065,
+                    "id": 7351,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "244:7:29",
@@ -285,42 +290,42 @@
               "src": "243:16:29"
             },
             "returnParameters": {
-              "id": 7071,
+              "id": 7357,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7070,
+                  "id": 7356,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7072,
+                  "scope": 7358,
                   "src": "278:23:29",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Loan_$7308_memory_ptr",
+                    "typeIdentifier": "t_struct$_Loan_$7568_memory_ptr",
                     "typeString": "struct LoanLibrary.Loan"
                   },
                   "typeName": {
-                    "id": 7069,
+                    "id": 7355,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 7068,
+                      "id": 7354,
                       "name": "LoanLibrary.Loan",
                       "nameLocations": [
                         "278:11:29",
                         "290:4:29"
                       ],
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 7308,
+                      "referencedDeclaration": 7568,
                       "src": "278:16:29"
                     },
-                    "referencedDeclaration": 7308,
+                    "referencedDeclaration": 7568,
                     "src": "278:16:29",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Loan_$7308_storage_ptr",
+                      "typeIdentifier": "t_struct$_Loan_$7568_storage_ptr",
                       "typeString": "struct LoanLibrary.Loan"
                     }
                   },
@@ -329,7 +334,7 @@
               ],
               "src": "277:25:29"
             },
-            "scope": 7091,
+            "scope": 7377,
             "src": "227:76:29",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -337,7 +342,7 @@
           },
           {
             "functionSelector": "8c8489f2",
-            "id": 7083,
+            "id": 7369,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -345,17 +350,17 @@
             "nameLocation": "320:9:29",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7079,
+              "id": 7365,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7074,
+                  "id": 7360,
                   "mutability": "mutable",
                   "name": "loanId",
                   "nameLocation": "348:6:29",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7083,
+                  "scope": 7369,
                   "src": "340:14:29",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -364,7 +369,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7073,
+                    "id": 7359,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "340:7:29",
@@ -377,12 +382,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 7076,
+                  "id": 7362,
                   "mutability": "mutable",
                   "name": "principalPaid",
                   "nameLocation": "373:13:29",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7083,
+                  "scope": 7369,
                   "src": "365:21:29",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -391,7 +396,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7075,
+                    "id": 7361,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "365:7:29",
@@ -404,12 +409,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 7078,
+                  "id": 7364,
                   "mutability": "mutable",
                   "name": "collateralRetrieved",
                   "nameLocation": "405:19:29",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7083,
+                  "scope": 7369,
                   "src": "397:27:29",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -418,7 +423,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7077,
+                    "id": 7363,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "397:7:29",
@@ -433,17 +438,17 @@
               "src": "329:102:29"
             },
             "returnParameters": {
-              "id": 7082,
+              "id": 7368,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7081,
+                  "id": 7367,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7083,
+                  "scope": 7369,
                   "src": "450:4:29",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -452,7 +457,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 7080,
+                    "id": 7366,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "450:4:29",
@@ -466,7 +471,7 @@
               ],
               "src": "449:6:29"
             },
-            "scope": 7091,
+            "scope": 7377,
             "src": "311:145:29",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -474,7 +479,7 @@
           },
           {
             "functionSelector": "ccdd9f5d",
-            "id": 7090,
+            "id": 7376,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -482,17 +487,17 @@
             "nameLocation": "473:13:29",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7086,
+              "id": 7372,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7085,
+                  "id": 7371,
                   "mutability": "mutable",
                   "name": "loanId",
                   "nameLocation": "495:6:29",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7090,
+                  "scope": 7376,
                   "src": "487:14:29",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -501,7 +506,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7084,
+                    "id": 7370,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "487:7:29",
@@ -516,17 +521,17 @@
               "src": "486:16:29"
             },
             "returnParameters": {
-              "id": 7089,
+              "id": 7375,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7088,
+                  "id": 7374,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7090,
+                  "scope": 7376,
                   "src": "521:4:29",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -535,7 +540,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 7087,
+                    "id": 7373,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "521:4:29",
@@ -549,14 +554,14 @@
               ],
               "src": "520:6:29"
             },
-            "scope": 7091,
+            "scope": 7377,
             "src": "464:63:29",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 7092,
+        "scope": 7378,
         "src": "197:333:29",
         "usedErrors": []
       }
@@ -569,7 +574,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-02-12T14:01:17.927Z",
+  "updatedAt": "2023-02-12T20:37:48.516Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

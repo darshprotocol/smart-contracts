@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "../libraries/AssetLibrary.sol";
+import "../libraries/PoolLibrary.sol";
 import "../libraries/LoanLibrary.sol";
 import "../libraries/OfferLibrary.sol";
 
@@ -20,7 +20,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
 
     event LoanCreated(
         uint256 loanId,
-        uint256 offerId,
+        uint160 offerId,
         LoanLibrary.State state,
         address principalToken,
         address collateralToken,
@@ -38,14 +38,15 @@ contract LoanManager is ILoanManager, Ownable2Step {
     constructor() Ownable2Step() {}
 
     function createLoan(
-        uint256 offerId,
+        uint160 offerId,
         OfferLibrary.Type offerType,
         address principalToken,
         address collateralToken,
-        uint256 principal,
-        uint256 collateral,
+        uint256 principalAmount,
+        uint256 collateralAmount,
+        uint256 collateralPriceInUSD,
         uint256 interest,
-        uint256 daysToMaturity,
+        uint16 daysToMaturity,
         address borrower,
         address lender
     ) public onlyLendingPool returns (uint256) {
@@ -56,7 +57,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
         uint160 startDate = uint160(block.timestamp);
         uint160 duration = uint160((daysToMaturity * 1 days));
         uint160 maturityDate = startDate + duration;
-        uint256 numInstallmentsPaid = 0;
+        uint8 numInstallmentsPaid = 0;
 
         loans[loanId] = LoanLibrary.Loan(
             offerId,
@@ -64,10 +65,11 @@ contract LoanManager is ILoanManager, Ownable2Step {
             offerType,
             principalToken,
             collateralToken,
-            principal,
-            principal,
-            collateral,
-            collateral,
+            principalAmount,
+            principalAmount,
+            collateralAmount,
+            collateralAmount,
+            collateralPriceInUSD,
             interest,
             startDate,
             maturityDate,
