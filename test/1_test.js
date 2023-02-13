@@ -56,14 +56,14 @@ contract("CreateLendingOffer", async accounts => {
         // await lendingPool.setPriceFeed(PriceFeed.address);
     })
     it("createOffer", async () => {
-        // const ftmAmount = "1000000000000000000" // 1 ftm
+        // const ftmAmount = "2000000000000000000" // 2 ftm
         // const lending = await LendingPool.deployed()
         // await lending.createLendingOffer(
         //     0, // amount
         //     NATIVE.address,
         //     [USDC.address, USDT.address, DAI.address],
         //     30, // days to maturity,
-        //     "385802400000000", // interest
+        //     "50000000000000", // interest
         //     7,
         //     {
         //         from: accounts[0],
@@ -72,25 +72,35 @@ contract("CreateLendingOffer", async accounts => {
         // )
     })
     it("ltv", async () => {
-        const ltv = await LoanToValueRatio.deployed()
-        let x = await ltv.getLTV(accounts[1]);
-        console.log(x.toNumber());
+        // const ltv = await LoanToValueRatio.deployed()
+        // let x = await ltv.getLTV(accounts[1]);
+        // console.log(x.toNumber());
+
+        const trt = await TrustScore.deployed()
+        let z = await trt.getScore(accounts[1])
+        console.log(z.toNumber())
+
+        const act = await Activity.deployed()
+        let y = await act.getActivity(accounts[1])
+        console.log(y)
     })
     it("borrowOffer", async () => {
         // const dai = await DAI.deployed()
-        // await dai.transfer(accounts[1], "10000000000000000000")
+        // let b = await dai.balanceOf("0x579959633488750B0C6603bEC0f8FDd24aD57fcA")
+        // console.log(b.toNumber());
+        // // await dai.transfer(accounts[1], "10000000000000000000")
         // await dai.approve(LendingPool.address, "10000000000000000000", { from: accounts[1] })
         // const borrowing = await LendingPool.deployed()
-        // await borrowing.acceptLendingOffer(1, 75, DAI.address, { from: accounts[1] })
+        // await borrowing.acceptLendingOffer(2, 50, DAI.address, { from: accounts[1] })
     })
     it("repayLoan", async () => {
-        const lendingPool = await LendingPool.deployed()
-        const createdAt = 1676239028
-        const now = Math.floor(Date.now() / 1000)
-        const ellapsed = (now + 10) - createdAt
-        const ftmAmount = "7500000000000000000" // 0.75 ftm
-        const payback = await lendingPool.getFullInterestAmount(ftmAmount, ellapsed, "385802400000")
-        console.log(Number(payback));
-        await lendingPool.repayLoan(1, 50, { value: payback, from: accounts[1] });
+        // const lendingPool = await LendingPool.deployed()
+        // const createdAt = 1676286833
+        // const now = Math.floor(Date.now() / 1000)
+        // const ellapsed = (now + 20) - createdAt
+        // const ftmAmount = "250000000000000000"
+        // const payback = await lendingPool.getFullInterestAmount(ftmAmount, ellapsed, "50000000000000")
+        // console.log(Number(payback));
+        // await lendingPool.repayLoan(2, 25, { value: payback, from: accounts[1] });
     })
 })

@@ -74,6 +74,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
             startDate,
             maturityDate,
             numInstallmentsPaid,
+            0, // unclaimed earnings
             borrower,
             lender
         );
@@ -94,6 +95,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
 
     function repayLoan(
         uint256 loanId,
+        uint256 interestPaid,
         uint256 principalPaid,
         uint256 collateralRetrieved
     ) public override onlyLendingPool returns (bool) {
@@ -101,17 +103,17 @@ contract LoanManager is ILoanManager, Ownable2Step {
 
         require(loan.state == LoanLibrary.State.ACTIVE, "ERR_LOAN_NOT_ACTIVE");
 
+        loan.numInstallmentsPaid += 1;
+        loan.unClaimedEarnings += interestPaid;
         loan.currentPrincipal -= principalPaid;
         loan.currentCollateral -= collateralRetrieved;
-        loan.numInstallmentsPaid += 1;
 
-        if (loan.currentPrincipal == 0) {
-            // mark loan as paid
+        if (loan.currentPrincipal <= 1) {
             loan.state = LoanLibrary.State.PAID;
         }
 
         _emit(loanId, loan);
-        return true;
+        return loan.state == LoanLibrary.State.PAID;
     }
 
     function liquidateLoan(uint256 loanId)

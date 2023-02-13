@@ -218,11 +218,11 @@ contract TrustScore is Ownable2Step, ITrustScore {
 
         if (activity.lastActive == 0) {
             result += 5;
-        } else if ((activity.lastActive + 15 days) < currentTime) {
+        } else if ((activity.lastActive + 15 days) > currentTime) {
             result += 0;
-        } else if ((activity.lastActive + 25 days) < currentTime) {
+        } else if ((activity.lastActive + 25 days) > currentTime) {
             result += 4;
-        } else if ((activity.lastActive + 45 days) < currentTime) {
+        } else if ((activity.lastActive + 45 days) > currentTime) {
             result += 7;
         } else {
             result += 10;

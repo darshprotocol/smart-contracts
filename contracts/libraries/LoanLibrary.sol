@@ -26,6 +26,7 @@ library LoanLibrary {
         uint160 startDate;
         uint160 maturityDate;
         uint8 numInstallmentsPaid;
+        uint256 unClaimedEarnings;
         address borrower;
         address lender;
     }

@@ -10,6 +10,7 @@ import "./math/SimpleInterest.sol";
 
 import "./interfaces/IPriceFeed.sol";
 import "./interfaces/ILoanToValueRatio.sol";
+import "./interfaces/IFeeManager.sol";
 
 import "./managers/LoanManager.sol";
 import "./managers/OfferManager.sol";
@@ -35,6 +36,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     PoolManager private _poolManager;
     LoanManager private _loanManager;
     OfferManager private _offerManager;
+    IFeeManager private _feeManager;
 
     address public constant nativeAddress =
         0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
@@ -42,11 +44,13 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     constructor(
         address poolManager_,
         address loanManager_,
-        address offerManager_
+        address offerManager_,
+        address feeManager_
     ) ReentrancyGuard() {
         _poolManager = PoolManager(poolManager_);
         _loanManager = LoanManager(loanManager_);
         _offerManager = OfferManager(offerManager_);
+        _feeManager = IFeeManager(feeManager_);
 
         deployer = _msgSender();
     }
@@ -523,6 +527,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             principalAmount
         );
         _activity._borrowLoan(_msgSender(), amountBorrowedInUSD);
+        _activity._dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
     // @borrower
@@ -553,8 +558,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* delegate the loan collateral to lender */
-        _poolManager.transfer(
-            _msgSender(),
+        _poolManager.deposit(
             request.lender,
             offer.collateralToken,
             collateralAmount
@@ -595,6 +599,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             principalAmount
         );
         _activity._borrowLoan(_msgSender(), amountBorrowedInUSD);
+        _activity._dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
     // @borrower
@@ -633,8 +638,19 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             loan.interest
         );
 
+        uint256 interestPaid = (repaymentPrincipalAmount - principalAmount);
+        uint256 fee = percentageOf(interestPaid, _feeManager.feePercentage());
+        uint256 unClaimedInterest = (interestPaid - fee);
+
+        _feeManager.credit(loan.principalToken, fee);
+
         // will revert the transaction if fail
-        _loanManager.repayLoan(loanId, principalAmount, collateralAmount);
+        bool completed = _loanManager.repayLoan(
+            loanId,
+            unClaimedInterest,
+            principalAmount,
+            collateralAmount
+        );
 
         /* extract pay back amount */
         if (loan.principalToken == nativeAddress) {
@@ -668,7 +684,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             principalAmount
         );
 
-        _activity._repayLoan(_msgSender(), amountPaidInUSD, interestPaidInUSD);
+        _activity._repayLoan(
+            _msgSender(),
+            amountPaidInUSD,
+            interestPaidInUSD,
+            completed
+        );
     }
 
     function repayLiquidatedLoan(uint256 loanId) public payable {}
@@ -687,6 +708,21 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     function changeOwner(address newOwner) public onlyOwner {
         deployer = newOwner;
+    }
+
+    /// @dev to claim revenue
+    function claim(
+        address token,
+        address payable receiver,
+        uint256 amount
+    ) public onlyOwner {
+        _feeManager.debit(token, amount);
+        require(amount > 0, "ERR_ZERO_AMOUNT");
+        if (token == nativeAddress) {
+            receiver.transfer(amount);
+        } else {
+            ERC20(token).transfer(receiver, amount);
+        }
     }
 
     function _checkPercentage(uint16 percentage) private pure {

@@ -10,6 +10,7 @@ interface ILoanManager {
 
     function repayLoan(
         uint256 loanId,
+        uint256 interestPaid,
         uint256 principalPaid,
         uint256 collateralRetrieved
     ) external returns (bool);
