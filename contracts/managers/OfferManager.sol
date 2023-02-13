@@ -32,6 +32,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
     constructor() Ownable2Step() {}
 
+    // events for offers
     event LendingOfferCreated(
         uint160 offerId,
         address principalToken,
@@ -58,9 +59,31 @@ contract OfferManager is IOfferManager, Ownable2Step {
         address borrower
     );
 
-    event OfferClosed(uint160 offerId, OfferLibrary.Type offerType);
+    // events for requests
+    event LendingRequestCreated(
+        uint160 requestId,
+        uint16 percentage,
+        uint16 daysToMaturity,
+        uint160 expiresAt,
+        uint256 interest,
+        uint160 createdAt,
+        address lender,
+        uint160 offerId
+    );
 
-    event RequestClosed(uint256 requestId, RequestLibrary.Type requestType);
+    event BorrowingRequestCreated(
+        uint160 requestId,
+        uint16 percentage,
+        address collateralToken,
+        uint256 collateralAmount,
+        uint256 collateralPriceInUSD,
+        uint16 daysToMaturity,
+        uint160 expiresAt,
+        uint256 interest,
+        uint160 createdAt,
+        address borrower,
+        uint160 offerId
+    );
 
     function createLendingOffer(
         address principalToken,
@@ -198,7 +221,6 @@ contract OfferManager is IOfferManager, Ownable2Step {
     }
 
     // events
-
     function _emitLendingOffer(
         uint160 offerId,
         OfferLibrary.LendingOffer memory offer
@@ -238,15 +260,39 @@ contract OfferManager is IOfferManager, Ownable2Step {
     function _emitLendingRequest(
         uint160 requestId,
         RequestLibrary.LendingRequest memory request
-    ) private {}
+    ) private {
+        emit LendingRequestCreated(
+            requestId,
+            request.percentage,
+            request.daysToMaturity,
+            request.expiresAt,
+            request.interest,
+            request.createdAt,
+            request.lender,
+            request.offerId
+        );
+    }
 
     function _emitBorrowingRequest(
         uint160 requestId,
         RequestLibrary.BorrowingRequest memory request
-    ) private {}
+    ) private {
+        emit BorrowingRequestCreated(
+            requestId,
+            request.percentage,
+            request.collateralToken,
+            request.collateralAmount,
+            request.collateralPriceInUSD,
+            request.daysToMaturity,
+            request.expiresAt,
+            request.interest,
+            request.createdAt,
+            request.borrower,
+            request.offerId
+        );
+    }
 
     // updaters
-
     function _afterOfferLendingLoan(uint160 offerId, uint256 principalAmount)
         public
         onlyLendingPool
@@ -284,7 +330,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
         _emitBorrowingOffer(offerId, offer);
     }
-
+    
     function isCollateralSupported(uint160 offerId, address token)
         public
         view
@@ -305,6 +351,8 @@ contract OfferManager is IOfferManager, Ownable2Step {
         return supported;
     }
 
+
+    // getters
     function getLendingOffer(uint160 offerId)
         public
         view
