@@ -9,31 +9,24 @@ library OfferLibrary {
         BORROWING_OFFER
     }
 
-    struct LendingOffer {
+    struct Offer {
+        // shared attributes
         uint160 offerId;
         address principalToken;
         uint256 currentPrincipal;
         uint256 initialPrincipal;
         uint256 interest;
         uint16 daysToMaturity;
-        address[] collateralTokens;
         uint160 expiresAt;
         uint160 createdAt;
-        address lender;
-    }
-
-    struct BorrowingOffer {
-        uint160 offerId;
-        address principalToken;
+        address creator;
+        // related to lending offers only
+        address[] collateralTokens;
+        // related to borrowing offers only
         address collateralToken;
         uint256 currentCollateral;
         uint256 initialCollateral;
-        uint256 currentPrincipal;
-        uint256 initialPrincipal;
-        uint256 interest;
-        uint16 daysToMaturity;
-        uint160 expiresAt;
-        uint160 createdAt;
-        address borrower;
+        // type
+        Type offerType;
     }
 }

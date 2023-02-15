@@ -14,7 +14,6 @@ library LoanLibrary {
     struct Loan {
         uint160 offerId;
         LoanLibrary.State state;
-        OfferLibrary.Type offerType;
         address principalToken;
         address collateralToken;
         uint256 initialPrincipal;
@@ -25,8 +24,10 @@ library LoanLibrary {
         uint256 interest;
         uint160 startDate;
         uint160 maturityDate;
+        uint16 graceDays;
         uint8 numInstallmentsPaid;
-        uint256 unClaimedEarnings;
+        uint256 unClaimedPrincipal;
+        uint256 unClaimedCollateral;
         address borrower;
         address lender;
     }

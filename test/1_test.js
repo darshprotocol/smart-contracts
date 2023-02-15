@@ -1,6 +1,7 @@
 const PoolManager = artifacts.require("PoolManager");
 const OfferManager = artifacts.require("OfferManager");
 const LoanManager = artifacts.require("LoanManager");
+const FeeManager = artifacts.require("FeeManager");
 
 const LendingPool = artifacts.require("LendingPool");
 
@@ -23,37 +24,40 @@ const NATIVE = {
 
 contract("CreateLendingOffer", async accounts => {
     it("setValues", async () => {
-        // const priceFeed = await PriceFeed.deployed()
-        // await priceFeed.addPriceFeed(NATIVE.address, "0xe04676B9A9A2973BCb0D1478b5E1E9098BBB7f3D")
-        // await priceFeed.addPriceFeed(WBTC.address, "0x65E8d79f3e8e36fE48eC31A2ae935e92F5bBF529")
-        // await priceFeed.addPriceFeed(WETH.address, "0xB8C458C957a6e6ca7Cc53eD95bEA548c52AFaA24")
-        // await priceFeed.addPriceFeed(USDT.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
-        // await priceFeed.addPriceFeed(USDC.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
-        // await priceFeed.addPriceFeed(DAI.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
+        const priceFeed = await PriceFeed.deployed()
+        await priceFeed.addPriceFeed(NATIVE.address, "0xe04676B9A9A2973BCb0D1478b5E1E9098BBB7f3D")
+        await priceFeed.addPriceFeed(WBTC.address, "0x65E8d79f3e8e36fE48eC31A2ae935e92F5bBF529")
+        await priceFeed.addPriceFeed(WETH.address, "0xB8C458C957a6e6ca7Cc53eD95bEA548c52AFaA24")
+        await priceFeed.addPriceFeed(USDT.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
+        await priceFeed.addPriceFeed(USDC.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
+        await priceFeed.addPriceFeed(DAI.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
     })
     it("setValues 2", async () => {
-        // const ltv = await LoanToValueRatio.deployed()
-        // await ltv.setTrustScore(TrustScore.address, 100, 120)
+        const ltv = await LoanToValueRatio.deployed()
+        await ltv.setTrustScore(TrustScore.address, 100, 120)
 
-        // const trustScore = await TrustScore.deployed()
-        // await trustScore.setActivity(Activity.address)
+        const trustScore = await TrustScore.deployed()
+        await trustScore.setActivity(Activity.address)
 
-        // const offerManager = await OfferManager.deployed()
-        // await offerManager.setLendingPool(LendingPool.address)
+        const offerManager = await OfferManager.deployed()
+        await offerManager.setLendingPool(LendingPool.address)
 
-        // const poolManager = await PoolManager.deployed()
-        // await poolManager.setLendingPool(LendingPool.address)
+        const poolManager = await PoolManager.deployed()
+        await poolManager.setLendingPool(LendingPool.address)
 
-        // const loanManager = await LoanManager.deployed()
-        // await loanManager.setLendingPool(LendingPool.address)
+        const loanManager = await LoanManager.deployed()
+        await loanManager.setLendingPool(LendingPool.address)
 
-        // const activity = await Activity.deployed()
-        // await activity.setLendingPool(LendingPool.address)
+        const feeManager = await FeeManager.deployed()
+        await feeManager.setLendingPool(LendingPool.address)
 
-        // const lendingPool = await LendingPool.deployed()
-        // await lendingPool.setLTV(LoanToValueRatio.address);
-        // await lendingPool.setActivity(Activity.address);
-        // await lendingPool.setPriceFeed(PriceFeed.address);
+        const activity = await Activity.deployed()
+        await activity.setLendingPool(LendingPool.address)
+
+        const lendingPool = await LendingPool.deployed()
+        await lendingPool.setLTV(LoanToValueRatio.address);
+        await lendingPool.setActivity(Activity.address);
+        await lendingPool.setPriceFeed(PriceFeed.address);
     })
     it("createOffer", async () => {
         // const ftmAmount = "2000000000000000000" // 2 ftm
