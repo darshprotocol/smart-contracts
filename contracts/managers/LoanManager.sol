@@ -144,20 +144,27 @@ contract LoanManager is ILoanManager, Ownable2Step {
         loan.unClaimedCollateral = 0;
     }
 
-    function liquidateLoan(uint160 loanId)
-        public
-        override
-        onlyLendingPool
-        returns (bool)
-    {
-        LoanLibrary.Loan storage loan = loans[loanId];
-        require(loan.state == LoanLibrary.State.ACTIVE, "ERR_LOAN_NOT_ACTIVE");
+    // function liquidateLoan(
+    //     uint160 loanId,
+    //     uint256 principalTaken,
+    //     uint256 collateralTaken
+    // ) public override onlyLendingPool returns (bool) {
+    //     LoanLibrary.Loan storage loan = loans[loanId];
+    //     require(loan.state == LoanLibrary.State.ACTIVE, "ERR_LOAN_NOT_ACTIVE");
 
-        loan.state = LoanLibrary.State.LIQUIDATED;
+    //     uint160 graceDate = loan.graceDays * 1 days;
+    //     uint160 defaultDate = loan.maturityDate + graceDate;
+    //     uint160 currentDate = uint160(block.timestamp);
 
-        _emit(loanId, loan);
-        return true;
-    }
+    //     require(defaultDate >= currentDate, "ERR_LOAN_NOT_MATURED");
+
+    //     loan.currentPrincipal -= principalTaken;
+    //     loan.currentCollateral -= collateralTaken;
+    //     loan.state = LoanLibrary.State.LIQUIDATED;
+
+    //     _emit(loanId, loan);
+    //     return true;
+    // }
 
     function _emit(uint160 loanId, LoanLibrary.Loan memory loan) private {
         emit LoanCreated(

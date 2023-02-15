@@ -17,13 +17,17 @@ import "./managers/OfferManager.sol";
 import "./managers/PoolManager.sol";
 
 import "@openzeppelin/contracts/utils/Context.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+/*
+    LendingPool is the core contract of the DARSH ecosystem.
+    It interacts with Darsh MANAGERS, PRICE FEEDS, LTV, MATH LIBRARIES
+    and others to carry out the peer to peer functionality
+*/
+
 contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
-    using SafeMath for uint256;
     using SafeERC20 for ERC20;
 
     address deployer;
@@ -73,7 +77,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             principalAmount = msg.value;
         } else {
             principalAmount = principalAmount_;
-            ERC20(principalToken).transferFrom(
+            ERC20(principalToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 principalAmount
@@ -101,7 +105,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint16 percentage,
         uint16 daysToMaturity,
         uint256 interest,
-        uint16 daysToExpire
+        uint16 hoursToExpire
     ) public payable {
         _checkPercentage(percentage);
 
@@ -116,7 +120,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (offer.principalToken == nativeAddress) {
             require(msg.value >= principalAmount);
         } else {
-            ERC20(offer.principalToken).transferFrom(
+            ERC20(offer.principalToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 principalAmount
@@ -135,7 +139,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             percentage,
             interest,
             daysToMaturity,
-            daysToExpire,
+            hoursToExpire,
             _msgSender(),
             offerId
         );
@@ -167,12 +171,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             require(msg.value >= principalAmount);
             payable(offer.creator).transfer(principalAmount);
         } else {
-            ERC20(offer.principalToken).transferFrom(
+            ERC20(offer.principalToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 principalAmount
             );
-            ERC20(offer.principalToken).transfer(
+            ERC20(offer.principalToken).safeTransfer(
                 offer.creator,
                 principalAmount
             );
@@ -244,7 +248,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (offer.principalToken == nativeAddress) {
             payable(request.creator).transfer(principalAmount);
         } else {
-            ERC20(offer.principalToken).transfer(
+            ERC20(offer.principalToken).safeTransfer(
                 request.creator,
                 principalAmount
             );
@@ -306,7 +310,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             collateralAmount = msg.value;
         } else {
             collateralAmount = collateralAmount_;
-            ERC20(collateralToken).transferFrom(
+            ERC20(collateralToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 collateralAmount
@@ -361,7 +365,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         address collateralToken,
         uint256 interest,
         uint16 daysToMaturity,
-        uint16 daysToExpire
+        uint16 hoursToExpire
     ) public payable {
         _checkPercentage(percentage);
 
@@ -397,7 +401,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (collateralToken == nativeAddress) {
             require(collateralAmount >= msg.value);
         } else {
-            ERC20(collateralToken).transferFrom(
+            ERC20(collateralToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 collateralAmount
@@ -421,7 +425,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             ltv,
             interest,
             daysToMaturity,
-            daysToExpire,
+            hoursToExpire,
             _msgSender(),
             offerId
         );
@@ -471,7 +475,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (collateralToken == nativeAddress) {
             require(collateralAmount >= msg.value, "ERR_COLLATERAL_AMOUNT");
         } else {
-            ERC20(collateralToken).transferFrom(
+            ERC20(collateralToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 collateralAmount
@@ -551,7 +555,10 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (offer.principalToken == nativeAddress) {
             payable(_msgSender()).transfer(principalAmount);
         } else {
-            ERC20(offer.principalToken).transfer(_msgSender(), principalAmount);
+            ERC20(offer.principalToken).safeTransfer(
+                _msgSender(),
+                principalAmount
+            );
         }
 
         /* delegate the loan collateral to lender */
@@ -653,7 +660,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (loan.principalToken == nativeAddress) {
             require(msg.value >= repaymentPrincipalAmount);
         } else {
-            ERC20(loan.principalToken).transferFrom(
+            ERC20(loan.principalToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 repaymentPrincipalAmount
@@ -687,7 +694,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (loan.collateralToken == nativeAddress) {
             payable(_msgSender()).transfer(loan.unClaimedCollateral);
         } else {
-            ERC20(loan.collateralToken).transfer(
+            ERC20(loan.collateralToken).safeTransfer(
                 _msgSender(),
                 loan.unClaimedCollateral
             );
@@ -704,16 +711,21 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (loan.principalToken == nativeAddress) {
             payable(_msgSender()).transfer(loan.unClaimedPrincipal);
         } else {
-            ERC20(loan.principalToken).transfer(
+            ERC20(loan.principalToken).safeTransfer(
                 _msgSender(),
                 loan.unClaimedPrincipal
             );
         }
 
-        _loanManager.claimCollateral(loanId);
+        _loanManager.claimPrincipal(loanId);
     }
 
-    function repayLiquidatedLoan(uint256 loanId) public payable {}
+    function repayLiquidatedLoan(uint160 loanId) public payable {}
+
+    // function liquidateLoan(uint160 loanId) public onlyOwner {
+    //     LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
+    //     _loanManager.liquidateLoan(loanId);
+    // }
 
     function setLTV(address ltv_) public onlyOwner {
         _ltv = ILoanToValueRatio(ltv_);
@@ -742,7 +754,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         if (token == nativeAddress) {
             receiver.transfer(amount);
         } else {
-            ERC20(token).transfer(receiver, amount);
+            ERC20(token).safeTransfer(receiver, amount);
         }
     }
 

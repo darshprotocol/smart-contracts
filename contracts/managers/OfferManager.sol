@@ -105,7 +105,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint16 percentage,
         uint256 interest,
         uint16 daysToMaturity,
-        uint16 daysToExpire,
+        uint16 hoursToExpire,
         address lender,
         uint160 offerId
     ) public onlyLendingPool returns (uint160) {
@@ -113,10 +113,10 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint256 requestId = requestIdTracker.current();
 
         uint160 createdAt = uint160(block.timestamp);
-        uint160 duration = uint160((daysToExpire * 1 days));
+        uint160 duration = uint160((hoursToExpire * 1 hours));
         uint160 expiresAt = createdAt + duration;
 
-        requests[offerId] = RequestLibrary.Request(
+        requests[requestId] = RequestLibrary.Request(
             // shared
             uint160(requestId),
             percentage,
@@ -188,7 +188,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint160 ltvUsed,
         uint256 interest,
         uint16 daysToMaturity,
-        uint16 daysToExpire,
+        uint16 hoursToExpire,
         address borrower,
         uint160 offerId
     ) public onlyLendingPool returns (uint160) {
@@ -196,10 +196,10 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint256 requestId = requestIdTracker.current();
 
         uint160 createdAt = uint160(block.timestamp);
-        uint160 duration = uint160((daysToExpire * 1 days));
+        uint160 duration = uint160((hoursToExpire * 1 hours));
         uint160 expiresAt = createdAt + duration;
 
-        requests[offerId] = RequestLibrary.Request(
+        requests[requestId] = RequestLibrary.Request(
             // shared
             uint160(requestId),
             percentage,
