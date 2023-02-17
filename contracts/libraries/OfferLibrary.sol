@@ -9,16 +9,33 @@ library OfferLibrary {
         BORROWING_OFFER
     }
 
+    event OfferCreated(
+        uint256 offerId,
+        address principalToken,
+        uint256 currentPrincipal,
+        uint256 initialPrincipal,
+        uint256 interest,
+        uint16 daysToMaturity,
+        uint expiresAt,
+        uint createdAt,
+        address creator,
+        address[] collateralTokens,
+        address collateralToken,
+        uint256 currentCollateral,
+        uint256 initialCollateral,
+        OfferLibrary.Type offerType
+    );
+
     struct Offer {
         // shared attributes
-        uint160 offerId;
+        uint256 offerId;
         address principalToken;
         uint256 currentPrincipal;
         uint256 initialPrincipal;
         uint256 interest;
         uint16 daysToMaturity;
-        uint160 expiresAt;
-        uint160 createdAt;
+        uint expiresAt;
+        uint createdAt;
         address creator;
         // related to lending offers only
         address[] collateralTokens;

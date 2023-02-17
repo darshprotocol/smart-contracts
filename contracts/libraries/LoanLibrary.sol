@@ -11,8 +11,26 @@ library LoanLibrary {
         LIQUIDATED
     }
 
+    event LoanCreated(
+        uint256 loanId,
+        uint256 offerId,
+        LoanLibrary.State state,
+        address principalToken,
+        address collateralToken,
+        uint256 initialPrincipal,
+        uint256 currentPrincipal,
+        uint256 initialCollateral,
+        uint256 currentCollateral,
+        uint256 interest,
+        uint256 startDate,
+        uint256 maturityDate,
+        uint16 graceDays,
+        address borrower,
+        address lender
+    );
+
     struct Loan {
-        uint160 offerId;
+        uint256 offerId;
         LoanLibrary.State state;
         address principalToken;
         address collateralToken;
@@ -22,12 +40,13 @@ library LoanLibrary {
         uint256 currentCollateral;
         uint256 collateralPriceInUSD;
         uint256 interest;
-        uint160 startDate;
-        uint160 maturityDate;
+        uint startDate;
+        uint maturityDate;
         uint16 graceDays;
         uint8 numInstallmentsPaid;
         uint256 unClaimedPrincipal;
         uint256 unClaimedCollateral;
+        uint repaidOn;
         address borrower;
         address lender;
     }

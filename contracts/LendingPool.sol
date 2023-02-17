@@ -22,9 +22,9 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /*
-    LendingPool is the core contract of the DARSH ecosystem.
-    It interacts with Darsh MANAGERS, PRICE FEEDS, LTV, MATH LIBRARIES
-    and others to carry out the peer to peer functionality
+    LendingPool is the core contract of the DARSH protocol.
+    It interacts with managers, price feed, loan-to-Value ratio, math libraries,
+    trust score, and others to carry out the peer to peer functionality.
 */
 
 contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
@@ -101,7 +101,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     // @lenders
     function createLendingRequest(
-        uint160 offerId,
+        uint256 offerId,
         uint16 percentage,
         uint16 daysToMaturity,
         uint256 interest,
@@ -146,7 +146,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     }
 
     // @lenders
-    function acceptBorrowingOffer(uint160 offerId, uint16 percentage)
+    function acceptBorrowingOffer(uint256 offerId, uint16 percentage)
         public
         payable
     {
@@ -297,43 +297,40 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     // @borrower
     function createBorrowingOffer(
         address principalToken,
+        uint256 principalAmount,
         address collateralToken,
-        uint256 collateralAmount_, // for ERC20 assets
         uint256 interest,
         uint16 daysToMaturity,
-        uint16 daysToExpire
+        uint16 hoursToExpire
     ) public payable {
-        uint256 collateralAmount;
+        uint256 principalAmountInUSD = _priceFeed.amountInUSD(
+            principalToken,
+            principalAmount
+        );
+
+        uint160 ltv = _ltv.getRelativeLTV(_msgSender(), principalAmountInUSD);
+
+        uint256 collateralNormalAmount = _priceFeed.exchangeRate(
+            principalToken,
+            collateralToken,
+            principalAmount
+        );
+
+        uint256 collateralAmount = percentageOf(
+            collateralNormalAmount,
+            ltv / _ltv.getBase()
+        );
 
         /* extract collateral from borrower */
         if (collateralToken == nativeAddress) {
-            collateralAmount = msg.value;
+            require(msg.value >= collateralAmount);
         } else {
-            collateralAmount = collateralAmount_;
             ERC20(collateralToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 collateralAmount
             );
         }
-
-        uint256 principalNormalAmount = _priceFeed.exchangeRate(
-            collateralToken,
-            principalToken,
-            collateralAmount
-        );
-
-        uint256 principalAmountInUSD = _priceFeed.amountInUSD(
-            principalToken,
-            principalNormalAmount
-        );
-
-        uint160 ltv = _ltv.getRelativeLTV(_msgSender(), principalAmountInUSD);
-
-        uint256 principalAmount = percentageInverseOf(
-            principalNormalAmount,
-            ltv
-        ) / _ltv.getBase();
 
         /* delegate the collateral to borrower */
         _poolManager.deposit(_msgSender(), collateralToken, collateralAmount);
@@ -346,7 +343,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             principalAmount,
             interest,
             daysToMaturity,
-            daysToExpire,
+            hoursToExpire,
             _msgSender()
         );
 
@@ -360,7 +357,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     // @borrower
     function createBorrowingRequest(
-        uint160 offerId,
+        uint256 offerId,
         uint16 percentage,
         address collateralToken,
         uint256 interest,
@@ -394,8 +391,10 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             principalAmount
         );
 
-        uint256 collateralAmount = percentageOf(collateralNormalAmount, ltv) /
-            _ltv.getBase();
+        uint256 collateralAmount = percentageOf(
+            collateralNormalAmount,
+            ltv / _ltv.getBase()
+        );
 
         /* extract collateral from borrower */
         if (collateralToken == nativeAddress) {
@@ -436,7 +435,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
     // @borrower
     function acceptLendingOffer(
-        uint160 offerId,
+        uint256 offerId,
         uint16 percentage,
         address collateralToken
     ) public payable {
@@ -468,8 +467,10 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             principalAmount
         );
 
-        uint256 collateralAmount = percentageOf(collateralNormalAmount, ltv) /
-            _ltv.getBase();
+        uint256 collateralAmount = percentageOf(
+            collateralNormalAmount,
+            ltv / _ltv.getBase()
+        );
 
         /* extract collateral tokens from borrower */
         if (collateralToken == nativeAddress) {
@@ -606,14 +607,16 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _activity._dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
-    // @borrower
-    function reActivateOffer() public payable {}
+    // @lender
+    function reActivateOffer(uint256 offerId) public {
+        // _offerManager.reActivate(offerId, _msgSender());
+    }
 
     // @borrower
     function reActivateRequest() public payable {}
 
     // @borrower
-    function repayLoan(uint160 loanId, uint16 percentage) public payable {
+    function repayLoan(uint256 loanId, uint16 percentage) public payable {
         _checkPercentage(percentage);
 
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
@@ -622,8 +625,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         require(loan.borrower == _msgSender(), "ERR_NOT_BORROWER");
 
         // calculate the duration of the loan
-        uint160 time = uint160(block.timestamp);
-        uint160 ellapsedSecs = (time - loan.startDate);
+        uint time = block.timestamp;
+        uint ellapsedSecs = (time - loan.startDate);
 
         uint256 principalAmount = percentageOf(
             loan.initialPrincipal,
@@ -686,7 +689,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
     }
 
-    function claimCollateral(uint160 loanId) public {
+    function claimCollateral(uint256 loanId) public {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         require(loan.borrower == _msgSender(), "ERR_NOT_BORROWER");
@@ -703,7 +706,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _loanManager.claimCollateral(loanId);
     }
 
-    function claimPrincipal(uint160 loanId) public {
+    function claimPrincipal(uint256 loanId) public {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         require(loan.lender == _msgSender(), "ERR_NOT_LENDER");
@@ -720,9 +723,9 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _loanManager.claimPrincipal(loanId);
     }
 
-    function repayLiquidatedLoan(uint160 loanId) public payable {}
+    function repayLiquidatedLoan(uint256 loanId) public payable {}
 
-    // function liquidateLoan(uint160 loanId) public onlyOwner {
+    // function liquidateLoan(uint256 loanId) public onlyOwner {
     //     LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
     //     _loanManager.liquidateLoan(loanId);
     // }
@@ -749,8 +752,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         address payable receiver,
         uint256 amount
     ) public onlyOwner {
-        _feeManager.debit(token, amount);
         require(amount > 0, "ERR_ZERO_AMOUNT");
+        _feeManager.debit(token, amount);
         if (token == nativeAddress) {
             receiver.transfer(amount);
         } else {

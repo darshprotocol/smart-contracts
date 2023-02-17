@@ -7,11 +7,26 @@ import "../libraries/RequestLibrary.sol";
 
 import "../interfaces/IOfferManager.sol";
 
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+/*
+    The OfferManager contract is responsible for bookeeping
+    the offers and requests made.
+
+    It can be only modified by the LendingPool contract,
+    but can be read from external sources.
+
+    Any OfferManager contract must inherite the IOfferManager interface.
+*/
+
 contract OfferManager is IOfferManager, Ownable2Step {
+    uint256 public constant ONE_DAY = 60 * 60 * 24;
+    uint256 public constant ONE_HOUR = 60 * 60;
+
     using Counters for Counters.Counter;
+    using SafeMath for uint256;
 
     // offers
     Counters.Counter private offerIdTracker;
@@ -25,41 +40,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
     constructor() Ownable2Step() {}
 
-    // events for offers
-    event OfferCreated(
-        uint160 offerId,
-        address principalToken,
-        uint256 currentPrincipal,
-        uint256 initialPrincipal,
-        uint256 interest,
-        uint16 daysToMaturity,
-        uint160 expiresAt,
-        uint160 createdAt,
-        address creator,
-        address[] collateralTokens,
-        address collateralToken,
-        uint256 currentCollateral,
-        uint256 initialCollateral,
-        OfferLibrary.Type offerType
-    );
-
-    // events for requests
-    event RequestCreated(
-        uint160 requestId,
-        uint16 percentage,
-        uint16 daysToMaturity,
-        uint160 expiresAt,
-        uint256 interest,
-        uint160 createdAt,
-        address creator,
-        uint160 offerId,
-        address collateralToken,
-        uint256 collateralAmount,
-        uint256 collateralPriceInUSD,
-        uint160 ltvUsed,
-        RequestLibrary.Type requestType
-    );
-
+    // creates a new lending offer
     function createLendingOffer(
         address principalToken,
         uint256 principalAmount,
@@ -68,13 +49,13 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint16 daysToExpire,
         address[] memory collateralTokens,
         address lender
-    ) public onlyLendingPool returns (uint160) {
+    ) public onlyLendingPool returns (uint256) {
         offerIdTracker.increment();
         uint256 offerId = offerIdTracker.current();
 
-        uint160 createdAt = uint160(block.timestamp);
-        uint160 duration = uint160((daysToExpire * 1 days));
-        uint160 expiresAt = createdAt + duration;
+        uint256 createdAt = block.timestamp;
+        uint256 duration = ONE_DAY.mul(daysToExpire);
+        uint256 expiresAt = createdAt.add(duration);
 
         offers[offerId] = OfferLibrary.Offer(
             // shared
@@ -97,32 +78,43 @@ contract OfferManager is IOfferManager, Ownable2Step {
             OfferLibrary.Type.LENDING_OFFER
         );
 
-        _emitOffer(uint160(offerId), offers[offerId]);
-        return uint160(offerId);
+        _emitOffer(offerId, offers[offerId]);
+        return offerId;
     }
 
+    // creates a new lending request
     function createLendingRequest(
         uint16 percentage,
         uint256 interest,
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address lender,
-        uint160 offerId
-    ) public onlyLendingPool returns (uint160) {
+        uint256 offerId
+    ) public onlyLendingPool returns (uint256) {
         requestIdTracker.increment();
         uint256 requestId = requestIdTracker.current();
 
-        uint160 createdAt = uint160(block.timestamp);
-        uint160 duration = uint160((hoursToExpire * 1 hours));
-        uint160 expiresAt = createdAt + duration;
+        uint256 createdAt = block.timestamp;
+        uint256 duration = ONE_HOUR.mul(hoursToExpire);
+        uint256 expiresAt = createdAt.add(duration);
+
+        OfferLibrary.Offer memory offer = offers[offerId];
+
+        require(
+            offer.offerType == OfferLibrary.Type.BORROWING_OFFER,
+            "ERR_OFFER_TYPE"
+        );
+        if (offer.initialCollateral == offer.currentCollateral) {
+            require(createdAt < offers[offerId].expiresAt, "ERR_OFFER_EXPIRED");
+        }
 
         requests[requestId] = RequestLibrary.Request(
             // shared
-            uint160(requestId),
+            requestId,
             percentage,
             daysToMaturity,
-            expiresAt,
             interest,
+            expiresAt,
             createdAt,
             lender,
             offerId,
@@ -135,10 +127,11 @@ contract OfferManager is IOfferManager, Ownable2Step {
             RequestLibrary.Type.LENDING_REQUEST
         );
 
-        _emitRequest(uint160(requestId), requests[requestId]);
-        return uint160(requestId);
+        _emitRequest(requestId, requests[requestId]);
+        return requestId;
     }
 
+    // creates a new borrowing offer
     function createBorrowingOffer(
         address principalToken,
         address collateralToken,
@@ -146,18 +139,18 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint256 principalAmount,
         uint256 interest,
         uint16 daysToMaturity,
-        uint16 daysToExpire,
+        uint16 hoursToExpire,
         address borrower
-    ) public onlyLendingPool returns (uint160) {
+    ) public onlyLendingPool returns (uint256) {
         offerIdTracker.increment();
         uint256 offerId = offerIdTracker.current();
 
-        uint160 createdAt = uint160(block.timestamp);
-        uint160 duration = uint160((daysToExpire * 1 days));
-        uint160 expiresAt = createdAt + duration;
+        uint256 createdAt = block.timestamp;
+        uint256 duration = ONE_HOUR.mul(hoursToExpire);
+        uint256 expiresAt = createdAt.add(duration);
 
         offers[offerId] = OfferLibrary.Offer(
-            uint160(offerId),
+            offerId,
             principalToken,
             principalAmount, // currentPrincipal
             principalAmount, // initialPrincipal
@@ -176,10 +169,11 @@ contract OfferManager is IOfferManager, Ownable2Step {
             OfferLibrary.Type.BORROWING_OFFER
         );
 
-        _emitOffer(uint160(offerId), offers[offerId]);
-        return uint160(offerId);
+        _emitOffer(offerId, offers[offerId]);
+        return offerId;
     }
 
+    // creates a new borrowing request
     function createBorrowingRequest(
         uint16 percentage,
         address collateralToken,
@@ -190,22 +184,33 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address borrower,
-        uint160 offerId
-    ) public onlyLendingPool returns (uint160) {
+        uint256 offerId
+    ) public onlyLendingPool returns (uint256) {
         requestIdTracker.increment();
         uint256 requestId = requestIdTracker.current();
 
-        uint160 createdAt = uint160(block.timestamp);
-        uint160 duration = uint160((hoursToExpire * 1 hours));
-        uint160 expiresAt = createdAt + duration;
+        uint256 createdAt = block.timestamp;
+        uint256 duration = ONE_HOUR.mul(hoursToExpire);
+        uint256 expiresAt = createdAt.add(duration);
+
+        OfferLibrary.Offer memory offer = offers[offerId];
+
+        require(
+            offer.offerType == OfferLibrary.Type.LENDING_OFFER,
+            "ERR_OFFER_TYPE"
+        );
+        require(createdAt < offers[offerId].expiresAt, "ERR_OFFER_EXPIRED");
+        if (offer.initialCollateral == offer.currentCollateral) {
+            require(createdAt < offers[offerId].expiresAt, "ERR_OFFER_EXPIRED");
+        }
 
         requests[requestId] = RequestLibrary.Request(
             // shared
-            uint160(requestId),
+            requestId,
             percentage,
             daysToMaturity,
-            expiresAt,
             interest,
+            expiresAt,
             createdAt,
             borrower,
             offerId,
@@ -217,15 +222,15 @@ contract OfferManager is IOfferManager, Ownable2Step {
             RequestLibrary.Type.BORROWING_REQUEST
         );
 
-        _emitRequest(uint160(requestId), requests[requestId]);
-        return uint160(requestId);
+        _emitRequest(requestId, requests[requestId]);
+        return requestId;
     }
 
     // events
-    function _emitOffer(uint160 offerId, OfferLibrary.Offer memory offer)
+    function _emitOffer(uint256 offerId, OfferLibrary.Offer memory offer)
         private
     {
-        emit OfferCreated(
+        emit OfferLibrary.OfferCreated(
             offerId,
             offer.principalToken,
             offer.currentPrincipal,
@@ -244,15 +249,15 @@ contract OfferManager is IOfferManager, Ownable2Step {
     }
 
     function _emitRequest(
-        uint160 requestId,
+        uint256 requestId,
         RequestLibrary.Request memory request
     ) private {
-        emit RequestCreated(
+        emit RequestLibrary.RequestCreated(
             requestId,
             request.percentage,
             request.daysToMaturity,
-            request.expiresAt,
             request.interest,
+            request.expiresAt,
             request.createdAt,
             request.creator,
             request.offerId,
@@ -264,8 +269,8 @@ contract OfferManager is IOfferManager, Ownable2Step {
         );
     }
 
-    // updaters
-    function _afterOfferLendingLoan(uint160 offerId, uint256 principalAmount)
+    // called after a lending offer loan is executed
+    function _afterOfferLendingLoan(uint256 offerId, uint256 principalAmount)
         public
         onlyLendingPool
     {
@@ -285,8 +290,9 @@ contract OfferManager is IOfferManager, Ownable2Step {
         _emitOffer(offerId, offer);
     }
 
+    // called after a borrowing offer loan is executed
     function _afterOfferBorrowingLoan(
-        uint160 offerId,
+        uint256 offerId,
         uint256 principalAmount,
         uint256 collateralAmount
     ) public onlyLendingPool {
@@ -311,7 +317,8 @@ contract OfferManager is IOfferManager, Ownable2Step {
         _emitOffer(offerId, offer);
     }
 
-    function isCollateralSupported(uint160 offerId, address token)
+    // checks if a offer support collateral token
+    function isCollateralSupported(uint256 offerId, address token)
         public
         view
         returns (bool)
@@ -332,7 +339,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
     }
 
     // getters
-    function getOffer(uint160 offerId)
+    function getOffer(uint256 offerId)
         public
         view
         override

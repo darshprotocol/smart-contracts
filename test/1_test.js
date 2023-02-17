@@ -60,33 +60,34 @@ contract("CreateLendingOffer", async accounts => {
         await lendingPool.setPriceFeed(PriceFeed.address);
     })
     it("createOffer", async () => {
-        // const ftmAmount = "2000000000000000000" // 2 ftm
+        // const usdt = await USDT.deployed()
+        // await usdt.approve(LendingPool.address, '2000000000000000000')
         // const lending = await LendingPool.deployed()
-        // await lending.createLendingOffer(
-        //     0, // amount
+        // await lending.createBorrowingOffer(
         //     NATIVE.address,
-        //     [USDC.address, USDT.address, DAI.address],
-        //     30, // days to maturity,
-        //     "50000000000000", // interest
-        //     7,
+        //     '1000000000000000000',
+        //     USDT.address,
+        //     "50000000000000",
+        //     30,
+        //     24,
         //     {
-        //         from: accounts[0],
-        //         value: ftmAmount
+        //         from: accounts[0]
         //     }
         // )
     })
-    it("ltv", async () => {
-        // const ltv = await LoanToValueRatio.deployed()
-        // let x = await ltv.getLTV(accounts[1]);
-        // console.log(x.toNumber());
-
-        const trt = await TrustScore.deployed()
-        let z = await trt.getScore(accounts[1])
-        console.log(z.toNumber())
-
-        const act = await Activity.deployed()
-        let y = await act.getActivity(accounts[1])
-        console.log(y)
+    it("createBorrowOffer", async () => {
+        // const lendingPool = await LendingPool.deployed()
+        // await lendingPool.createBorrowingRequest(
+        //     3,
+        //     25,
+        //     '0x99960D3d0A6F57D9F75eE5756888Fcfb7A47C93B',
+        //     '3858024691358',
+        //     30,
+        //     24,
+        //     {
+        //         from: accounts[1]
+        //     }
+        // )
     })
     it("borrowOffer", async () => {
         // const dai = await DAI.deployed()

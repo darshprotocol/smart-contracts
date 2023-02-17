@@ -29,18 +29,6 @@ abstract contract SimpleInterest is ISimpleInterest {
         return (total * percent) / PERCENT;
     }
 
-    function percentageInverseOf(uint256 total, uint160 percent)
-        public
-        pure
-        virtual
-        returns (uint256)
-    {
-        require(percent >= PERCENT);
-        uint160 diff = percent - PERCENT;
-        uint160 percentage = PERCENT - diff;
-        return percentageOf(total, percentage);
-    }
-
     function minimumBetween(uint256 a, uint256 b)
         private
         pure

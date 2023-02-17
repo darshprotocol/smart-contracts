@@ -8,6 +8,14 @@ import "../interfaces/IFeeManager.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+/*
+    The FeeManager contract is solely created to bookkeep
+    @dev revenue from the LendingPool contract.
+
+    This contract can only be modified by the LendingPool 
+    contract.
+*/
+
 contract FeeManager is IFeeManager, Ownable2Step {
     address deployer;
 

@@ -9,16 +9,32 @@ library RequestLibrary {
         BORROWING_REQUEST
     }
 
+    event RequestCreated(
+        uint256 requestId,
+        uint16 percentage,
+        uint16 daysToMaturity,
+        uint256 interest,
+        uint expiresAt,
+        uint createdAt,
+        address creator,
+        uint256 offerId,
+        address collateralToken,
+        uint256 collateralAmount,
+        uint256 collateralPriceInUSD,
+        uint160 ltvUsed,
+        RequestLibrary.Type requestType
+    );
+
     struct Request {
         // shared
-        uint160 requestId;
+        uint256 requestId;
         uint16 percentage;
         uint16 daysToMaturity;
-        uint160 expiresAt;
         uint256 interest;
-        uint160 createdAt;
+        uint expiresAt;
+        uint createdAt;
         address creator;
-        uint160 offerId;
+        uint256 offerId;
         // related to borrowing request only
         address collateralToken;
         uint256 collateralAmount;

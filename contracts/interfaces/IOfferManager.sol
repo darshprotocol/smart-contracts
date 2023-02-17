@@ -7,7 +7,7 @@ import "../libraries/RequestLibrary.sol";
 
 interface IOfferManager {
 
-    function getOffer(uint160 offerId) external view returns(OfferLibrary.Offer memory);
+    function getOffer(uint256 offerId) external view returns(OfferLibrary.Offer memory);
 
     function getRequest(uint256 requestId) external view returns (RequestLibrary.Request memory);
    

@@ -7,43 +7,30 @@ import "../libraries/OfferLibrary.sol";
 
 import "../interfaces/ILoanManager.sol";
 
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract LoanManager is ILoanManager, Ownable2Step {
+    uint256 public constant ONE_DAY = 60 * 60 * 24;
+    uint256 public constant ONE_HOUR = 60 * 60;
+
     using Counters for Counters.Counter;
+    using SafeMath for uint256;
 
     Counters.Counter private loanIdTracker;
     mapping(uint256 => LoanLibrary.Loan) private loans;
 
     // offerId => wallet addresses
-    mapping(uint160 => address[]) private borrowers;
+    mapping(uint256 => address[]) private borrowers;
 
     address lendingPool;
     uint16 graceDays = 5;
 
-    event LoanCreated(
-        uint256 loanId,
-        uint160 offerId,
-        LoanLibrary.State state,
-        address principalToken,
-        address collateralToken,
-        uint256 initialPrincipal,
-        uint256 currentPrincipal,
-        uint256 initialCollateral,
-        uint256 currentCollateral,
-        uint256 interest,
-        uint160 startDate,
-        uint160 maturityDate,
-        uint16 graceDays,
-        address borrower,
-        address lender
-    );
-
     constructor() Ownable2Step() {}
 
     function createLoan(
-        uint160 offerId,
+        uint256 offerId,
         OfferLibrary.Type offerType,
         address principalToken,
         address collateralToken,
@@ -54,7 +41,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
         uint16 daysToMaturity,
         address borrower,
         address lender
-    ) public onlyLendingPool returns (uint160) {
+    ) public onlyLendingPool returns (uint256) {
         // avoid 0 id
         loanIdTracker.increment();
         uint256 loanId = loanIdTracker.current();
@@ -70,10 +57,9 @@ contract LoanManager is ILoanManager, Ownable2Step {
             borrowers[offerId].push(lender);
         }
 
-        uint160 startDate = uint160(block.timestamp);
-        uint160 duration = uint160((daysToMaturity * 1 days));
-        uint160 maturityDate = startDate + duration;
-        uint8 numInstallmentsPaid = 0;
+        uint256 startDate = block.timestamp;
+        uint256 duration = ONE_DAY.mul(daysToMaturity);
+        uint256 maturityDate = startDate.add(duration);
 
         loans[loanId] = LoanLibrary.Loan(
             offerId,
@@ -89,18 +75,19 @@ contract LoanManager is ILoanManager, Ownable2Step {
             startDate,
             maturityDate,
             graceDays,
-            numInstallmentsPaid,
+            0, // numInstallmentsPaid
             0, // unclaimed principal
             0, // unclaimed collateral
+            0, // repaidOn
             borrower,
             lender
         );
 
-        _emit(uint160(loanId), loans[loanId]);
-        return uint160(loanId);
+        _emit(loanId, loans[loanId]);
+        return loanId;
     }
 
-    function getLoan(uint160 loanId)
+    function getLoan(uint256 loanId)
         public
         view
         override
@@ -110,7 +97,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
     }
 
     function repayLoan(
-        uint160 loanId,
+        uint256 loanId,
         uint256 interestPaid,
         uint256 principalPaid,
         uint256 collateralRetrieved
@@ -124,21 +111,22 @@ contract LoanManager is ILoanManager, Ownable2Step {
         loan.currentPrincipal -= principalPaid;
         loan.currentCollateral -= collateralRetrieved;
 
-        if (loan.currentPrincipal <= 1) {
+        if (loan.currentPrincipal <= 10) {
             loan.state = LoanLibrary.State.PAID;
+            loan.repaidOn = block.timestamp;
         }
 
         _emit(loanId, loan);
         return loan.state == LoanLibrary.State.PAID;
     }
 
-    function claimPrincipal(uint160 loanId) public override onlyLendingPool {
+    function claimPrincipal(uint256 loanId) public override onlyLendingPool {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.unClaimedPrincipal > 0, "ERR_ZERO_BALANCE");
         loan.unClaimedPrincipal = 0;
     }
 
-    function claimCollateral(uint160 loanId) public override onlyLendingPool {
+    function claimCollateral(uint256 loanId) public override onlyLendingPool {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.unClaimedCollateral > 0, "ERR_ZERO_BALANCE");
         loan.unClaimedCollateral = 0;
@@ -166,8 +154,8 @@ contract LoanManager is ILoanManager, Ownable2Step {
     //     return true;
     // }
 
-    function _emit(uint160 loanId, LoanLibrary.Loan memory loan) private {
-        emit LoanCreated(
+    function _emit(uint256 loanId, LoanLibrary.Loan memory loan) private {
+        emit LoanLibrary.LoanCreated(
             loanId,
             loan.offerId,
             loan.state,
@@ -186,7 +174,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
         );
     }
 
-    function _hasBorrowedFrom(uint160 offerId, address user)
+    function _hasBorrowedFrom(uint256 offerId, address user)
         private
         view
         returns (bool)
