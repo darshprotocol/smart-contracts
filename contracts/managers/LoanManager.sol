@@ -19,7 +19,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
     using SafeMath for uint256;
 
     Counters.Counter private loanIdTracker;
-    mapping(uint256 => LoanLibrary.Loan) private loans;
+    mapping(uint256 => LoanLibrary.Loan) public loans;
 
     // offerId => wallet addresses
     mapping(uint256 => address[]) private borrowers;
@@ -78,6 +78,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
             0, // numInstallmentsPaid
             0, // unclaimed principal
             0, // unclaimed collateral
+            0, // unclaimed default collateral
             0, // repaidOn
             borrower,
             lender
@@ -126,33 +127,54 @@ contract LoanManager is ILoanManager, Ownable2Step {
         loan.unClaimedPrincipal = 0;
     }
 
+    function claimDefaultCollateral(uint256 loanId)
+        public
+        override
+        onlyLendingPool
+    {
+        LoanLibrary.Loan storage loan = loans[loanId];
+        require(loan.unClaimedDefaultCollateral > 0, "ERR_ZERO_BALANCE");
+        loan.unClaimedDefaultCollateral = 0;
+    }
+
     function claimCollateral(uint256 loanId) public override onlyLendingPool {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.unClaimedCollateral > 0, "ERR_ZERO_BALANCE");
         loan.unClaimedCollateral = 0;
     }
 
-    // function liquidateLoan(
-    //     uint160 loanId,
-    //     uint256 principalTaken,
-    //     uint256 collateralTaken
-    // ) public override onlyLendingPool returns (bool) {
-    //     LoanLibrary.Loan storage loan = loans[loanId];
-    //     require(loan.state == LoanLibrary.State.ACTIVE, "ERR_LOAN_NOT_ACTIVE");
+    function liquidateLoan(
+        uint256 loanId,
+        uint256 principalPaid,
+        uint256 collateralRetrieved,
+        uint256 collateralPaid
+    ) public override onlyLendingPool {
+        LoanLibrary.Loan storage loan = loans[loanId];
+        require(loan.state == LoanLibrary.State.ACTIVE, "ERR_LOAN_NOT_ACTIVE");
 
-    //     uint160 graceDate = loan.graceDays * 1 days;
-    //     uint160 defaultDate = loan.maturityDate + graceDate;
-    //     uint160 currentDate = uint160(block.timestamp);
+        uint256 graceDate = ONE_DAY.mul(loan.graceDays);
+        uint256 defaultDate = loan.maturityDate.add(graceDate);
+        uint256 currentDate = block.timestamp;
 
-    //     require(defaultDate >= currentDate, "ERR_LOAN_NOT_MATURED");
+        require(defaultDate >= currentDate, "ERR_LOAN_NOT_MATURED");
 
-    //     loan.currentPrincipal -= principalTaken;
-    //     loan.currentCollateral -= collateralTaken;
-    //     loan.state = LoanLibrary.State.LIQUIDATED;
+        loan.currentPrincipal -= principalPaid;
+        loan.currentCollateral -= collateralRetrieved;
+        loan.unClaimedDefaultCollateral += collateralPaid;
 
-    //     _emit(loanId, loan);
-    //     return true;
-    // }
+        if (loan.currentCollateral > 0) {
+            loan.unClaimedCollateral = loan.currentCollateral;
+            loan.currentCollateral = 0;
+        }
+
+        if (loan.currentPrincipal <= 10) {
+            loan.state = LoanLibrary.State.PAID_LIQUIDATED;
+        } else {
+            loan.state = LoanLibrary.State.ACTIVE_LIQUIDATED;
+        }
+
+        _emit(loanId, loan);
+    }
 
     function _emit(uint256 loanId, LoanLibrary.Loan memory loan) private {
         emit LoanLibrary.LoanCreated(

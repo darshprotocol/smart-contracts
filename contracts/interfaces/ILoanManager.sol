@@ -15,9 +15,16 @@ interface ILoanManager {
         uint256 collateralRetrieved
     ) external returns (bool);
 
-    // function liquidateLoan(uint256 loanId) external returns (bool);
+    function liquidateLoan(
+        uint256 loanId,
+        uint256 principalPaid,
+        uint256 collateralRetrieved,
+        uint256 collateralPaid
+    ) external;
 
     function claimPrincipal(uint256 loanId) external;
+
+    function claimDefaultCollateral(uint256 loanId) external;
 
     function claimCollateral(uint256 loanId) external;
 }

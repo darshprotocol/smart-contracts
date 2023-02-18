@@ -189,8 +189,6 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             offer.collateralToken,
             collateralAmount
         );
-        /* undelegate the principal from lender */
-        _poolManager.burn(_msgSender(), offer.principalToken, principalAmount);
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
             offer.collateralToken,
@@ -608,12 +606,9 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     }
 
     // @lender
-    function reActivateOffer(uint256 offerId) public {
-        // _offerManager.reActivate(offerId, _msgSender());
+    function reActivateOffer(uint256 offerId, uint16 toExpire) public {
+        _offerManager.reActivateOffer(offerId, toExpire, _msgSender());
     }
-
-    // @borrower
-    function reActivateRequest() public payable {}
 
     // @borrower
     function repayLoan(uint256 loanId, uint16 percentage) public payable {
@@ -625,8 +620,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         require(loan.borrower == _msgSender(), "ERR_NOT_BORROWER");
 
         // calculate the duration of the loan
-        uint time = block.timestamp;
-        uint ellapsedSecs = (time - loan.startDate);
+        uint256 time = block.timestamp;
+        uint256 ellapsedSecs = (time - loan.startDate);
 
         uint256 principalAmount = percentageOf(
             loan.initialPrincipal,
@@ -639,13 +634,13 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
 
         // calculate the pay back amount
-        uint256 repaymentPrincipalAmount = getFullInterestAmount(
+        uint256 repaymentPrincipal = getFullInterestAmount(
             principalAmount,
             ellapsedSecs,
             loan.interest
         );
 
-        uint256 interestPaid = (repaymentPrincipalAmount - principalAmount);
+        uint256 interestPaid = (repaymentPrincipal - principalAmount);
         uint256 fee = percentageOf(interestPaid, _feeManager.feePercentage());
         uint256 unClaimedInterest = (interestPaid - fee);
 
@@ -661,19 +656,19 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
         /* extract pay back amount */
         if (loan.principalToken == nativeAddress) {
-            require(msg.value >= repaymentPrincipalAmount);
+            require(msg.value >= repaymentPrincipal);
         } else {
             ERC20(loan.principalToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
-                repaymentPrincipalAmount
+                repaymentPrincipal
             );
         }
 
         // update activity
         uint256 interestPaidInUSD = _priceFeed.amountInUSD(
             loan.principalToken,
-            (repaymentPrincipalAmount - principalAmount)
+            (repaymentPrincipal - principalAmount)
         );
 
         uint256 amountPaidInUSD = _priceFeed.amountInUSD(
@@ -723,12 +718,92 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _loanManager.claimPrincipal(loanId);
     }
 
+    function claimDefaultCollateral(uint256 loanId) public {
+        LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
+
+        require(loan.lender == _msgSender(), "ERR_NOT_LENDER");
+
+        if (loan.collateralToken == nativeAddress) {
+            payable(_msgSender()).transfer(loan.unClaimedDefaultCollateral);
+        } else {
+            ERC20(loan.collateralToken).safeTransfer(
+                _msgSender(),
+                loan.unClaimedDefaultCollateral
+            );
+        }
+
+        _loanManager.claimDefaultCollateral(loanId);
+    }
+
     function repayLiquidatedLoan(uint256 loanId) public payable {}
 
-    // function liquidateLoan(uint256 loanId) public onlyOwner {
-    //     LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
-    //     _loanManager.liquidateLoan(loanId);
-    // }
+    function liquidateLoan(uint256 loanId) public onlyOwner {
+        LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
+
+        // calculate the duration of the loan
+        uint256 time = block.timestamp;
+        uint256 ellapsedSecs = (time - loan.startDate);
+
+        uint256 repaymentPrincipal = getFullInterestAmount(
+            loan.currentPrincipal,
+            ellapsedSecs,
+            loan.interest
+        );
+
+        uint256 repaymentCollateral = _priceFeed.exchangeRate(
+            loan.principalToken,
+            loan.collateralToken,
+            repaymentPrincipal
+        );
+
+        uint256 interestInCollateral = _priceFeed.exchangeRate(
+            loan.principalToken,
+            loan.collateralToken,
+            (repaymentPrincipal - loan.currentPrincipal)
+        );
+
+        uint256 principalPaid;
+        uint256 collateralRetrieved;
+        uint256 collateralFee;
+
+        uint256 fee = percentageOf(
+            interestInCollateral,
+            _feeManager.feePercentage()
+        );
+
+        if (loan.currentCollateral >= (repaymentCollateral - fee)) {
+            collateralRetrieved = (repaymentCollateral - fee);
+            principalPaid = loan.currentPrincipal;
+
+            if (loan.currentCollateral >= repaymentCollateral) {
+                collateralFee = fee;
+            } else {
+                collateralRetrieved = loan.currentCollateral;
+                collateralFee = (loan.currentCollateral -
+                    (repaymentCollateral - fee));
+            }
+        } else {
+            collateralRetrieved = loan.currentCollateral;
+
+            uint256 collateralInPrincipal = _priceFeed.exchangeRate(
+                loan.collateralToken,
+                loan.principalToken,
+                collateralRetrieved
+            );
+
+            principalPaid = collateralInPrincipal;
+            collateralFee = 0;
+        }
+
+        _feeManager.credit(loan.collateralToken, collateralFee);
+
+        _loanManager.liquidateLoan(
+            loanId,
+            principalPaid,
+            collateralRetrieved,
+            (collateralRetrieved - collateralFee)
+        );
+    }
 
     function setLTV(address ltv_) public onlyOwner {
         _ltv = ILoanToValueRatio(ltv_);

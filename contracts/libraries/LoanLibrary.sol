@@ -8,7 +8,8 @@ library LoanLibrary {
     enum State {
         ACTIVE,
         PAID,
-        LIQUIDATED
+        ACTIVE_LIQUIDATED,
+        PAID_LIQUIDATED
     }
 
     event LoanCreated(
@@ -40,13 +41,14 @@ library LoanLibrary {
         uint256 currentCollateral;
         uint256 collateralPriceInUSD;
         uint256 interest;
-        uint startDate;
-        uint maturityDate;
+        uint256 startDate;
+        uint256 maturityDate;
         uint16 graceDays;
         uint8 numInstallmentsPaid;
         uint256 unClaimedPrincipal;
         uint256 unClaimedCollateral;
-        uint repaidOn;
+        uint256 unClaimedDefaultCollateral;
+        uint256 repaidOn;
         address borrower;
         address lender;
     }

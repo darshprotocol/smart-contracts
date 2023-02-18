@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
 contract PoolManager is IPoolManager, Ownable2Step {
     address lendingPool;
 
-    mapping(address => PoolLibrary.Pool[]) pools;
+    mapping(address => PoolLibrary.Pool[]) public pools;
 
     constructor() Ownable2Step() {}
 
@@ -45,7 +45,7 @@ contract PoolManager is IPoolManager, Ownable2Step {
             }
         }
 
-        revert("ERR_WITHDRAW");
+        revert("ERR_WITHDRAW_END");
     }
 
     function transfer(

@@ -82,6 +82,33 @@ contract OfferManager is IOfferManager, Ownable2Step {
         return offerId;
     }
 
+    function reActivateOffer(uint256 offerId, uint16 toExpire, address user)
+        public
+        onlyLendingPool
+    {
+        OfferLibrary.Offer memory offer = offers[offerId];
+
+        require(offer.creator == user, "ERR_ONLY_CREATOR");
+        require(offer.initialCollateral == offer.currentCollateral);
+
+        uint256 createdAt = block.timestamp;
+        require(createdAt > offer.expiresAt, "ERR_NOT_EXPIRED");
+
+        offerIdTracker.increment();
+
+        uint256 duration;
+        if (offer.offerType == OfferLibrary.Type.LENDING_OFFER) {
+            duration = ONE_DAY.mul(toExpire);
+        } else {
+            duration = ONE_HOUR.mul(toExpire);
+        }
+
+        offer.expiresAt = createdAt + duration;
+        offer.offerId = offerIdTracker.current();
+
+        _emitOffer(offerId, offer);
+    }
+
     // creates a new lending request
     function createLendingRequest(
         uint16 percentage,
@@ -298,7 +325,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
     ) public onlyLendingPool {
         OfferLibrary.Offer storage offer = offers[offerId];
         require(
-            offer.offerType == OfferLibrary.Type.LENDING_OFFER,
+            offer.offerType == OfferLibrary.Type.BORROWING_OFFER,
             "ERR_OFFER_TYPE"
         );
         require(

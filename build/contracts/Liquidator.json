@@ -1,0 +1,749 @@
+{
+  "contractName": "Liquidator",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferStarted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "acceptOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pendingOwner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "millis",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateGracePeriod",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "gracePeriod",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "loanId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        }
+      ],
+      "name": "liquidate",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferStarted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"gracePeriod\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"loanId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"}],\"name\":\"liquidate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"millis\",\"type\":\"uint256\"}],\"name\":\"updateGracePeriod\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"acceptOwnership()\":{\"details\":\"The new owner accepts the ownership transfer.\"},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"pendingOwner()\":{\"details\":\"Returns the address of the pending owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Liquidator.sol\":\"Liquidator\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0xee2b6bc803215b66037612da0fe9f23ec3c99ff89db4ff05449a8df17c9befc5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://127be279bb6b2f6106127ea6b431cfc879f9018dd76b7575841821be9eef3488\",\"dweb:/ipfs/QmfXqvL6sKx256hrVuQcSnNtirZrpm4JUbDFXwGHKgrrXU\"]},\"@openzeppelin/contracts/access/Ownable2Step.sol\":{\"keccak256\":\"0xcb3486322c36755440f6f07ce94c23c0fffe1f628a79fd50f8f501007de8ebc6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5abe306336e45520a971708e3fb0def42c20adf50a14f19a8b2849611e04b2bd\",\"dweb:/ipfs/QmQYysdtGUqyyz5a14FnxDq3QszsddtkeJ7cNammhvLcNP\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0x81d5fc973a522c8909d60be6a201869d46aa47b030b8813f60616404628c2b94\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9755b505799e622d964a843a8ed1fd60fedffca230178e5cb95ae9280df4dcd2\",\"dweb:/ipfs/QmRkhUYUUgRZ2QYJjmtQct2ubyYwS3bdUMhbuFYM12VfYn\"]},\"project:/contracts/Liquidator.sol\":{\"keccak256\":\"0x16912a32f15b3718aa408d5ba6ac24993479065002eeb435bc2d1d90bf196a35\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://130073ce1af5559d3f13d0336b64909c4062466b4cf85b12254360fa8a8598e0\",\"dweb:/ipfs/QmYKfgUf4EXMwzYTztwX49yFeXbyk5SWT51eYQzWJc8EQs\"]},\"project:/contracts/interfaces/ILiqudation.sol\":{\"keccak256\":\"0xf00ab9a0297adacaf62819733e0a653b976af45362d92cd3b2b10c928a15d686\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://3b4a85481095183ef23be209c7b2b707e5aac471bf6b361fd9a101bde36547ee\",\"dweb:/ipfs/QmYCksAe2crzgvpepWnBnZhL9PwyrcJdSqhnUH73GkZE4p\"]}},\"version\":1}",
+  "bytecode": "0x6080806040523461006a57600180546001600160a01b03199081169091556000805433928116831782556001600160a01b0316907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09080a36206978060025561036190816100708239f35b600080fdfe604060808152600436101561001357600080fd5b600090813560e01c9081635ab98d5a146102b05781635fae8b3d14610283578163715018a61461021e57816379ba50971461015f5781638da5cb5b14610137578163a06db7dc14610118578163e30c3978146100eb575063f2fde38b1461007957600080fd5b346100e85760203660031901126100e8576004356001600160a01b03818116918290036100e4576100a86102d3565b600180546001600160a01b031916831790558254167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e227008380a380f35b8280fd5b80fd5b90503461011457816003193601126101145760015490516001600160a01b039091168152602090f35b5080fd5b9050346101145781600319360112610114576020906002549051908152f35b905034610114578160031936011261011457905490516001600160a01b039091168152602090f35b905034610114578160031936011261011457600154906001600160a01b039033828416036101c957506001600160a01b031991821660015582543392811683178455167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08380a380f35b5162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b6064820152608490fd5b82346100e857806003193601126100e8576102376102d3565b600180546001600160a01b03199081169091558154908116825581906001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b9050346101145780600319360112610114576024356001600160a01b038116036101145751908152602090f35b82346100e85760203660031901126100e8576102ca6102d3565b60043560025580f35b6000546001600160a01b031633036102e757565b606460405162461bcd60e51b815260206004820152602060248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152fdfea264697066735822122064db68bbf1fa1991134c28c406016eefa665da35d234d05d35ffaba31ea45aa464736f6c63430008110033",
+  "deployedBytecode": "0x604060808152600436101561001357600080fd5b600090813560e01c9081635ab98d5a146102b05781635fae8b3d14610283578163715018a61461021e57816379ba50971461015f5781638da5cb5b14610137578163a06db7dc14610118578163e30c3978146100eb575063f2fde38b1461007957600080fd5b346100e85760203660031901126100e8576004356001600160a01b03818116918290036100e4576100a86102d3565b600180546001600160a01b031916831790558254167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e227008380a380f35b8280fd5b80fd5b90503461011457816003193601126101145760015490516001600160a01b039091168152602090f35b5080fd5b9050346101145781600319360112610114576020906002549051908152f35b905034610114578160031936011261011457905490516001600160a01b039091168152602090f35b905034610114578160031936011261011457600154906001600160a01b039033828416036101c957506001600160a01b031991821660015582543392811683178455167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08380a380f35b5162461bcd60e51b815260206004820152602960248201527f4f776e61626c6532537465703a2063616c6c6572206973206e6f7420746865206044820152683732bb9037bbb732b960b91b6064820152608490fd5b82346100e857806003193601126100e8576102376102d3565b600180546001600160a01b03199081169091558154908116825581906001600160a01b03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a380f35b9050346101145780600319360112610114576024356001600160a01b038116036101145751908152602090f35b82346100e85760203660031901126100e8576102ca6102d3565b60043560025580f35b6000546001600160a01b031633036102e757565b606460405162461bcd60e51b815260206004820152602060248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152fdfea264697066735822122064db68bbf1fa1991134c28c406016eefa665da35d234d05d35ffaba31ea45aa464736f6c63430008110033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "173:499:25:-:0;;;;;;;;;;-1:-1:-1;;;;;;173:499:25;;;;;;-1:-1:-1;173:499:25;;736:10:14;173:499:25;;;;;;;-1:-1:-1;;;;;173:499:25;;2653:40:1;;-1:-1:-1;2653:40:1;305:6:25;290:21;173:499;;;;;;;;;;;",
+  "deployedSourceMap": "173:499:25:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;173:499:25;;;;;;-1:-1:-1;;;;;173:499:25;;;;;;;;;1097:65:1;;:::i;:::-;173:499:25;;;-1:-1:-1;;;;;;173:499:25;;;;;;;;1303:43:2;173:499:25;;1303:43:2;173:499:25;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;173:499:25;;;;;;;;;;;;;;;;;;;;;;;;;;;;508:12;173:499;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;173:499:25;;;;;;;;;;;;;;;;;;;;;;953:13:2;173:499:25;;-1:-1:-1;;;;;173:499:25;736:10:14;173:499:25;;;1880:24:2;173:499:25;;-1:-1:-1;;;;;;;173:499:25;;;953:13:2;173:499:25;;;736:10:14;173:499:25;;;;;;;;2653:40:1;173:499:25;;2653:40:1;173:499:25;;;;-1:-1:-1;;;173:499:25;;;;;;;;;;;;;;;;;-1:-1:-1;;;173:499:25;;;;;;;;;;;;;;;;;;;;1097:65:1;;:::i;:::-;1627:20:2;173:499:25;;-1:-1:-1;;;;;;173:499:25;;;;;;;;;;;;;;;-1:-1:-1;;;;;173:499:25;2653:40:1;173:499:25;;2653:40:1;173:499:25;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;173:499:25;;;;;;;;;;;;;;;;;;;-1:-1:-1;;173:499:25;;;;1097:65:1;;:::i;:::-;173:499:25;;395:21;173:499;;;1408:132:1;1316:6;173:499:25;-1:-1:-1;;;;;173:499:25;736:10:14;1472:23:1;173:499:25;;1408:132:1:o;173:499:25:-;;;;;;;;;;;;;;;;;;;;;;;;",
+  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\nimport \"./interfaces/ILiqudation.sol\";\r\nimport \"@openzeppelin/contracts/access/Ownable2Step.sol\";\r\n\r\ncontract Liquidator is ILiqudation, Ownable2Step {\r\n\r\n    uint private _gracePeriod;\r\n\r\n    constructor() {\r\n        _gracePeriod = 5 days;\r\n    }\r\n\r\n    function updateGracePeriod(uint millis) public onlyOwner {\r\n        _gracePeriod = millis;\r\n    }\r\n\r\n    function gracePeriod() public view override returns(uint) {\r\n        return _gracePeriod;\r\n    }\r\n    \r\n    function liquidate(uint256 loanId, address caller) public returns(bool) {\r\n        // check if caller can liquidate loan\r\n    }\r\n\r\n}",
+  "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\Liquidator.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/Liquidator.sol",
+    "exportedSymbols": {
+      "Context": [
+        2760
+      ],
+      "ILiqudation": [
+        7915
+      ],
+      "Liquidator": [
+        6508
+      ],
+      "Ownable": [
+        158
+      ],
+      "Ownable2Step": [
+        241
+      ]
+    },
+    "id": 6509,
+    "license": "GPL-3.0",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 6460,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.7",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "37:31:25"
+      },
+      {
+        "absolutePath": "project:/contracts/interfaces/ILiqudation.sol",
+        "file": "./interfaces/ILiqudation.sol",
+        "id": 6461,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 6509,
+        "sourceUnit": 7916,
+        "src": "72:38:25",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/access/Ownable2Step.sol",
+        "file": "@openzeppelin/contracts/access/Ownable2Step.sol",
+        "id": 6462,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 6509,
+        "sourceUnit": 242,
+        "src": "112:57:25",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 6463,
+              "name": "ILiqudation",
+              "nameLocations": [
+                "196:11:25"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 7915,
+              "src": "196:11:25"
+            },
+            "id": 6464,
+            "nodeType": "InheritanceSpecifier",
+            "src": "196:11:25"
+          },
+          {
+            "baseName": {
+              "id": 6465,
+              "name": "Ownable2Step",
+              "nameLocations": [
+                "209:12:25"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 241,
+              "src": "209:12:25"
+            },
+            "id": 6466,
+            "nodeType": "InheritanceSpecifier",
+            "src": "209:12:25"
+          }
+        ],
+        "canonicalName": "Liquidator",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 6508,
+        "linearizedBaseContracts": [
+          6508,
+          241,
+          158,
+          2760,
+          7915
+        ],
+        "name": "Liquidator",
+        "nameLocation": "182:10:25",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 6468,
+            "mutability": "mutable",
+            "name": "_gracePeriod",
+            "nameLocation": "244:12:25",
+            "nodeType": "VariableDeclaration",
+            "scope": 6508,
+            "src": "231:25:25",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 6467,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "231:4:25",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 6475,
+              "nodeType": "Block",
+              "src": "279:40:25",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6473,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6471,
+                      "name": "_gracePeriod",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6468,
+                      "src": "290:12:25",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "35",
+                      "id": 6472,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "305:6:25",
+                      "subdenomination": "days",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_432000_by_1",
+                        "typeString": "int_const 432000"
+                      },
+                      "value": "5"
+                    },
+                    "src": "290:21:25",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 6474,
+                  "nodeType": "ExpressionStatement",
+                  "src": "290:21:25"
+                }
+              ]
+            },
+            "id": 6476,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nameLocation": "-1:-1:-1",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6469,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "276:2:25"
+            },
+            "returnParameters": {
+              "id": 6470,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "279:0:25"
+            },
+            "scope": 6508,
+            "src": "265:54:25",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 6487,
+              "nodeType": "Block",
+              "src": "384:40:25",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6485,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6483,
+                      "name": "_gracePeriod",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6468,
+                      "src": "395:12:25",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 6484,
+                      "name": "millis",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 6478,
+                      "src": "410:6:25",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "395:21:25",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 6486,
+                  "nodeType": "ExpressionStatement",
+                  "src": "395:21:25"
+                }
+              ]
+            },
+            "functionSelector": "5ab98d5a",
+            "id": 6488,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 6481,
+                "kind": "modifierInvocation",
+                "modifierName": {
+                  "id": 6480,
+                  "name": "onlyOwner",
+                  "nameLocations": [
+                    "374:9:25"
+                  ],
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 77,
+                  "src": "374:9:25"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "374:9:25"
+              }
+            ],
+            "name": "updateGracePeriod",
+            "nameLocation": "336:17:25",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6479,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6478,
+                  "mutability": "mutable",
+                  "name": "millis",
+                  "nameLocation": "359:6:25",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6488,
+                  "src": "354:11:25",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6477,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "354:4:25",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "353:13:25"
+            },
+            "returnParameters": {
+              "id": 6482,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "384:0:25"
+            },
+            "scope": 6508,
+            "src": "327:97:25",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "baseFunctions": [
+              7914
+            ],
+            "body": {
+              "id": 6496,
+              "nodeType": "Block",
+              "src": "490:38:25",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 6494,
+                    "name": "_gracePeriod",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 6468,
+                    "src": "508:12:25",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 6493,
+                  "id": 6495,
+                  "nodeType": "Return",
+                  "src": "501:19:25"
+                }
+              ]
+            },
+            "functionSelector": "a06db7dc",
+            "id": 6497,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "gracePeriod",
+            "nameLocation": "441:11:25",
+            "nodeType": "FunctionDefinition",
+            "overrides": {
+              "id": 6490,
+              "nodeType": "OverrideSpecifier",
+              "overrides": [],
+              "src": "467:8:25"
+            },
+            "parameters": {
+              "id": 6489,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "452:2:25"
+            },
+            "returnParameters": {
+              "id": 6493,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6492,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6497,
+                  "src": "484:4:25",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6491,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "484:4:25",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "483:6:25"
+            },
+            "scope": 6508,
+            "src": "432:96:25",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 6506,
+              "nodeType": "Block",
+              "src": "612:55:25",
+              "statements": []
+            },
+            "functionSelector": "5fae8b3d",
+            "id": 6507,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "liquidate",
+            "nameLocation": "549:9:25",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6502,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6499,
+                  "mutability": "mutable",
+                  "name": "loanId",
+                  "nameLocation": "567:6:25",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6507,
+                  "src": "559:14:25",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6498,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "559:7:25",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 6501,
+                  "mutability": "mutable",
+                  "name": "caller",
+                  "nameLocation": "583:6:25",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6507,
+                  "src": "575:14:25",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6500,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "575:7:25",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "558:32:25"
+            },
+            "returnParameters": {
+              "id": 6505,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6504,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6507,
+                  "src": "606:4:25",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 6503,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "606:4:25",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "605:6:25"
+            },
+            "scope": 6508,
+            "src": "540:127:25",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 6509,
+        "src": "173:499:25",
+        "usedErrors": []
+      }
+    ],
+    "src": "37:635:25"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-02-18T15:28:17.848Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "acceptOwnership()": {
+        "details": "The new owner accepts the ownership transfer."
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "pendingOwner()": {
+        "details": "Returns the address of the pending owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
