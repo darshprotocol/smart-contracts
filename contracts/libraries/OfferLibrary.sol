@@ -9,8 +9,14 @@ library OfferLibrary {
         BORROWING_OFFER
     }
 
+    enum State {
+        DEFAULT,
+        CANCELLED
+    }
+
     event OfferCreated(
         uint256 offerId,
+        State state,
         address principalToken,
         uint256 currentPrincipal,
         uint256 initialPrincipal,
@@ -29,6 +35,7 @@ library OfferLibrary {
     struct Offer {
         // shared attributes
         uint256 offerId;
+        State state;
         address principalToken;
         uint256 currentPrincipal;
         uint256 initialPrincipal;

@@ -235,8 +235,6 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             request.offerId
         );
 
-        require(offer.creator == _msgSender(), "ERR_ONLY_LENDER");
-
         uint256 principalAmount = percentageOf(
             offer.initialPrincipal,
             request.percentage
@@ -283,6 +281,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             principalAmount,
             request.collateralAmount
         );
+        _offerManager.acceptRequest(requestId, _msgSender());
 
         // update activity
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
@@ -538,8 +537,6 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             request.offerId
         );
 
-        require(offer.creator == _msgSender(), "ERR_ONLY_BORROWER");
-
         uint256 collateralAmount = percentageOf(
             offer.initialCollateral,
             request.percentage
@@ -595,6 +592,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
 
         // will revert the transaction if fail
         _offerManager._afterOfferLendingLoan(offer.offerId, principalAmount);
+        _offerManager.acceptRequest(requestId, _msgSender());
 
         // update activityj
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
@@ -682,6 +680,59 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             interestPaidInUSD,
             completed
         );
+    }
+
+    function rejectRequest(uint256 requestId) public {
+        _offerManager.rejectRequest(requestId, _msgSender());
+    }
+
+    function cancelLendRequest(uint256 requestId) public {
+        RequestLibrary.Request memory request = _offerManager.getRequest(
+            requestId
+        );
+        require(request.requestType == RequestLibrary.Type.LENDING_REQUEST);
+
+        OfferLibrary.Offer memory offer = _offerManager.getOffer(
+            request.offerId
+        );
+
+        uint256 principalAmount = percentageOf(
+            offer.initialPrincipal,
+            request.percentage
+        );
+
+        if (offer.principalToken == nativeAddress) {
+            payable(_msgSender()).transfer(principalAmount);
+        } else {
+            ERC20(offer.principalToken).safeTransfer(
+                _msgSender(),
+                principalAmount
+            );
+        }
+
+        _offerManager.cancelRequest(requestId, _msgSender());
+    }
+
+    function cancelBorrowRequest(uint256 requestId) public {
+        RequestLibrary.Request memory request = _offerManager.getRequest(
+            requestId
+        );
+        require(request.requestType == RequestLibrary.Type.BORROWING_REQUEST);
+
+        OfferLibrary.Offer memory offer = _offerManager.getOffer(
+            request.offerId
+        );
+
+        if (offer.collateralToken == nativeAddress) {
+            payable(_msgSender()).transfer(request.collateralAmount);
+        } else {
+            ERC20(offer.collateralToken).safeTransfer(
+                _msgSender(),
+                request.collateralAmount
+            );
+        }
+
+        _offerManager.cancelRequest(requestId, _msgSender());
     }
 
     function claimCollateral(uint256 loanId) public {

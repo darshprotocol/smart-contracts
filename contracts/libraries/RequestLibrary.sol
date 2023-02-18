@@ -9,8 +9,16 @@ library RequestLibrary {
         BORROWING_REQUEST
     }
 
+    enum State {
+        PENDING,
+        ACCEPTED,
+        REJECTED,
+        CANCELLED
+    }
+
     event RequestCreated(
         uint256 requestId,
+        State state,
         uint16 percentage,
         uint16 daysToMaturity,
         uint256 interest,
@@ -28,6 +36,7 @@ library RequestLibrary {
     struct Request {
         // shared
         uint256 requestId;
+        State state;
         uint16 percentage;
         uint16 daysToMaturity;
         uint256 interest;

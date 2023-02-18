@@ -59,7 +59,8 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
         offers[offerId] = OfferLibrary.Offer(
             // shared
-            uint160(offerId),
+            offerId,
+            OfferLibrary.State.DEFAULT,
             principalToken,
             principalAmount, // currentPrincipal
             principalAmount, // initialPrincipal
@@ -82,10 +83,11 @@ contract OfferManager is IOfferManager, Ownable2Step {
         return offerId;
     }
 
-    function reActivateOffer(uint256 offerId, uint16 toExpire, address user)
-        public
-        onlyLendingPool
-    {
+    function reActivateOffer(
+        uint256 offerId,
+        uint16 toExpire,
+        address user
+    ) public onlyLendingPool {
         OfferLibrary.Offer memory offer = offers[offerId];
 
         require(offer.creator == user, "ERR_ONLY_CREATOR");
@@ -138,6 +140,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         requests[requestId] = RequestLibrary.Request(
             // shared
             requestId,
+            RequestLibrary.State.PENDING,
             percentage,
             daysToMaturity,
             interest,
@@ -178,6 +181,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
         offers[offerId] = OfferLibrary.Offer(
             offerId,
+            OfferLibrary.State.DEFAULT,
             principalToken,
             principalAmount, // currentPrincipal
             principalAmount, // initialPrincipal
@@ -234,6 +238,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         requests[requestId] = RequestLibrary.Request(
             // shared
             requestId,
+            RequestLibrary.State.PENDING,
             percentage,
             daysToMaturity,
             interest,
@@ -253,12 +258,44 @@ contract OfferManager is IOfferManager, Ownable2Step {
         return requestId;
     }
 
+    function rejectRequest(uint256 requestId, address user)
+        public
+        onlyLendingPool
+    {
+        RequestLibrary.Request storage request = requests[requestId];
+        OfferLibrary.Offer memory offer = offers[request.offerId];
+        require(offer.creator == user, "ERR_ONLY_CREATOR");
+        request.state = RequestLibrary.State.REJECTED;
+        _emitRequest(requestId, request);
+    }
+
+    function acceptRequest(uint256 requestId, address user)
+        public
+        onlyLendingPool
+    {
+        RequestLibrary.Request storage request = requests[requestId];
+        OfferLibrary.Offer memory offer = offers[request.offerId];
+        require(offer.creator == user, "ERR_ONLY_CREATOR");
+        request.state = RequestLibrary.State.ACCEPTED;
+    }
+
+    function cancelRequest(uint256 requestId, address user)
+        public
+        onlyLendingPool
+    {
+        RequestLibrary.Request storage request = requests[requestId];
+        require(request.creator == user, "ERR_ONLY_CREATOR");
+        request.state = RequestLibrary.State.CANCELLED;
+        _emitRequest(requestId, request);
+    }
+
     // events
     function _emitOffer(uint256 offerId, OfferLibrary.Offer memory offer)
         private
     {
         emit OfferLibrary.OfferCreated(
             offerId,
+            offer.state,
             offer.principalToken,
             offer.currentPrincipal,
             offer.initialPrincipal,
@@ -281,6 +318,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
     ) private {
         emit RequestLibrary.RequestCreated(
             requestId,
+            request.state,
             request.percentage,
             request.daysToMaturity,
             request.interest,
