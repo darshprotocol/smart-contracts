@@ -4,17 +4,15 @@ pragma solidity >=0.7.0 <0.9.0;
 import "./Activity.sol";
 
 import "./libraries/Errors.sol";
-import "./libraries/PoolLibrary.sol";
 
 import "./math/SimpleInterest.sol";
 
 import "./interfaces/IPriceFeed.sol";
-import "./interfaces/ILoanToValueRatio.sol";
 import "./interfaces/IFeeManager.sol";
-
-import "./managers/LoanManager.sol";
-import "./managers/OfferManager.sol";
-import "./managers/PoolManager.sol";
+import "./interfaces/IVaultManager.sol";
+import "./interfaces/IOfferManager.sol";
+import "./interfaces/ILoanManager.sol";
+import "./interfaces/ILoanToValueRatio.sol";
 
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -37,23 +35,23 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     ILoanToValueRatio private _ltv;
 
     // managers
-    PoolManager private _poolManager;
-    LoanManager private _loanManager;
-    OfferManager private _offerManager;
+    IVaultManager private _vaultManager;
+    ILoanManager private _loanManager;
+    IOfferManager private _offerManager;
     IFeeManager private _feeManager;
 
     address public constant nativeAddress =
         0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
     constructor(
-        address poolManager_,
+        address vaultManager_,
         address loanManager_,
         address offerManager_,
         address feeManager_
     ) ReentrancyGuard() {
-        _poolManager = PoolManager(poolManager_);
-        _loanManager = LoanManager(loanManager_);
-        _offerManager = OfferManager(offerManager_);
+        _vaultManager = IVaultManager(vaultManager_);
+        _loanManager = ILoanManager(loanManager_);
+        _offerManager = IOfferManager(offerManager_);
         _feeManager = IFeeManager(feeManager_);
 
         deployer = _msgSender();
@@ -70,8 +68,6 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     ) public payable {
         uint256 principalAmount;
 
-        require(collateralTokens.length > 0, "ERR_NO_COLLATERAL_TYPES");
-
         /* extract tokens from lender */
         if (principalToken == nativeAddress) {
             principalAmount = msg.value;
@@ -84,11 +80,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        /* delegate principal to lender */
-        _poolManager.deposit(_msgSender(), principalToken, principalAmount);
-
         /* create the lending offer */
-        _offerManager.createLendingOffer(
+        uint256 offerId = _offerManager.createLendingOffer(
             principalToken,
             principalAmount,
             interest,
@@ -96,6 +89,14 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             daysToExpire,
             collateralTokens,
             _msgSender()
+        );
+
+        /* delegate principal to lender */
+        _vaultManager.deposit(
+            _msgSender(),
+            principalToken,
+            principalAmount,
+            offerId
         );
     }
 
@@ -128,10 +129,11 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* delegate principal to lender */
-        _poolManager.deposit(
+        _vaultManager.deposit(
             _msgSender(),
             offer.principalToken,
-            principalAmount
+            principalAmount,
+            offerId
         );
 
         /* create the lending request */
@@ -183,11 +185,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* delegate the loan collateral to lender */
-        _poolManager.transfer(
+        _vaultManager.transfer(
             offer.creator,
             _msgSender(),
             offer.collateralToken,
-            collateralAmount
+            collateralAmount,
+            offerId
         );
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
@@ -211,7 +214,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
 
         // will revert the transaction if fail
-        _offerManager._afterOfferBorrowingLoan(
+        _offerManager.afterOfferBorrowingLoan(
             offerId,
             principalAmount,
             collateralAmount
@@ -251,14 +254,21 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* delegate the loan collateral to lender */
-        _poolManager.transfer(
+        _vaultManager.transfer(
             request.creator,
             _msgSender(),
             request.collateralToken,
-            request.collateralAmount
+            request.collateralAmount,
+            request.offerId
         );
+
         /* undelegate the principal from lender */
-        _poolManager.burn(_msgSender(), offer.principalToken, principalAmount);
+        _vaultManager.withdraw(
+            _msgSender(),
+            offer.principalToken,
+            principalAmount,
+            request.offerId
+        );
 
         /* register the loan from the loan manager */
         _loanManager.createLoan(
@@ -276,7 +286,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
 
         // will revert the transaction if fail
-        _offerManager._afterOfferBorrowingLoan(
+        _offerManager.afterOfferBorrowingLoan(
             request.offerId,
             principalAmount,
             request.collateralAmount
@@ -329,11 +339,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        /* delegate the collateral to borrower */
-        _poolManager.deposit(_msgSender(), collateralToken, collateralAmount);
-
         /* create the offer */
-        _offerManager.createBorrowingOffer(
+        uint256 offerId = _offerManager.createBorrowingOffer(
             principalToken,
             collateralToken,
             collateralAmount,
@@ -342,6 +349,14 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             daysToMaturity,
             hoursToExpire,
             _msgSender()
+        );
+
+        /* delegate the collateral to borrower */
+        _vaultManager.deposit(
+            _msgSender(),
+            collateralToken,
+            collateralAmount,
+            offerId
         );
 
         // update activity
@@ -405,7 +420,12 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* delegate the collateral to borrower */
-        _poolManager.deposit(_msgSender(), collateralToken, collateralAmount);
+        _vaultManager.deposit(
+            _msgSender(),
+            collateralToken,
+            collateralAmount,
+            offerId
+        );
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
             collateralToken,
@@ -491,9 +511,20 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* delegate the loan collateral to lender */
-        _poolManager.deposit(offer.creator, collateralToken, collateralAmount);
+        _vaultManager.deposit(
+            offer.creator,
+            collateralToken,
+            collateralAmount,
+            offerId
+        );
+
         /* undelegate the loan principal from lender */
-        _poolManager.burn(offer.creator, offer.principalToken, principalAmount);
+        _vaultManager.withdraw(
+            offer.creator,
+            offer.principalToken,
+            principalAmount,
+            offerId
+        );
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
             collateralToken,
@@ -516,7 +547,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
 
         // will revert if transaction fail
-        _offerManager._afterOfferLendingLoan(offerId, principalAmount);
+        _offerManager.afterOfferLendingLoan(offerId, principalAmount);
 
         // update activity
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
@@ -558,16 +589,19 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         }
 
         /* delegate the loan collateral to lender */
-        _poolManager.deposit(
+        _vaultManager.deposit(
             request.creator,
             offer.collateralToken,
-            collateralAmount
+            collateralAmount,
+            request.offerId
         );
+
         /* undelegate the loan principal from lender */
-        _poolManager.burn(
+        _vaultManager.withdraw(
             request.creator,
             offer.principalToken,
-            principalAmount
+            principalAmount,
+            request.offerId
         );
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
@@ -591,7 +625,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
 
         // will revert the transaction if fail
-        _offerManager._afterOfferLendingLoan(offer.offerId, principalAmount);
+        _offerManager.afterOfferLendingLoan(offer.offerId, principalAmount);
         _offerManager.acceptRequest(requestId, _msgSender());
 
         // update activityj
@@ -738,8 +772,6 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     function claimCollateral(uint256 loanId) public {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
-        require(loan.borrower == _msgSender(), "ERR_NOT_BORROWER");
-
         if (loan.collateralToken == nativeAddress) {
             payable(_msgSender()).transfer(loan.unClaimedCollateral);
         } else {
@@ -749,13 +781,11 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        _loanManager.claimCollateral(loanId);
+        _loanManager.claimCollateral(loanId, _msgSender());
     }
 
     function claimPrincipal(uint256 loanId) public {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
-
-        require(loan.lender == _msgSender(), "ERR_NOT_LENDER");
 
         if (loan.principalToken == nativeAddress) {
             payable(_msgSender()).transfer(loan.unClaimedPrincipal);
@@ -766,13 +796,11 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        _loanManager.claimPrincipal(loanId);
+        _loanManager.claimPrincipal(loanId, _msgSender());
     }
 
     function claimDefaultCollateral(uint256 loanId) public {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
-
-        require(loan.lender == _msgSender(), "ERR_NOT_LENDER");
 
         if (loan.collateralToken == nativeAddress) {
             payable(_msgSender()).transfer(loan.unClaimedDefaultCollateral);
@@ -783,7 +811,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
             );
         }
 
-        _loanManager.claimDefaultCollateral(loanId);
+        _loanManager.claimDefaultCollateral(loanId, _msgSender());
     }
 
     function repayLiquidatedLoan(uint256 loanId) public payable {}

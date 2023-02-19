@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "../libraries/PoolLibrary.sol";
 import "../libraries/OfferLibrary.sol";
 import "../libraries/RequestLibrary.sol";
 
@@ -49,13 +48,15 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint16 daysToExpire,
         address[] memory collateralTokens,
         address lender
-    ) public onlyLendingPool returns (uint256) {
+    ) public override onlyLendingPool returns (uint256) {
         offerIdTracker.increment();
         uint256 offerId = offerIdTracker.current();
 
         uint256 createdAt = block.timestamp;
         uint256 duration = ONE_DAY.mul(daysToExpire);
         uint256 expiresAt = createdAt.add(duration);
+
+        require(collateralTokens.length > 0, "ERR_NO_COLLATERAL_TYPES");
 
         offers[offerId] = OfferLibrary.Offer(
             // shared
@@ -87,7 +88,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint256 offerId,
         uint16 toExpire,
         address user
-    ) public onlyLendingPool {
+    ) public override onlyLendingPool {
         OfferLibrary.Offer memory offer = offers[offerId];
 
         require(offer.creator == user, "ERR_ONLY_CREATOR");
@@ -119,7 +120,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint16 hoursToExpire,
         address lender,
         uint256 offerId
-    ) public onlyLendingPool returns (uint256) {
+    ) public override onlyLendingPool returns (uint256) {
         requestIdTracker.increment();
         uint256 requestId = requestIdTracker.current();
 
@@ -171,7 +172,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address borrower
-    ) public onlyLendingPool returns (uint256) {
+    ) public override onlyLendingPool returns (uint256) {
         offerIdTracker.increment();
         uint256 offerId = offerIdTracker.current();
 
@@ -216,7 +217,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint16 hoursToExpire,
         address borrower,
         uint256 offerId
-    ) public onlyLendingPool returns (uint256) {
+    ) public override onlyLendingPool returns (uint256) {
         requestIdTracker.increment();
         uint256 requestId = requestIdTracker.current();
 
@@ -260,6 +261,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
     function rejectRequest(uint256 requestId, address user)
         public
+        override
         onlyLendingPool
     {
         RequestLibrary.Request storage request = requests[requestId];
@@ -271,6 +273,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
     function acceptRequest(uint256 requestId, address user)
         public
+        override
         onlyLendingPool
     {
         RequestLibrary.Request storage request = requests[requestId];
@@ -281,6 +284,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
 
     function cancelRequest(uint256 requestId, address user)
         public
+        override
         onlyLendingPool
     {
         RequestLibrary.Request storage request = requests[requestId];
@@ -335,8 +339,9 @@ contract OfferManager is IOfferManager, Ownable2Step {
     }
 
     // called after a lending offer loan is executed
-    function _afterOfferLendingLoan(uint256 offerId, uint256 principalAmount)
+    function afterOfferLendingLoan(uint256 offerId, uint256 principalAmount)
         public
+        override
         onlyLendingPool
     {
         OfferLibrary.Offer storage offer = offers[offerId];
@@ -356,11 +361,11 @@ contract OfferManager is IOfferManager, Ownable2Step {
     }
 
     // called after a borrowing offer loan is executed
-    function _afterOfferBorrowingLoan(
+    function afterOfferBorrowingLoan(
         uint256 offerId,
         uint256 principalAmount,
         uint256 collateralAmount
-    ) public onlyLendingPool {
+    ) public override onlyLendingPool {
         OfferLibrary.Offer storage offer = offers[offerId];
         require(
             offer.offerType == OfferLibrary.Type.BORROWING_OFFER,
@@ -386,6 +391,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
     function isCollateralSupported(uint256 offerId, address token)
         public
         view
+        override
         returns (bool)
     {
         OfferLibrary.Offer memory offer = offers[offerId];

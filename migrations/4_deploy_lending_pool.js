@@ -1,5 +1,5 @@
 const LendingPool = artifacts.require("LendingPool")
-const PoolManager = artifacts.require("PoolManager")
+const VaultManager = artifacts.require("VaultManager")
 const LoanManager = artifacts.require("LoanManager")
 const OfferManager = artifacts.require("OfferManager")
 const FeeManager = artifacts.require("FeeManager")
@@ -10,7 +10,7 @@ module.exports = async function(deployer, network, accounts) {
     
     await deployer.deploy(
         LendingPool,
-        PoolManager.address,
+        VaultManager.address,
         LoanManager.address,
         OfferManager.address,
         FeeManager.address

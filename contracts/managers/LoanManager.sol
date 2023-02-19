@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "../libraries/PoolLibrary.sol";
 import "../libraries/LoanLibrary.sol";
 import "../libraries/OfferLibrary.sol";
 
@@ -41,7 +40,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
         uint16 daysToMaturity,
         address borrower,
         address lender
-    ) public onlyLendingPool returns (uint256) {
+    ) public override onlyLendingPool returns (uint256) {
         // avoid 0 id
         loanIdTracker.increment();
         uint256 loanId = loanIdTracker.current();
@@ -121,24 +120,35 @@ contract LoanManager is ILoanManager, Ownable2Step {
         return loan.state == LoanLibrary.State.PAID;
     }
 
-    function claimPrincipal(uint256 loanId) public override onlyLendingPool {
-        LoanLibrary.Loan storage loan = loans[loanId];
-        require(loan.unClaimedPrincipal > 0, "ERR_ZERO_BALANCE");
-        loan.unClaimedPrincipal = 0;
-    }
-
-    function claimDefaultCollateral(uint256 loanId)
+    function claimPrincipal(uint256 loanId, address user)
         public
         override
         onlyLendingPool
     {
         LoanLibrary.Loan storage loan = loans[loanId];
+        require(loan.lender == user, "ERR_NOT_LENDER");
+        require(loan.unClaimedPrincipal > 0, "ERR_ZERO_BALANCE");
+        loan.unClaimedPrincipal = 0;
+    }
+
+    function claimDefaultCollateral(uint256 loanId, address user)
+        public
+        override
+        onlyLendingPool
+    {
+        LoanLibrary.Loan storage loan = loans[loanId];
+        require(loan.lender == user, "ERR_NOT_LENDER");
         require(loan.unClaimedDefaultCollateral > 0, "ERR_ZERO_BALANCE");
         loan.unClaimedDefaultCollateral = 0;
     }
 
-    function claimCollateral(uint256 loanId) public override onlyLendingPool {
+    function claimCollateral(uint256 loanId, address user)
+        public
+        override
+        onlyLendingPool
+    {
         LoanLibrary.Loan storage loan = loans[loanId];
+        require(loan.borrower == user, "ERR_NOT_BORROWER");
         require(loan.unClaimedCollateral > 0, "ERR_ZERO_BALANCE");
         loan.unClaimedCollateral = 0;
     }

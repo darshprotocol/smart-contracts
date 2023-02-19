@@ -1,4 +1,4 @@
-const PoolManager = artifacts.require("PoolManager");
+const VaultManager = artifacts.require("VaultManager");
 const OfferManager = artifacts.require("OfferManager");
 const LoanManager = artifacts.require("LoanManager");
 const FeeManager = artifacts.require("FeeManager");
@@ -42,8 +42,8 @@ contract("CreateLendingOffer", async accounts => {
         const offerManager = await OfferManager.deployed()
         await offerManager.setLendingPool(LendingPool.address)
 
-        const poolManager = await PoolManager.deployed()
-        await poolManager.setLendingPool(LendingPool.address)
+        const VaultManager = await VaultManager.deployed()
+        await VaultManager.setLendingPool(LendingPool.address)
 
         const loanManager = await LoanManager.deployed()
         await loanManager.setLendingPool(LendingPool.address)
