@@ -210,7 +210,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
             offer.principalToken,
             principalAmount
         );
-        _activity._borrowLoan(offer.creator, borrowedAmountInUSD);
+        _activity.borrowLoan(offer.creator, borrowedAmountInUSD);
     }
 
     // @lenders
@@ -283,7 +283,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
             offer.principalToken,
             principalAmount
         );
-        _activity._borrowLoan(request.creator, amountBorrowedInUSD);
+        _activity.borrowLoan(request.creator, amountBorrowedInUSD);
     }
 
     // @borrower
@@ -349,7 +349,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
             collateralToken,
             collateralAmount
         );
-        _activity._dropCollateral(_msgSender(), amountInUSD);
+        _activity.dropCollateral(_msgSender(), amountInUSD);
     }
 
     // @borrower
@@ -432,7 +432,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         );
 
         // update activity
-        _activity._dropCollateral(_msgSender(), collateralPriceInUSD);
+        _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
     // @borrower
@@ -539,8 +539,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
             offer.principalToken,
             principalAmount
         );
-        _activity._borrowLoan(_msgSender(), amountBorrowedInUSD);
-        _activity._dropCollateral(_msgSender(), collateralPriceInUSD);
+        _activity.borrowLoan(_msgSender(), amountBorrowedInUSD);
+        _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
     // @borrower
@@ -622,8 +622,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
             offer.principalToken,
             principalAmount
         );
-        _activity._borrowLoan(_msgSender(), amountBorrowedInUSD);
-        _activity._dropCollateral(_msgSender(), collateralPriceInUSD);
+        _activity.borrowLoan(_msgSender(), amountBorrowedInUSD);
+        _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
     // @lender
@@ -704,7 +704,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
             principalAmount
         );
 
-        _activity._repayLoan(
+        _activity.repayLoan(
             _msgSender(),
             amountPaidInUSD,
             interestPaidInUSD,

@@ -40,7 +40,7 @@ contract Activity is Ownable2Step {
 
     mapping(address => ActivityModel) activities;
 
-    function _borrowLoan(address user, uint256 amountBorrowedInUSD)
+    function borrowLoan(address user, uint256 amountBorrowedInUSD)
         external
         onlyLendingPool
     {
@@ -53,7 +53,7 @@ contract Activity is Ownable2Step {
         }
     }
 
-    function _repayLoan(
+    function repayLoan(
         address user,
         uint256 amountPaidInUSD,
         uint256 interestPaidInUSD,
@@ -69,7 +69,7 @@ contract Activity is Ownable2Step {
         }
     }
 
-    function _dropCollateral(address user, uint256 amountInUSD)
+    function dropCollateral(address user, uint256 amountInUSD)
         external
         onlyLendingPool
     {
