@@ -45,6 +45,8 @@ contract LoanManager is ILoanManager, Ownable2Step {
         loanIdTracker.increment();
         uint256 loanId = loanIdTracker.current();
 
+        require(lender != borrower, "ERR_CANT_BORROW_OWN");
+
         if (offerType == OfferLibrary.Type.LENDING_OFFER) {
             require(
                 !_hasBorrowedFrom(offerId, borrower),

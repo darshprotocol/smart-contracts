@@ -18,6 +18,7 @@ import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 /*
     LendingPool is the core contract of the DARSH protocol.
@@ -25,10 +26,8 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
     trust score, and others to carry out the peer to peer functionality.
 */
 
-contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
+contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     using SafeERC20 for ERC20;
-
-    address deployer;
 
     Activity private _activity;
     IPriceFeed private _priceFeed;
@@ -43,9 +42,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     address public constant nativeAddress =
         0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
-    constructor() ReentrancyGuard() {
-        deployer = _msgSender();
-    }
+    constructor() ReentrancyGuard() Ownable2Step() {}
 
     // @lenders
     function createLendingOffer(
@@ -98,7 +95,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint256 interest,
         uint16 hoursToExpire
     ) public payable nonReentrant {
-        _checkPercentage(percentage);
+        checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
 
@@ -143,11 +140,8 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         payable
         nonReentrant
     {
-        _checkPercentage(percentage);
-
+        checkPercentage(percentage);
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
-
-        require(_msgSender() != offer.creator, "ERR_CANT_BORROW_OWN");
 
         uint256 collateralAmount = percentageOf(
             offer.initialCollateral,
@@ -367,7 +361,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint16 daysToMaturity,
         uint16 hoursToExpire
     ) public payable nonReentrant {
-        _checkPercentage(percentage);
+        checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
 
@@ -447,7 +441,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint16 percentage,
         address collateralToken
     ) public payable nonReentrant {
-        _checkPercentage(percentage);
+        checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
 
@@ -646,7 +640,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         payable
         nonReentrant
     {
-        _checkPercentage(percentage);
+        checkPercentage(percentage);
 
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
@@ -908,10 +902,6 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _feeManager = IFeeManager(feeManager_);
     }
 
-    function changeOwner(address newOwner) public onlyOwner {
-        deployer = newOwner;
-    }
-
     /// @dev to claim revenue
     function claim(
         address token,
@@ -925,16 +915,5 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         } else {
             ERC20(token).safeTransfer(receiver, amount);
         }
-    }
-
-    function _checkPercentage(uint16 percentage) private pure {
-        // percentage must be 25, 50, 75 or 100
-        require(percentage <= 100, "OVER_PERCENTAGE");
-        require(percentage % 25 == 0, "ERR_PERCENTAGE");
-    }
-
-    modifier onlyOwner() {
-        require(_msgSender() == deployer, "ERR_ONLY_OWNER");
-        _;
     }
 }

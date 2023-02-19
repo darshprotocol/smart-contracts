@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-abstract contract SimpleInterest  {
+abstract contract SimpleInterest {
     /// @dev The units of precision equal to the minimum interest.
     uint256 public constant INTEREST_RATE_DENOMINATOR = 1e18;
     uint16 public constant PERCENT = 100;
@@ -12,7 +12,8 @@ abstract contract SimpleInterest  {
         uint256 interest
     ) public pure virtual returns (uint256) {
         uint256 accrued = (principal * interest * durationSecs) /
-            INTEREST_RATE_DENOMINATOR / PERCENT;
+            INTEREST_RATE_DENOMINATOR /
+            PERCENT;
 
         return principal + accrued;
     }
@@ -27,12 +28,9 @@ abstract contract SimpleInterest  {
         return (total * percent) / PERCENT;
     }
 
-    function minimumBetween(uint256 a, uint256 b)
-        private
-        pure
-        returns (uint256)
-    {
-        if (b > a) return a;
-        return b;
+    function checkPercentage(uint16 percentage) public pure virtual {
+        // percentage must be 25, 50, 75 or 100
+        require(percentage <= 100, "OVER_PERCENTAGE");
+        require(percentage % 25 == 0, "ERR_PERCENTAGE");
     }
 }

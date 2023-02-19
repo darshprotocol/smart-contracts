@@ -3,6 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./interfaces/ITrustScore.sol";
 import "./interfaces/ILoanToValueRatio.sol";
+
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
