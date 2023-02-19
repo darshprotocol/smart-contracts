@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./../interfaces/ISimpleInterest.sol";
-
-abstract contract SimpleInterest is ISimpleInterest {
+abstract contract SimpleInterest  {
     /// @dev The units of precision equal to the minimum interest.
     uint256 public constant INTEREST_RATE_DENOMINATOR = 1e18;
     uint16 public constant PERCENT = 100;
