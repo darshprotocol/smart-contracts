@@ -43,17 +43,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     address public constant nativeAddress =
         0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
-    constructor(
-        address vaultManager_,
-        address loanManager_,
-        address offerManager_,
-        address feeManager_
-    ) ReentrancyGuard() {
-        _vaultManager = IVaultManager(vaultManager_);
-        _loanManager = ILoanManager(loanManager_);
-        _offerManager = IOfferManager(offerManager_);
-        _feeManager = IFeeManager(feeManager_);
-
+    constructor() ReentrancyGuard() {
         deployer = _msgSender();
     }
 
@@ -65,7 +55,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint16 daysToMaturity,
         uint256 interest,
         uint16 daysToExpire
-    ) public payable {
+    ) public payable nonReentrant {
         uint256 principalAmount;
 
         /* extract tokens from lender */
@@ -107,7 +97,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint16 daysToMaturity,
         uint256 interest,
         uint16 hoursToExpire
-    ) public payable {
+    ) public payable nonReentrant {
         _checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
@@ -151,6 +141,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     function acceptBorrowingOffer(uint256 offerId, uint16 percentage)
         public
         payable
+        nonReentrant
     {
         _checkPercentage(percentage);
 
@@ -229,7 +220,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     }
 
     // @lenders
-    function acceptBorrowingRequest(uint256 requestId) public {
+    function acceptBorrowingRequest(uint256 requestId) public nonReentrant {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
@@ -309,7 +300,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint256 interest,
         uint16 daysToMaturity,
         uint16 hoursToExpire
-    ) public payable {
+    ) public payable nonReentrant {
         uint256 principalAmountInUSD = _priceFeed.amountInUSD(
             principalToken,
             principalAmount
@@ -375,7 +366,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint256 interest,
         uint16 daysToMaturity,
         uint16 hoursToExpire
-    ) public payable {
+    ) public payable nonReentrant {
         _checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
@@ -455,7 +446,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         uint256 offerId,
         uint16 percentage,
         address collateralToken
-    ) public payable {
+    ) public payable nonReentrant {
         _checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
@@ -559,7 +550,11 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     }
 
     // @borrower
-    function acceptLendingRequest(uint256 requestId) public payable {
+    function acceptLendingRequest(uint256 requestId)
+        public
+        payable
+        nonReentrant
+    {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
@@ -638,12 +633,19 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
     }
 
     // @lender
-    function reActivateOffer(uint256 offerId, uint16 toExpire) public {
+    function reActivateOffer(uint256 offerId, uint16 toExpire)
+        public
+        nonReentrant
+    {
         _offerManager.reActivateOffer(offerId, toExpire, _msgSender());
     }
 
     // @borrower
-    function repayLoan(uint256 loanId, uint16 percentage) public payable {
+    function repayLoan(uint256 loanId, uint16 percentage)
+        public
+        payable
+        nonReentrant
+    {
         _checkPercentage(percentage);
 
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
@@ -716,11 +718,11 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
     }
 
-    function rejectRequest(uint256 requestId) public {
+    function rejectRequest(uint256 requestId) public nonReentrant {
         _offerManager.rejectRequest(requestId, _msgSender());
     }
 
-    function cancelLendRequest(uint256 requestId) public {
+    function cancelLendRequest(uint256 requestId) public nonReentrant {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
@@ -747,7 +749,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _offerManager.cancelRequest(requestId, _msgSender());
     }
 
-    function cancelBorrowRequest(uint256 requestId) public {
+    function cancelBorrowRequest(uint256 requestId) public nonReentrant {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
@@ -769,7 +771,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _offerManager.cancelRequest(requestId, _msgSender());
     }
 
-    function claimCollateral(uint256 loanId) public {
+    function claimCollateral(uint256 loanId) public nonReentrant {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         if (loan.collateralToken == nativeAddress) {
@@ -784,7 +786,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _loanManager.claimCollateral(loanId, _msgSender());
     }
 
-    function claimPrincipal(uint256 loanId) public {
+    function claimPrincipal(uint256 loanId) public nonReentrant {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         if (loan.principalToken == nativeAddress) {
@@ -799,7 +801,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _loanManager.claimPrincipal(loanId, _msgSender());
     }
 
-    function claimDefaultCollateral(uint256 loanId) public {
+    function claimDefaultCollateral(uint256 loanId) public nonReentrant {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         if (loan.collateralToken == nativeAddress) {
@@ -814,9 +816,9 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         _loanManager.claimDefaultCollateral(loanId, _msgSender());
     }
 
-    function repayLiquidatedLoan(uint256 loanId) public payable {}
+    function repayLiquidatedLoan(uint256 loanId) public payable nonReentrant {}
 
-    function liquidateLoan(uint256 loanId) public onlyOwner {
+    function liquidateLoan(uint256 loanId) public onlyOwner nonReentrant {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         // calculate the duration of the loan
@@ -884,16 +886,26 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         );
     }
 
-    function setLTV(address ltv_) public onlyOwner {
+    function setFeeds(
+        address ltv_,
+        address activity_,
+        address priceFeed_
+    ) public onlyOwner nonReentrant {
         _ltv = ILoanToValueRatio(ltv_);
-    }
-
-    function setActivity(address activity_) public onlyOwner {
         _activity = Activity(activity_);
+        _priceFeed = IPriceFeed(priceFeed_);
     }
 
-    function setPriceFeed(address priceFeed_) public onlyOwner {
-        _priceFeed = IPriceFeed(priceFeed_);
+    function setManagers(
+        address vaultManager_,
+        address loanManager_,
+        address offerManager_,
+        address feeManager_
+    ) public onlyOwner nonReentrant {
+        _vaultManager = IVaultManager(vaultManager_);
+        _loanManager = ILoanManager(loanManager_);
+        _offerManager = IOfferManager(offerManager_);
+        _feeManager = IFeeManager(feeManager_);
     }
 
     function changeOwner(address newOwner) public onlyOwner {
@@ -905,7 +917,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest {
         address token,
         address payable receiver,
         uint256 amount
-    ) public onlyOwner {
+    ) public onlyOwner nonReentrant {
         require(amount > 0, "ERR_ZERO_AMOUNT");
         _feeManager.debit(token, amount);
         if (token == nativeAddress) {
