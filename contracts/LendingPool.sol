@@ -20,15 +20,25 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
-/*
-    LendingPool is the core contract of the DARSH protocol.
-    It interacts with managers, price feed, loan-to-Value ratio, math libraries,
-    trust score, and others to carry out the peer to peer functionality.
-*/
-
+/**
+ * @title LendingPool contract
+ * @dev Main point of interaction with the DARSH protocol's market
+ * - Users can:
+ *   # Create Lending/Borrowing offers
+ *   # Request for new terms on offers
+ *   # Repay (Fully/Installment)
+ *   # Claim principal and earnings
+ *   # Claim back collateral
+ *   # Cancel/Reject/Accept requests
+ * - All admin functions are callable by the deployer address
+ * @author Arogundade Ibrahim
+ **/
 contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     using SafeERC20 for ERC20;
 
+    uint256 public constant LENDINGPOOL_REVISION = 0x2;
+
+    // feeds
     Activity private _activity;
     IPriceFeed private _priceFeed;
     ILoanToValueRatio private _ltv;
@@ -811,6 +821,14 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     }
 
     function repayLiquidatedLoan(uint256 loanId) public payable nonReentrant {}
+
+    // ============= ABOUT ============ //
+
+    function getRevision() public pure returns (uint256) {
+        return LENDINGPOOL_REVISION;
+    }
+
+    // ============= ADMIN FUNCTIONS =============== //
 
     function liquidateLoan(uint256 loanId) public onlyOwner nonReentrant {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
