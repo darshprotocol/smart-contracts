@@ -29,7 +29,7 @@ library LoanLibrary {
 
     struct Loan {
         uint256 offerId;
-        LoanLibrary.State state;
+        State state;
         address principalToken;
         address collateralToken;
         uint256 initialPrincipal;

@@ -2,10 +2,10 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "./Activity.sol";
-import "./interfaces/ITrustScore.sol";
+import "./interfaces/IHealthScore.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
-contract TrustScore is Ownable2Step, ITrustScore {
+contract HealthScore is Ownable2Step, IHealthScore {
     Activity private _activity;
 
     constructor() Ownable2Step() {}

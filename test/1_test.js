@@ -8,7 +8,7 @@ const LendingPool = artifacts.require("LendingPool");
 const PriceFeed = artifacts.require("PriceFeed");
 
 const Activity = artifacts.require("Activity");
-const TrustScore = artifacts.require("TrustScore");
+const HealthScore = artifacts.require("HealthScore");
 const LoanToValueRatio = artifacts.require("LoanToValueRatio");
 
 const WBTC = artifacts.require("WBTC");
@@ -34,9 +34,9 @@ contract("CreateLendingOffer", async accounts => {
     })
     it("setValues 2", async () => {
         const ltv = await LoanToValueRatio.deployed()
-        await ltv.setTrustScore(TrustScore.address, 100, 120)
+        await ltv.setHealthScore(HealthScore.address, 100, 120)
 
-        const trustScore = await TrustScore.deployed()
+        const trustScore = await HealthScore.deployed()
         await trustScore.setActivity(Activity.address)
 
         const offerManager = await OfferManager.deployed()

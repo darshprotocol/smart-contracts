@@ -19,6 +19,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
 /**
  * @title LendingPool contract
@@ -33,7 +34,13 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
  * - All admin functions are callable by the deployer address
  * @author Arogundade Ibrahim
  **/
-contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
+contract LendingPool is
+    Context,
+    ReentrancyGuard,
+    SimpleInterest,
+    Ownable2Step,
+    Pausable
+{
     using SafeERC20 for ERC20;
 
     uint256 public constant LENDINGPOOL_REVISION = 0x2;
@@ -62,7 +69,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         uint16 daysToMaturity,
         uint256 interest,
         uint16 daysToExpire
-    ) public payable nonReentrant {
+    ) public payable whenNotPaused {
         uint256 principalAmount;
 
         /* extract tokens from lender */
@@ -104,7 +111,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         uint16 daysToMaturity,
         uint256 interest,
         uint16 hoursToExpire
-    ) public payable nonReentrant {
+    ) public payable whenNotPaused {
         checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
@@ -148,7 +155,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     function acceptBorrowingOffer(uint256 offerId, uint16 percentage)
         public
         payable
-        nonReentrant
+        whenNotPaused
     {
         checkPercentage(percentage);
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
@@ -224,7 +231,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     }
 
     // @lenders
-    function acceptBorrowingRequest(uint256 requestId) public nonReentrant {
+    function acceptBorrowingRequest(uint256 requestId) public whenNotPaused {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
@@ -304,7 +311,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         uint256 interest,
         uint16 daysToMaturity,
         uint16 hoursToExpire
-    ) public payable nonReentrant {
+    ) public payable whenNotPaused {
         uint256 principalAmountInUSD = _priceFeed.amountInUSD(
             principalToken,
             principalAmount
@@ -370,7 +377,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         uint256 interest,
         uint16 daysToMaturity,
         uint16 hoursToExpire
-    ) public payable nonReentrant {
+    ) public payable whenNotPaused {
         checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
@@ -450,7 +457,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         uint256 offerId,
         uint16 percentage,
         address collateralToken
-    ) public payable nonReentrant {
+    ) public payable whenNotPaused {
         checkPercentage(percentage);
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
@@ -557,7 +564,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     function acceptLendingRequest(uint256 requestId)
         public
         payable
-        nonReentrant
+        whenNotPaused
     {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
@@ -639,7 +646,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     // @lender
     function reActivateOffer(uint256 offerId, uint16 toExpire)
         public
-        nonReentrant
+        whenNotPaused
     {
         _offerManager.reActivateOffer(offerId, toExpire, _msgSender());
     }
@@ -648,7 +655,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     function repayLoan(uint256 loanId, uint16 percentage)
         public
         payable
-        nonReentrant
+        whenNotPaused
     {
         checkPercentage(percentage);
 
@@ -722,11 +729,11 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         );
     }
 
-    function rejectRequest(uint256 requestId) public nonReentrant {
+    function rejectRequest(uint256 requestId) public whenNotPaused {
         _offerManager.rejectRequest(requestId, _msgSender());
     }
 
-    function cancelLendRequest(uint256 requestId) public nonReentrant {
+    function cancelLendRequest(uint256 requestId) public whenNotPaused {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
@@ -753,7 +760,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         _offerManager.cancelRequest(requestId, _msgSender());
     }
 
-    function cancelBorrowRequest(uint256 requestId) public nonReentrant {
+    function cancelBorrowRequest(uint256 requestId) public whenNotPaused {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
@@ -775,7 +782,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         _offerManager.cancelRequest(requestId, _msgSender());
     }
 
-    function claimCollateral(uint256 loanId) public nonReentrant {
+    function claimCollateral(uint256 loanId) public nonReentrant whenNotPaused {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         if (loan.collateralToken == nativeAddress) {
@@ -790,7 +797,7 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         _loanManager.claimCollateral(loanId, _msgSender());
     }
 
-    function claimPrincipal(uint256 loanId) public nonReentrant {
+    function claimPrincipal(uint256 loanId) public nonReentrant whenNotPaused {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         if (loan.principalToken == nativeAddress) {
@@ -805,7 +812,11 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
         _loanManager.claimPrincipal(loanId, _msgSender());
     }
 
-    function claimDefaultCollateral(uint256 loanId) public nonReentrant {
+    function claimDefaultCollateral(uint256 loanId)
+        public
+        nonReentrant
+        whenNotPaused
+    {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         if (loan.collateralToken == nativeAddress) {
@@ -829,6 +840,14 @@ contract LendingPool is Context, ReentrancyGuard, SimpleInterest, Ownable2Step {
     }
 
     // ============= ADMIN FUNCTIONS =============== //
+
+    function pause() external {
+        _pause();
+    }
+
+    function unpause() external {
+        _unpause();
+    }
 
     function liquidateLoan(uint256 loanId) public onlyOwner nonReentrant {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
