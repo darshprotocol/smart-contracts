@@ -346,10 +346,6 @@ contract OfferManager is IOfferManager, Ownable2Step {
     {
         OfferLibrary.Offer storage offer = offers[offerId];
         require(
-            offer.offerType == OfferLibrary.Type.LENDING_OFFER,
-            "ERR_OFFER_TYPE"
-        );
-        require(
             offer.currentPrincipal >= principalAmount,
             "ERR_INSUFFICIENT_PRINCIPAL"
         );
@@ -367,10 +363,6 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint256 collateralAmount
     ) public override onlyLendingPool {
         OfferLibrary.Offer storage offer = offers[offerId];
-        require(
-            offer.offerType == OfferLibrary.Type.BORROWING_OFFER,
-            "ERR_OFFER_TYPE"
-        );
         require(
             offer.currentPrincipal >= principalAmount,
             "ERR_INSUFFICIENT_PRINCIPAL"

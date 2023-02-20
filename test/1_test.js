@@ -42,8 +42,8 @@ contract("CreateLendingOffer", async accounts => {
         const offerManager = await OfferManager.deployed()
         await offerManager.setLendingPool(LendingPool.address)
 
-        const VaultManager = await VaultManager.deployed()
-        await VaultManager.setLendingPool(LendingPool.address)
+        const vaultManager = await VaultManager.deployed()
+        await vaultManager.setLendingPool(LendingPool.address)
 
         const loanManager = await LoanManager.deployed()
         await loanManager.setLendingPool(LendingPool.address)
@@ -55,9 +55,17 @@ contract("CreateLendingOffer", async accounts => {
         await activity.setLendingPool(LendingPool.address)
 
         const lendingPool = await LendingPool.deployed()
-        await lendingPool.setLTV(LoanToValueRatio.address);
-        await lendingPool.setActivity(Activity.address);
-        await lendingPool.setPriceFeed(PriceFeed.address);
+        await lendingPool.setFeeds(
+            LoanToValueRatio.address,
+            Activity.address,
+            PriceFeed.address
+        )
+        await lendingPool.setManagers(
+            VaultManager.address,
+            LoanManager.address,
+            OfferManager.address,
+            FeeManager.address
+        )
     })
     it("createOffer", async () => {
         // const usdt = await USDT.deployed()

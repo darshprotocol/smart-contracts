@@ -43,27 +43,28 @@ contract LendingPool is
 {
     using SafeERC20 for ERC20;
 
+    /// @dev contract version
     uint256 public constant LENDINGPOOL_REVISION = 0x2;
 
-    // feeds
     Activity private _activity;
     IPriceFeed private _priceFeed;
     ILoanToValueRatio private _ltv;
 
-    // managers
     IVaultManager private _vaultManager;
     ILoanManager private _loanManager;
     IOfferManager private _offerManager;
     IFeeManager private _feeManager;
 
+    /// @dev for convienency this address is used to represent FTM just like ERC20
     address public constant nativeAddress =
         0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
     constructor() ReentrancyGuard() Ownable2Step() {}
 
-    // @lenders
+    /// @notice This function creates a lending new lending offer
+    /// @dev the principalAmount_ parameter is use for ERC20 tokens only
     function createLendingOffer(
-        uint256 principalAmount_, // only for ERC20 assets
+        uint256 principalAmount_,
         address principalToken,
         address[] memory collateralTokens,
         uint16 daysToMaturity,
@@ -840,14 +841,6 @@ contract LendingPool is
     }
 
     // ============= ADMIN FUNCTIONS =============== //
-
-    function pause() external {
-        _pause();
-    }
-
-    function unpause() external {
-        _unpause();
-    }
 
     function liquidateLoan(uint256 loanId) public onlyOwner nonReentrant {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
