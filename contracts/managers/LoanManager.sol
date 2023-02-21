@@ -38,6 +38,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
         uint256 collateralPriceInUSD,
         uint256 interest,
         uint16 daysToMaturity,
+        uint256 unClaimedLoanPrincipal,
         address borrower,
         address lender
     ) public override onlyLendingPool returns (uint256) {
@@ -80,6 +81,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
             0, // unclaimed principal
             0, // unclaimed collateral
             0, // unclaimed default collateral
+            unClaimedLoanPrincipal,
             0, // repaidOn
             borrower,
             lender
@@ -114,45 +116,68 @@ contract LoanManager is ILoanManager, Ownable2Step {
         loan.currentCollateral -= collateralRetrieved;
 
         if (loan.currentPrincipal <= 10) {
-            loan.state = LoanLibrary.State.PAID;
+            loan.state = LoanLibrary.State.REPAID;
             loan.repaidOn = block.timestamp;
         }
 
         _emit(loanId, loan);
-        return loan.state == LoanLibrary.State.PAID;
+        return loan.state == LoanLibrary.State.REPAID;
     }
 
     function claimPrincipal(uint256 loanId, address user)
         public
         override
         onlyLendingPool
+        returns (uint256, address)
     {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.lender == user, "ERR_NOT_LENDER");
         require(loan.unClaimedPrincipal > 0, "ERR_ZERO_BALANCE");
+        uint256 amount = loan.unClaimedPrincipal;
         loan.unClaimedPrincipal = 0;
+        return (amount, loan.principalToken);
     }
 
     function claimDefaultCollateral(uint256 loanId, address user)
         public
         override
         onlyLendingPool
+        returns (uint256, address)
     {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.lender == user, "ERR_NOT_LENDER");
         require(loan.unClaimedDefaultCollateral > 0, "ERR_ZERO_BALANCE");
+        uint256 amount = loan.unClaimedDefaultCollateral;
         loan.unClaimedDefaultCollateral = 0;
+        return (amount, loan.collateralToken);
     }
 
     function claimCollateral(uint256 loanId, address user)
         public
         override
         onlyLendingPool
+        returns (uint256, address)
     {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.borrower == user, "ERR_NOT_BORROWER");
         require(loan.unClaimedCollateral > 0, "ERR_ZERO_BALANCE");
+        uint256 amount = loan.unClaimedCollateral;
         loan.unClaimedCollateral = 0;
+        return (amount, loan.collateralToken);
+    }
+
+    function claimLoanPrincipal(uint256 loanId, address user)
+        public
+        override
+        onlyLendingPool
+        returns (uint256, address)
+    {
+        LoanLibrary.Loan storage loan = loans[loanId];
+        require(loan.borrower == user, "ERR_NOT_BORROWER");
+        require(loan.unClaimedLoanPrincipal > 0, "ERR_ZERO_BALANCE");
+        uint256 amount = loan.unClaimedLoanPrincipal;
+        loan.unClaimedLoanPrincipal = 0;
+        return (amount, loan.principalToken);
     }
 
     function liquidateLoan(
@@ -180,9 +205,9 @@ contract LoanManager is ILoanManager, Ownable2Step {
         }
 
         if (loan.currentPrincipal <= 10) {
-            loan.state = LoanLibrary.State.PAID_LIQUIDATED;
+            loan.state = LoanLibrary.State.REPAID_DEFAULTED;
         } else {
-            loan.state = LoanLibrary.State.ACTIVE_LIQUIDATED;
+            loan.state = LoanLibrary.State.ACTIVE_DEFAULTED;
         }
 
         _emit(loanId, loan);

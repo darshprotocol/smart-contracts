@@ -16,6 +16,7 @@ interface ILoanManager {
         uint256 collateralPriceInUSD,
         uint256 interest,
         uint16 daysToMaturity,
+        uint256 unClaimedLoanPrincipal,
         address borrower,
         address lender
     ) external returns (uint256);
@@ -29,11 +30,21 @@ interface ILoanManager {
         uint256 collateralRetrieved
     ) external returns (bool);
 
-    function claimPrincipal(uint256 loanId, address user) external;
+    function claimPrincipal(uint256 loanId, address user)
+        external
+        returns (uint256, address);
 
-    function claimDefaultCollateral(uint256 loanId, address user) external;
+    function claimDefaultCollateral(uint256 loanId, address user)
+        external
+        returns (uint256, address);
 
-    function claimCollateral(uint256 loanId, address user) external;
+    function claimCollateral(uint256 loanId, address user)
+        external
+        returns (uint256, address);
+
+    function claimLoanPrincipal(uint256 loanId, address user)
+        external
+        returns (uint256, address);
 
     function liquidateLoan(
         uint256 loanId,

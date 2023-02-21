@@ -16,15 +16,7 @@ interface IVaultManager {
         uint256 offerId
     ) external;
 
-    function transfer(
-        address from,
-        address to,
-        address token,
-        uint256 amount,
-        uint256 offerId
-    ) external;
-
-    function balanceOf(address provider, address token)
+    function balanceOf(uint256 offerId, address token)
         external
         returns (uint256);
 }

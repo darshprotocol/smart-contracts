@@ -10,8 +10,8 @@ contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
     IHealthScore private _healthScore;
     uint8 public constant base = 10;
 
-    uint160 minLTV = 100 * base;
-    uint160 maxLTV = 120 * base;
+    uint160 minLTV = 1000;
+    uint160 maxLTV = 1200;
 
     uint256 public healthMaxPrice0 = 1000 * 1e18;
     uint256 public healthMaxPrice1 = 3000 * 1e18;

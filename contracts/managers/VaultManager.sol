@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
 contract VaultManager is IVaultManager, Ownable2Step {
     address lendingPool;
 
-    mapping(address => VaultLibrary.Vault[]) public vaults;
+    mapping(uint256 => VaultLibrary.Vault[]) public vaults;
 
     constructor() Ownable2Step() {}
 
@@ -21,13 +21,13 @@ contract VaultManager is IVaultManager, Ownable2Step {
         uint256 amount,
         uint256 offerId
     ) public override onlyLendingPool {
-        for (uint256 index = 0; index < vaults[to].length; index++) {
-            if (vaults[to][index].token == token) {
-                vaults[to][index].amount += amount;
+        for (uint256 index = 0; index < vaults[offerId].length; index++) {
+            if (vaults[offerId][index].token == token) {
+                vaults[offerId][index].amount += amount;
             }
         }
 
-        vaults[to].push(VaultLibrary.Vault(token, amount));
+        vaults[offerId].push(VaultLibrary.Vault(token, amount));
 
         emit VaultLibrary.Transfer(
             offerId,
@@ -45,13 +45,13 @@ contract VaultManager is IVaultManager, Ownable2Step {
         uint256 amount,
         uint256 offerId
     ) public override onlyLendingPool {
-        for (uint256 index = 0; index < vaults[from].length; index++) {
-            if (vaults[from][index].token == token) {
+        for (uint256 index = 0; index < vaults[offerId].length; index++) {
+            if (vaults[offerId][index].token == token) {
                 // insuficient amount
-                if (vaults[from][index].amount < amount) revert("ERR_WITHDRAW");
+                if (vaults[offerId][index].amount < amount) revert("ERR_WITHDRAW");
 
                 // burn successful
-                vaults[from][index].amount -= amount;
+                vaults[offerId][index].amount -= amount;
 
                 emit VaultLibrary.Transfer(
                     offerId,
@@ -68,26 +68,15 @@ contract VaultManager is IVaultManager, Ownable2Step {
         revert("ERR_WITHDRAW_END");
     }
 
-    function transfer(
-        address from,
-        address to,
-        address token,
-        uint256 amount,
-        uint256 offerId
-    ) public override onlyLendingPool {
-        withdraw(from, token, amount, offerId);
-        deposit(to, token, amount, offerId);
-    }
-
-    function balanceOf(address user, address token)
+    function balanceOf(uint256 offerId, address token)
         public
         view
         override
         returns (uint256)
     {
-        for (uint256 index = 0; index < vaults[user].length; index++) {
-            if (vaults[user][index].token == token) {
-                return vaults[user][index].amount;
+        for (uint256 index = 0; index < vaults[offerId].length; index++) {
+            if (vaults[offerId][index].token == token) {
+                return vaults[offerId][index].amount;
             }
         }
 

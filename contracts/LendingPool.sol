@@ -44,7 +44,7 @@ contract LendingPool is
     using SafeERC20 for ERC20;
 
     /// @dev contract version
-    uint256 public constant LENDINGPOOL_REVISION = 0x2;
+    uint256 public constant LENDINGPOOL_VERSION = 0x2;
 
     Activity private _activity;
     IPriceFeed private _priceFeed;
@@ -105,7 +105,8 @@ contract LendingPool is
         );
     }
 
-    // @lenders
+    /// @notice Explain to an end user what this does
+    /// @dev Explain to a developer any extra details
     function createLendingRequest(
         uint256 offerId,
         uint16 percentage,
@@ -132,14 +133,6 @@ contract LendingPool is
                 principalAmount
             );
         }
-
-        /* delegate principal to lender */
-        _vaultManager.deposit(
-            _msgSender(),
-            offer.principalToken,
-            principalAmount,
-            offerId
-        );
 
         /* create the lending request */
         _offerManager.createLendingRequest(
@@ -171,25 +164,27 @@ contract LendingPool is
             percentage
         );
 
-        /* extract principal from lender/caller and transfer to borrower */
+        /* extract principal from lender/caller */
         if (offer.principalToken == nativeAddress) {
             require(msg.value >= principalAmount);
-            payable(offer.creator).transfer(principalAmount);
         } else {
             ERC20(offer.principalToken).safeTransferFrom(
                 _msgSender(),
                 address(this),
                 principalAmount
             );
-            ERC20(offer.principalToken).safeTransfer(
-                offer.creator,
-                principalAmount
-            );
         }
 
+        /* undelegate the loan principal from to lender */
+        _vaultManager.deposit(
+            _msgSender(),
+            offer.principalToken,
+            principalAmount,
+            offerId
+        );
+
         /* delegate the loan collateral to lender */
-        _vaultManager.transfer(
-            offer.creator,
+        _vaultManager.withdraw(
             _msgSender(),
             offer.collateralToken,
             collateralAmount,
@@ -212,6 +207,7 @@ contract LendingPool is
             collateralPriceInUSD,
             offer.interest,
             offer.daysToMaturity,
+            principalAmount,
             offer.creator,
             _msgSender()
         );
@@ -231,7 +227,7 @@ contract LendingPool is
         _activity.borrowLoan(offer.creator, borrowedAmountInUSD);
     }
 
-    // @lenders
+    /// @notice accept new borrowing request placed on a lender's offer
     function acceptBorrowingRequest(uint256 requestId) public whenNotPaused {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
@@ -256,10 +252,9 @@ contract LendingPool is
             );
         }
 
-        /* delegate the loan collateral to lender */
-        _vaultManager.transfer(
+        /* delegate the collateral to borrower */
+        _vaultManager.deposit(
             request.creator,
-            _msgSender(),
             request.collateralToken,
             request.collateralAmount,
             request.offerId
@@ -284,6 +279,7 @@ contract LendingPool is
             request.collateralPriceInUSD,
             request.interest,
             request.daysToMaturity,
+            0,
             request.creator,
             _msgSender()
         );
@@ -294,6 +290,7 @@ contract LendingPool is
             principalAmount,
             request.collateralAmount
         );
+
         _offerManager.acceptRequest(requestId, _msgSender());
 
         // update activity
@@ -301,6 +298,7 @@ contract LendingPool is
             offer.principalToken,
             principalAmount
         );
+
         _activity.borrowLoan(request.creator, amountBorrowedInUSD);
     }
 
@@ -422,14 +420,6 @@ contract LendingPool is
             );
         }
 
-        /* delegate the collateral to borrower */
-        _vaultManager.deposit(
-            _msgSender(),
-            collateralToken,
-            collateralAmount,
-            offerId
-        );
-
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
             collateralToken,
             collateralAmount
@@ -503,19 +493,9 @@ contract LendingPool is
             );
         }
 
-        /* transfer the principal to borrower */
-        if (offer.principalToken == nativeAddress) {
-            payable(_msgSender()).transfer(principalAmount);
-        } else {
-            ERC20(offer.principalToken).safeTransfer(
-                _msgSender(),
-                principalAmount
-            );
-        }
-
         /* delegate the loan collateral to lender */
         _vaultManager.deposit(
-            offer.creator,
+            _msgSender(),
             collateralToken,
             collateralAmount,
             offerId
@@ -523,7 +503,7 @@ contract LendingPool is
 
         /* undelegate the loan principal from lender */
         _vaultManager.withdraw(
-            offer.creator,
+            _msgSender(),
             offer.principalToken,
             principalAmount,
             offerId
@@ -545,6 +525,7 @@ contract LendingPool is
             collateralPriceInUSD,
             offer.interest,
             offer.daysToMaturity,
+            principalAmount,
             _msgSender(),
             offer.creator
         );
@@ -597,7 +578,7 @@ contract LendingPool is
 
         /* delegate the loan collateral to lender */
         _vaultManager.deposit(
-            request.creator,
+            _msgSender(),
             offer.collateralToken,
             collateralAmount,
             request.offerId
@@ -605,7 +586,7 @@ contract LendingPool is
 
         /* undelegate the loan principal from lender */
         _vaultManager.withdraw(
-            request.creator,
+            _msgSender(),
             offer.principalToken,
             principalAmount,
             request.offerId
@@ -627,12 +608,14 @@ contract LendingPool is
             collateralPriceInUSD,
             request.interest,
             request.daysToMaturity,
+            0,
             _msgSender(),
             request.creator
         );
 
         // will revert the transaction if fail
         _offerManager.afterOfferLendingLoan(offer.offerId, principalAmount);
+
         _offerManager.acceptRequest(requestId, _msgSender());
 
         // update activityj
@@ -640,8 +623,8 @@ contract LendingPool is
             offer.principalToken,
             principalAmount
         );
+
         _activity.borrowLoan(_msgSender(), amountBorrowedInUSD);
-        _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
     // @lender
@@ -738,7 +721,11 @@ contract LendingPool is
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
-        require(request.requestType == RequestLibrary.Type.LENDING_REQUEST);
+
+        require(
+            request.requestType == RequestLibrary.Type.LENDING_REQUEST,
+            "ERR_REQUEST_TYPE"
+        );
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(
             request.offerId
@@ -765,7 +752,11 @@ contract LendingPool is
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
-        require(request.requestType == RequestLibrary.Type.BORROWING_REQUEST);
+
+        require(
+            request.requestType == RequestLibrary.Type.BORROWING_REQUEST,
+            "ERR_REQUEST_TYPE"
+        );
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(
             request.offerId
@@ -784,33 +775,46 @@ contract LendingPool is
     }
 
     function claimCollateral(uint256 loanId) public nonReentrant whenNotPaused {
-        LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
+        (uint256 amount, address token) = _loanManager.claimCollateral(
+            loanId,
+            _msgSender()
+        );
 
-        if (loan.collateralToken == nativeAddress) {
-            payable(_msgSender()).transfer(loan.unClaimedCollateral);
+        if (token == nativeAddress) {
+            payable(_msgSender()).transfer(amount);
         } else {
-            ERC20(loan.collateralToken).safeTransfer(
-                _msgSender(),
-                loan.unClaimedCollateral
-            );
+            ERC20(token).safeTransfer(_msgSender(), amount);
         }
+    }
 
-        _loanManager.claimCollateral(loanId, _msgSender());
+    function claimLoanPrincipal(uint256 loanId)
+        public
+        nonReentrant
+        whenNotPaused
+    {
+        (uint256 amount, address token) = _loanManager.claimLoanPrincipal(
+            loanId,
+            _msgSender()
+        );
+
+        if (token == nativeAddress) {
+            payable(_msgSender()).transfer(amount);
+        } else {
+            ERC20(token).safeTransfer(_msgSender(), amount);
+        }
     }
 
     function claimPrincipal(uint256 loanId) public nonReentrant whenNotPaused {
-        LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
+        (uint256 amount, address token) = _loanManager.claimPrincipal(
+            loanId,
+            _msgSender()
+        );
 
-        if (loan.principalToken == nativeAddress) {
-            payable(_msgSender()).transfer(loan.unClaimedPrincipal);
+        if (token == nativeAddress) {
+            payable(_msgSender()).transfer(amount);
         } else {
-            ERC20(loan.principalToken).safeTransfer(
-                _msgSender(),
-                loan.unClaimedPrincipal
-            );
+            ERC20(token).safeTransfer(_msgSender(), amount);
         }
-
-        _loanManager.claimPrincipal(loanId, _msgSender());
     }
 
     function claimDefaultCollateral(uint256 loanId)
@@ -818,26 +822,24 @@ contract LendingPool is
         nonReentrant
         whenNotPaused
     {
-        LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
+        (uint256 amount, address token) = _loanManager.claimDefaultCollateral(
+            loanId,
+            _msgSender()
+        );
 
-        if (loan.collateralToken == nativeAddress) {
-            payable(_msgSender()).transfer(loan.unClaimedDefaultCollateral);
+        if (token == nativeAddress) {
+            payable(_msgSender()).transfer(amount);
         } else {
-            ERC20(loan.collateralToken).safeTransfer(
-                _msgSender(),
-                loan.unClaimedDefaultCollateral
-            );
+            ERC20(token).safeTransfer(_msgSender(), amount);
         }
-
-        _loanManager.claimDefaultCollateral(loanId, _msgSender());
     }
 
     function repayLiquidatedLoan(uint256 loanId) public payable nonReentrant {}
 
     // ============= ABOUT ============ //
 
-    function getRevision() public pure returns (uint256) {
-        return LENDINGPOOL_REVISION;
+    function getVersion() public pure returns (uint256) {
+        return LENDINGPOOL_VERSION;
     }
 
     // ============= ADMIN FUNCTIONS =============== //
