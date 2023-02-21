@@ -70,6 +70,9 @@ library LoanLibrary {
         /// @dev this represents principal amount
         /// that the borrower has not claimed
         uint256 unClaimedLoanPrincipal;
+        /// @dev this represents total interest paid by 
+        /// the borrower
+        uint256 totalInterestPaid;
         /// @dev seconds of full repaid loan
         uint256 repaidOn;
         /// @dev actors address

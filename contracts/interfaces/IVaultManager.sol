@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 interface IVaultManager {
     function deposit(
-        address to,
+        address from,
         address token,
         uint256 amount,
         uint256 offerId

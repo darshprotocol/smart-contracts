@@ -7,16 +7,20 @@ import "../interfaces/IVaultManager.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract VaultManager is IVaultManager, Ownable2Step {
-    address lendingPool;
+    using Counters for Counters.Counter;
 
+    Counters.Counter private transferIdTracker;
     mapping(uint256 => VaultLibrary.Vault[]) public vaults;
+
+    address lendingPool;
 
     constructor() Ownable2Step() {}
 
     function deposit(
-        address to,
+        address from,
         address token,
         uint256 amount,
         uint256 offerId
@@ -29,12 +33,15 @@ contract VaultManager is IVaultManager, Ownable2Step {
 
         vaults[offerId].push(VaultLibrary.Vault(token, amount));
 
+        transferIdTracker.increment();
+
         emit VaultLibrary.Transfer(
+            transferIdTracker.current(),
             offerId,
-            to,
-            address(0),
+            from,
             amount,
             token,
+            "deposit",
             block.timestamp
         );
     }
@@ -48,17 +55,21 @@ contract VaultManager is IVaultManager, Ownable2Step {
         for (uint256 index = 0; index < vaults[offerId].length; index++) {
             if (vaults[offerId][index].token == token) {
                 // insuficient amount
-                if (vaults[offerId][index].amount < amount) revert("ERR_WITHDRAW");
+                if (vaults[offerId][index].amount < amount)
+                    revert("ERR_WITHDRAW");
 
                 // burn successful
                 vaults[offerId][index].amount -= amount;
 
+                transferIdTracker.increment();
+
                 emit VaultLibrary.Transfer(
+                    transferIdTracker.current(),
                     offerId,
-                    address(0),
                     from,
                     amount,
                     token,
+                    "withdraw",
                     block.timestamp
                 );
                 return;

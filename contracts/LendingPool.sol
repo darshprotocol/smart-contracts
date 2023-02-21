@@ -671,6 +671,7 @@ contract LendingPool is
 
         uint256 interestPaid = (repaymentPrincipal - principalAmount);
         uint256 fee = percentageOf(interestPaid, _feeManager.feePercentage());
+        
         uint256 unClaimedInterest = (interestPaid - fee);
 
         _feeManager.credit(loan.principalToken, fee);
@@ -694,6 +695,22 @@ contract LendingPool is
             );
         }
 
+        /* delegate principal to lender */
+        _vaultManager.deposit(
+            _msgSender(),
+            loan.principalToken,
+            (principalAmount + unClaimedInterest),
+            loan.offerId
+        );
+
+        /* undelegate collateral from lender to borrower */
+        _vaultManager.withdraw(
+            _msgSender(),
+            loan.collateralToken,
+            collateralAmount,
+            loan.offerId
+        );
+
         // update activity
         uint256 interestPaidInUSD = _priceFeed.amountInUSD(
             loan.principalToken,
@@ -712,6 +729,8 @@ contract LendingPool is
             completed
         );
     }
+
+    // =========== Request Functions =========== //
 
     function rejectRequest(uint256 requestId) public whenNotPaused {
         _offerManager.rejectRequest(requestId, _msgSender());
@@ -773,6 +792,8 @@ contract LendingPool is
 
         _offerManager.cancelRequest(requestId, _msgSender());
     }
+
+    // =========== Claim Functions =========== //
 
     function claimCollateral(uint256 loanId) public nonReentrant whenNotPaused {
         (uint256 amount, address token) = _loanManager.claimCollateral(

@@ -3,11 +3,11 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./Activity.sol";
 
-import "./interfaces/IHealthScore.sol";
+import "./interfaces/IDarshScore.sol";
 
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
-contract HealthScore is Ownable2Step, IHealthScore {
+contract DarshScore is Ownable2Step, IDarshScore {
     Activity private _activity;
 
     constructor() Ownable2Step() {}

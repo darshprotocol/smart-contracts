@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./interfaces/IHealthScore.sol";
+import "./interfaces/IDarshScore.sol";
 import "./interfaces/ILoanToValueRatio.sol";
 
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
-    IHealthScore private _healthScore;
+    IDarshScore private _healthScore;
     uint8 public constant base = 10;
 
     uint160 minLTV = 1000;
@@ -56,6 +56,6 @@ contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
         minLTV = minLTV_ * base;
         maxLTV = maxLTV_ * base;
         
-        _healthScore = IHealthScore(trustScore_);
+        _healthScore = IDarshScore(trustScore_);
     }
 }

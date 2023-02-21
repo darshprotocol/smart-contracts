@@ -82,6 +82,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
             0, // unclaimed collateral
             0, // unclaimed default collateral
             unClaimedLoanPrincipal,
+            0, // total interest paid
             0, // repaidOn
             borrower,
             lender
@@ -106,11 +107,12 @@ contract LoanManager is ILoanManager, Ownable2Step {
         uint256 principalPaid,
         uint256 collateralRetrieved
     ) public override onlyLendingPool returns (bool) {
-        LoanLibrary.Loan storage loan = loans[loanId];
+        LoanLibrary.Loan storage loan = loans[loanId]; 
         require(loan.state == LoanLibrary.State.ACTIVE, "ERR_LOAN_NOT_ACTIVE");
 
         loan.numInstallmentsPaid += 1;
-        loan.unClaimedPrincipal += interestPaid;
+        loan.totalInterestPaid += interestPaid;
+        loan.unClaimedPrincipal += principalPaid.add(interestPaid);
         loan.unClaimedCollateral += collateralRetrieved;
         loan.currentPrincipal -= principalPaid;
         loan.currentCollateral -= collateralRetrieved;
