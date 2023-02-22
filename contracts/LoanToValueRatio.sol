@@ -7,14 +7,14 @@ import "./interfaces/ILoanToValueRatio.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
-    IDarshScore private _healthScore;
+    IDarshScore private _darshScore;
     uint8 public constant base = 10;
 
     uint160 minLTV = 1000;
     uint160 maxLTV = 1200;
 
-    uint256 public healthMaxPrice0 = 1000 * 1e18;
-    uint256 public healthMaxPrice1 = 3000 * 1e18;
+    uint256 public darshScorePrice0 = 1000 * 1e18;
+    uint256 public darshScorePrice1 = 3000 * 1e18;
 
     constructor() Ownable2Step() {}
 
@@ -28,26 +28,26 @@ contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
         override
         returns (uint160)
     {
-        uint160 ltv = getLTV(user);
+        uint160 ltvRatio = getLTV(user);
 
-        if (amount > healthMaxPrice1) return maxLTV;
+        if (amount > darshScorePrice1) return maxLTV;
 
-        if (amount > healthMaxPrice0) {
+        if (amount > darshScorePrice0) {
             uint160 average = ((maxLTV + minLTV) / 2);
-            if (ltv <= average) return average;
+            if (ltvRatio <= average) return average;
         }
 
-        return ltv;
+        return ltvRatio;
     }
 
     function getLTV(address user) public view override returns (uint160) {
-        uint16 score = _healthScore.getScore(user);
+        uint16 score = _darshScore.getScore(user);
         uint160 range = maxLTV - minLTV;
         uint160 scale = ((range * score) / 100);
         return minLTV + scale;
     }
 
-    function setHealthScore(
+    function setDarshScore(
         address trustScore_,
         uint160 minLTV_,
         uint160 maxLTV_
@@ -55,7 +55,7 @@ contract LoanToValueRatio is Ownable2Step, ILoanToValueRatio {
         require(minLTV_ < maxLTV_, "ERR_LTV");
         minLTV = minLTV_ * base;
         maxLTV = maxLTV_ * base;
-        
-        _healthScore = IDarshScore(trustScore_);
+
+        _darshScore = IDarshScore(trustScore_);
     }
 }
