@@ -267,6 +267,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         RequestLibrary.Request storage request = requests[requestId];
         OfferLibrary.Offer memory offer = offers[request.offerId];
         require(offer.creator == user, "ERR_ONLY_CREATOR");
+        require(request.state == RequestLibrary.State.PENDING, "ERR_OFFER_STATE");
         request.state = RequestLibrary.State.REJECTED;
         _emitRequest(requestId, request);
     }

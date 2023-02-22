@@ -63,6 +63,8 @@ contract LendingPool is
 
     constructor() ReentrancyGuard() Ownable2Step() {}
 
+    // ============= Create Lending / Borrowing Offer ============ //
+
     /// @notice This function creates a lending new lending offer
     /// @dev the principalAmount_ parameter is use for ERC20 tokens only
     function createLendingOffer(
@@ -107,6 +109,67 @@ contract LendingPool is
         );
     }
 
+    // @borrower
+    function createBorrowingOffer(
+        address principalToken,
+        uint256 principalAmount,
+        address collateralToken,
+        uint256 interestRate,
+        uint16 daysToMaturity,
+        uint16 hoursToExpire
+    ) public payable whenNotPaused {
+        uint256 principalAmountInUSD = _priceFeed.amountInUSD(
+            principalToken,
+            principalAmount
+        );
+
+        uint160 ltvRatio = _ltvRatio.getRelativeLTV(
+            _msgSender(),
+            principalAmountInUSD
+        );
+
+        uint256 collateralNormalAmount = _priceFeed.exchangeRate(
+            principalToken,
+            collateralToken,
+            principalAmount
+        );
+
+        uint256 collateralAmount = percentageOf(
+            collateralNormalAmount,
+            ltvRatio / _ltvRatio.getBase()
+        );
+
+        if (collateralToken == nativeAddress) {
+            require(msg.value >= collateralAmount);
+        } else {
+            ERC20(collateralToken).safeTransferFrom(
+                _msgSender(),
+                address(this),
+                collateralAmount
+            );
+        }
+
+        _offerManager.createBorrowingOffer(
+            principalToken,
+            collateralToken,
+            collateralAmount,
+            principalAmount,
+            interestRate,
+            daysToMaturity,
+            hoursToExpire,
+            _msgSender()
+        );
+
+        uint256 amountInUSD = _priceFeed.amountInUSD(
+            collateralToken,
+            collateralAmount
+        );
+
+        _activity.dropCollateral(_msgSender(), amountInUSD);
+    }
+
+    // ============ Create Lending / Borrowing Request ============= //
+
     /// @notice Explain to an end user what this does
     /// @dev Explain to a developer any extra details
     function createLendingRequest(
@@ -145,6 +208,83 @@ contract LendingPool is
             offerId
         );
     }
+
+    // @borrower
+    function createBorrowingRequest(
+        uint256 offerId,
+        uint16 percentage,
+        address collateralToken,
+        uint256 interestRate,
+        uint16 daysToMaturity,
+        uint16 hoursToExpire
+    ) public payable whenNotPaused {
+        checkPercentage(percentage);
+
+        OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
+
+        require(
+            _offerManager.isCollateralSupported(offerId, collateralToken),
+            "ERR_COLLATERAL_NOT_SUPPORTED"
+        );
+
+        uint256 principalAmount = percentageOf(
+            offer.initialPrincipal,
+            percentage
+        );
+
+        uint256 principalPriceInUSD = _priceFeed.amountInUSD(
+            offer.principalToken,
+            principalAmount
+        );
+
+        uint160 ltvRatio = _ltvRatio.getRelativeLTV(
+            _msgSender(),
+            principalPriceInUSD
+        );
+
+        uint256 collateralNormalAmount = _priceFeed.exchangeRate(
+            offer.principalToken,
+            collateralToken,
+            principalAmount
+        );
+
+        uint256 collateralAmount = percentageOf(
+            collateralNormalAmount,
+            ltvRatio / _ltvRatio.getBase()
+        );
+
+        if (collateralToken == nativeAddress) {
+            require(collateralAmount >= msg.value);
+        } else {
+            ERC20(collateralToken).safeTransferFrom(
+                _msgSender(),
+                address(this),
+                collateralAmount
+            );
+        }
+
+        uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
+            collateralToken,
+            collateralAmount
+        );
+
+        _offerManager.createBorrowingRequest(
+            percentage,
+            collateralToken,
+            collateralAmount,
+            collateralPriceInUSD,
+            ltvRatio,
+            interestRate,
+            daysToMaturity,
+            hoursToExpire,
+            _msgSender(),
+            offerId
+        );
+
+        _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
+    }
+
+    // ============ Accept Lending / Borrowing Offer =============== //
 
     // @lenders
     function acceptBorrowingOffer(uint256 offerId, uint16 percentage)
@@ -224,194 +364,6 @@ contract LendingPool is
         );
 
         _activity.borrowLoan(offer.creator, borrowedAmountInUSD);
-    }
-
-    /// @notice accept new borrowing request placed on a lender's offer
-    function acceptBorrowingRequest(uint256 requestId) public whenNotPaused {
-        RequestLibrary.Request memory request = _offerManager.getRequest(
-            requestId
-        );
-
-        OfferLibrary.Offer memory offer = _offerManager.getOffer(
-            request.offerId
-        );
-
-        uint256 principalAmount = percentageOf(
-            offer.initialPrincipal,
-            request.percentage
-        );
-
-        transfer(
-            request.offerId,
-            request.creator,
-            request.collateralAmount,
-            request.collateralToken,
-            Type.LOCKED
-        );
-
-        _loanManager.createLoan(
-            request.offerId,
-            offer.offerType,
-            offer.principalToken,
-            request.collateralToken,
-            principalAmount,
-            request.collateralAmount,
-            request.collateralPriceInUSD,
-            request.interestRate,
-            request.daysToMaturity,
-            principalAmount,
-            request.creator,
-            _msgSender()
-        );
-
-        _offerManager.afterOfferBorrowingLoan(
-            request.offerId,
-            principalAmount,
-            request.collateralAmount
-        );
-
-        _offerManager.acceptRequest(requestId, _msgSender());
-
-        uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
-            offer.principalToken,
-            principalAmount
-        );
-
-        _activity.borrowLoan(request.creator, amountBorrowedInUSD);
-    }
-
-    // @borrower
-    function createBorrowingOffer(
-        address principalToken,
-        uint256 principalAmount,
-        address collateralToken,
-        uint256 interestRate,
-        uint16 daysToMaturity,
-        uint16 hoursToExpire
-    ) public payable whenNotPaused {
-        uint256 principalAmountInUSD = _priceFeed.amountInUSD(
-            principalToken,
-            principalAmount
-        );
-
-        uint160 ltvRatio = _ltvRatio.getRelativeLTV(
-            _msgSender(),
-            principalAmountInUSD
-        );
-
-        uint256 collateralNormalAmount = _priceFeed.exchangeRate(
-            principalToken,
-            collateralToken,
-            principalAmount
-        );
-
-        uint256 collateralAmount = percentageOf(
-            collateralNormalAmount,
-            ltvRatio / _ltvRatio.getBase()
-        );
-
-        if (collateralToken == nativeAddress) {
-            require(msg.value >= collateralAmount);
-        } else {
-            ERC20(collateralToken).safeTransferFrom(
-                _msgSender(),
-                address(this),
-                collateralAmount
-            );
-        }
-
-        _offerManager.createBorrowingOffer(
-            principalToken,
-            collateralToken,
-            collateralAmount,
-            principalAmount,
-            interestRate,
-            daysToMaturity,
-            hoursToExpire,
-            _msgSender()
-        );
-
-        uint256 amountInUSD = _priceFeed.amountInUSD(
-            collateralToken,
-            collateralAmount
-        );
-
-        _activity.dropCollateral(_msgSender(), amountInUSD);
-    }
-
-    // @borrower
-    function createBorrowingRequest(
-        uint256 offerId,
-        uint16 percentage,
-        address collateralToken,
-        uint256 interestRate,
-        uint16 daysToMaturity,
-        uint16 hoursToExpire
-    ) public payable whenNotPaused {
-        checkPercentage(percentage);
-
-        OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
-
-        require(
-            _offerManager.isCollateralSupported(offerId, collateralToken),
-            "ERR_COLLATERAL_NOT_SUPPORTED"
-        );
-
-        uint256 principalAmount = percentageOf(
-            offer.initialPrincipal,
-            percentage
-        );
-
-        uint256 principalPriceInUSD = _priceFeed.amountInUSD(
-            offer.principalToken,
-            principalAmount
-        );
-
-        uint160 ltvRatio = _ltvRatio.getRelativeLTV(
-            _msgSender(),
-            principalPriceInUSD
-        );
-
-        uint256 collateralNormalAmount = _priceFeed.exchangeRate(
-            offer.principalToken,
-            collateralToken,
-            principalAmount
-        );
-
-        uint256 collateralAmount = percentageOf(
-            collateralNormalAmount,
-            ltvRatio / _ltvRatio.getBase()
-        );
-
-        if (collateralToken == nativeAddress) {
-            require(collateralAmount >= msg.value);
-        } else {
-            ERC20(collateralToken).safeTransferFrom(
-                _msgSender(),
-                address(this),
-                collateralAmount
-            );
-        }
-
-        uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
-            collateralToken,
-            collateralAmount
-        );
-
-        _offerManager.createBorrowingRequest(
-            percentage,
-            collateralToken,
-            collateralAmount,
-            collateralPriceInUSD,
-            ltvRatio,
-            interestRate,
-            daysToMaturity,
-            hoursToExpire,
-            _msgSender(),
-            offerId
-        );
-
-        _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
     // @borrower
@@ -523,6 +475,62 @@ contract LendingPool is
         _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
+    // ============ Accept Lending / Borrowing Request =============== //
+
+    /// @notice accept new borrowing request placed on a lender's offer
+    function acceptBorrowingRequest(uint256 requestId) public whenNotPaused {
+        RequestLibrary.Request memory request = _offerManager.getRequest(
+            requestId
+        );
+
+        OfferLibrary.Offer memory offer = _offerManager.getOffer(
+            request.offerId
+        );
+
+        uint256 principalAmount = percentageOf(
+            offer.initialPrincipal,
+            request.percentage
+        );
+
+        transfer(
+            request.offerId,
+            request.creator,
+            request.collateralAmount,
+            request.collateralToken,
+            Type.LOCKED
+        );
+
+        _loanManager.createLoan(
+            request.offerId,
+            offer.offerType,
+            offer.principalToken,
+            request.collateralToken,
+            principalAmount,
+            request.collateralAmount,
+            request.collateralPriceInUSD,
+            request.interestRate,
+            request.daysToMaturity,
+            principalAmount,
+            request.creator,
+            _msgSender()
+        );
+
+        _offerManager.afterOfferBorrowingLoan(
+            request.offerId,
+            principalAmount,
+            request.collateralAmount
+        );
+
+        _offerManager.acceptRequest(requestId, _msgSender());
+
+        uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
+            offer.principalToken,
+            principalAmount
+        );
+
+        _activity.borrowLoan(request.creator, amountBorrowedInUSD);
+    }
+
     // @borrower
     function acceptLendingRequest(uint256 requestId)
         public
@@ -604,6 +612,8 @@ contract LendingPool is
         _activity.borrowLoan(_msgSender(), amountBorrowedInUSD);
     }
 
+    // ============= ReActivating Lending / Borrowing Offer ============= //
+
     // @lender
     function reActivateOffer(uint256 offerId, uint16 toExpire)
         public
@@ -611,6 +621,8 @@ contract LendingPool is
     {
         _offerManager.reActivateOffer(offerId, toExpire, _msgSender());
     }
+
+    // =============== Loan Repayment ============= //
 
     // @borrower
     function repayLoan(uint256 loanId, uint16 percentage)
@@ -693,7 +705,9 @@ contract LendingPool is
         );
     }
 
-    // =========== Request Functions =========== //
+    function repayLiquidatedLoan(uint256 loanId) public payable whenNotPaused {}
+
+    // =========== Cancel / Reject Request Functions =========== //
 
     function rejectRequest(uint256 requestId) public whenNotPaused {
         _offerManager.rejectRequest(requestId, _msgSender());
@@ -798,15 +812,7 @@ contract LendingPool is
         transfer(offerId, _msgSender(), amount, token, Type.CLAIMED);
     }
 
-    function repayLiquidatedLoan(uint256 loanId) public payable nonReentrant {}
-
-    // ============= ABOUT ============ //
-
-    function getVersion() public pure returns (uint256) {
-        return LENDINGPOOL_VERSION;
-    }
-
-    // ============= ADMIN FUNCTIONS =============== //
+    // =========== Loan Liquidation ============= //
 
     /// @dev this function will liquidate a loan when it has pass
     /// maturity date + grace days.
@@ -878,6 +884,14 @@ contract LendingPool is
             (collateralRetrieved - collateralFee)
         );
     }
+
+    // ============= ABOUT ============ //
+
+    function getVersion() public pure returns (uint256) {
+        return LENDINGPOOL_VERSION;
+    }
+
+    // ============= ADMIN FUNCTIONS =============== //
 
     function setFeeds(
         address ltv_,

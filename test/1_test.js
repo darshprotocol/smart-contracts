@@ -23,33 +23,34 @@ const NATIVE = {
 
 contract("CreateLendingOffer", async accounts => {
     it("setValues", async () => {
-        const priceFeed = await PriceFeed.deployed()
-        await priceFeed.addPriceFeed(NATIVE.address, "0xe04676B9A9A2973BCb0D1478b5E1E9098BBB7f3D")
-        await priceFeed.addPriceFeed(WBTC.address, "0x65E8d79f3e8e36fE48eC31A2ae935e92F5bBF529")
-        await priceFeed.addPriceFeed(WETH.address, "0xB8C458C957a6e6ca7Cc53eD95bEA548c52AFaA24")
-        await priceFeed.addPriceFeed(USDT.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
-        await priceFeed.addPriceFeed(USDC.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
-        await priceFeed.addPriceFeed(DAI.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
+        // const priceFeed = await PriceFeed.deployed()
+        // await priceFeed.addPriceFeed(NATIVE.address, "0xe04676B9A9A2973BCb0D1478b5E1E9098BBB7f3D")
+        // await priceFeed.addPriceFeed(WBTC.address, "0x65E8d79f3e8e36fE48eC31A2ae935e92F5bBF529")
+        // await priceFeed.addPriceFeed(WETH.address, "0xB8C458C957a6e6ca7Cc53eD95bEA548c52AFaA24")
+        // await priceFeed.addPriceFeed(USDT.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
+        // await priceFeed.addPriceFeed(USDC.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
+        // await priceFeed.addPriceFeed(DAI.address, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
     })
     it("setValues 2", async () => {
-        const ltv = await LoanToValueRatio.deployed()
-        await ltv.setHealthScore(DarshScore.address, 100, 120)
+        // const ltv = await LoanToValueRatio.deployed()
+        // await ltv.setDarshScore(DarshScore.address, 100, 120)
 
-        const darshScore = await DarshScore.deployed()
-        await darshScore.setActivity(Activity.address)
+        // const darshScore = await DarshScore.deployed()
+        // await darshScore.setActivity(Activity.address)
 
-        const offerManager = await OfferManager.deployed()
-        await offerManager.setLendingPool(LendingPool.address)
+        // const offerManager = await OfferManager.deployed()
+        // await offerManager.setLendingPool(LendingPool.address)
 
-        const loanManager = await LoanManager.deployed()
-        await loanManager.setLendingPool(LendingPool.address)
+        // const loanManager = await LoanManager.deployed()
+        // await loanManager.setLendingPool(LendingPool.address)
 
-        const feeManager = await FeeManager.deployed()
-        await feeManager.setLendingPool(LendingPool.address)
+        // const feeManager = await FeeManager.deployed()
+        // await feeManager.setLendingPool(LendingPool.address)
 
-        const activity = await Activity.deployed()
-        await activity.setLendingPool(LendingPool.address)
-
+        // const activity = await Activity.deployed()
+        // await activity.setLendingPool(LendingPool.address)
+    })
+    it("setValues 3", async function () {
         const lendingPool = await LendingPool.deployed()
         await lendingPool.setFeeds(
             LoanToValueRatio.address,
@@ -62,14 +63,14 @@ contract("CreateLendingOffer", async accounts => {
             FeeManager.address
         )
     }),
-    it("mint faucet", async () => {
-        const btc = await WBTC.deployed()
-        await btc.faucetMint('2000000000000000000', {from: accounts[1]})
-        const weth = await WETH.deployed()
-        await weth.faucetMint('5000000000000000000', {from: accounts[1]})
-        const usdt = await WBTC.deployed()
-        await usdt.faucetMint('100000000000000000000000', {from: accounts[1]})
-    })
+        it("mint faucet", async () => {
+            const btc = await WBTC.deployed()
+            await btc.faucetMint('2000000000000000000', { from: accounts[1] })
+            const weth = await WETH.deployed()
+            await weth.faucetMint('5000000000000000000', { from: accounts[1] })
+            const usdt = await WBTC.deployed()
+            await usdt.faucetMint('100000000000000000000000', { from: accounts[1] })
+        })
     it("createOffer", async () => {
         // const usdt = await USDT.deployed()
         // await usdt.approve(LendingPool.address, '2000000000000000000')
