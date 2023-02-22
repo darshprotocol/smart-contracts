@@ -8,7 +8,7 @@ interface IOfferManager {
     function createLendingOffer(
         address principalToken,
         uint256 principalAmount,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 daysToExpire,
         address[] memory collateralTokens,
@@ -17,7 +17,7 @@ interface IOfferManager {
 
     function createLendingRequest(
         uint16 percentage,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address lender,
@@ -29,7 +29,7 @@ interface IOfferManager {
         address collateralToken,
         uint256 collateralAmount,
         uint256 principalAmount,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address borrower
@@ -41,7 +41,7 @@ interface IOfferManager {
         uint256 collateralAmount,
         uint256 collateralPriceInUSD,
         uint160 ltvUsed,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address borrower,

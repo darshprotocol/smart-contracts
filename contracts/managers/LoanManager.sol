@@ -36,9 +36,9 @@ contract LoanManager is ILoanManager, Ownable2Step {
         uint256 principalAmount,
         uint256 collateralAmount,
         uint256 collateralPriceInUSD,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
-        uint256 unClaimedLoanPrincipal,
+        uint256 unClaimedBorrowedPrincipal,
         address borrower,
         address lender
     ) public override onlyLendingPool returns (uint256) {
@@ -73,7 +73,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
             collateralAmount,
             collateralAmount,
             collateralPriceInUSD,
-            interest,
+            interestRate,
             startDate,
             maturityDate,
             graceDays,
@@ -81,8 +81,8 @@ contract LoanManager is ILoanManager, Ownable2Step {
             0, // unclaimed principal
             0, // unclaimed collateral
             0, // unclaimed default collateral
-            unClaimedLoanPrincipal,
-            0, // total interest paid
+            unClaimedBorrowedPrincipal,
+            0, // total interestRate paid
             0, // repaidOn
             borrower,
             lender
@@ -107,7 +107,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
         uint256 principalPaid,
         uint256 collateralRetrieved
     ) public override onlyLendingPool returns (bool) {
-        LoanLibrary.Loan storage loan = loans[loanId]; 
+        LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.state == LoanLibrary.State.ACTIVE, "ERR_LOAN_NOT_ACTIVE");
 
         loan.numInstallmentsPaid += 1;
@@ -130,56 +130,72 @@ contract LoanManager is ILoanManager, Ownable2Step {
         public
         override
         onlyLendingPool
-        returns (uint256, address)
+        returns (
+            uint256,
+            uint256,
+            address
+        )
     {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.lender == user, "ERR_NOT_LENDER");
         require(loan.unClaimedPrincipal > 0, "ERR_ZERO_BALANCE");
         uint256 amount = loan.unClaimedPrincipal;
         loan.unClaimedPrincipal = 0;
-        return (amount, loan.principalToken);
+        return (amount, loan.offerId, loan.principalToken);
     }
 
     function claimDefaultCollateral(uint256 loanId, address user)
         public
         override
         onlyLendingPool
-        returns (uint256, address)
+        returns (
+            uint256,
+            uint256,
+            address
+        )
     {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.lender == user, "ERR_NOT_LENDER");
         require(loan.unClaimedDefaultCollateral > 0, "ERR_ZERO_BALANCE");
         uint256 amount = loan.unClaimedDefaultCollateral;
         loan.unClaimedDefaultCollateral = 0;
-        return (amount, loan.collateralToken);
+        return (amount, loan.offerId, loan.collateralToken);
     }
 
     function claimCollateral(uint256 loanId, address user)
         public
         override
         onlyLendingPool
-        returns (uint256, address)
+        returns (
+            uint256,
+            uint256,
+            address
+        )
     {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.borrower == user, "ERR_NOT_BORROWER");
         require(loan.unClaimedCollateral > 0, "ERR_ZERO_BALANCE");
         uint256 amount = loan.unClaimedCollateral;
         loan.unClaimedCollateral = 0;
-        return (amount, loan.collateralToken);
+        return (amount, loan.offerId, loan.collateralToken);
     }
 
-    function claimLoanPrincipal(uint256 loanId, address user)
+    function claimBorrowedPrincipal(uint256 loanId, address user)
         public
         override
         onlyLendingPool
-        returns (uint256, address)
+        returns (
+            uint256,
+            uint256,
+            address
+        )
     {
         LoanLibrary.Loan storage loan = loans[loanId];
         require(loan.borrower == user, "ERR_NOT_BORROWER");
-        require(loan.unClaimedLoanPrincipal > 0, "ERR_ZERO_BALANCE");
-        uint256 amount = loan.unClaimedLoanPrincipal;
-        loan.unClaimedLoanPrincipal = 0;
-        return (amount, loan.principalToken);
+        require(loan.unClaimedBorrowedPrincipal > 0, "ERR_ZERO_BALANCE");
+        uint256 amount = loan.unClaimedBorrowedPrincipal;
+        loan.unClaimedBorrowedPrincipal = 0;
+        return (amount, loan.offerId, loan.principalToken);
     }
 
     function liquidateLoan(
@@ -226,12 +242,23 @@ contract LoanManager is ILoanManager, Ownable2Step {
             loan.currentPrincipal,
             loan.initialCollateral,
             loan.currentCollateral,
-            loan.interest,
+            loan.interestRate,
             loan.startDate,
             loan.maturityDate,
             loan.graceDays,
             loan.borrower,
             loan.lender
+        );
+        emit LoanLibrary.LoanCreatedProperty(
+            loanId,
+            loan.collateralPriceInUSD,
+            loan.numInstallmentsPaid,
+            loan.unClaimedPrincipal,
+            loan.unClaimedCollateral,
+            loan.unClaimedDefaultCollateral,
+            loan.unClaimedBorrowedPrincipal,
+            loan.totalInterestPaid,
+            loan.repaidOn
         );
     }
 

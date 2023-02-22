@@ -36,8 +36,8 @@ contract("CreateLendingOffer", async accounts => {
         const ltv = await LoanToValueRatio.deployed()
         await ltv.setHealthScore(DarshScore.address, 100, 120)
 
-        const trustScore = await DarshScore.deployed()
-        await trustScore.setActivity(Activity.address)
+        const darshScore = await DarshScore.deployed()
+        await darshScore.setActivity(Activity.address)
 
         const offerManager = await OfferManager.deployed()
         await offerManager.setLendingPool(LendingPool.address)

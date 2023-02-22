@@ -18,7 +18,7 @@ library OfferLibrary {
         address principalToken,
         uint256 currentPrincipal,
         uint256 initialPrincipal,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint expiresAt,
         uint createdAt,
@@ -37,7 +37,7 @@ library OfferLibrary {
         address principalToken;
         uint256 currentPrincipal;
         uint256 initialPrincipal;
-        uint256 interest;
+        uint256 interestRate;
         uint16 daysToMaturity;
         uint expiresAt;
         uint createdAt;

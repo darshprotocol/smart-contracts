@@ -43,7 +43,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
     function createLendingOffer(
         address principalToken,
         uint256 principalAmount,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 daysToExpire,
         address[] memory collateralTokens,
@@ -65,7 +65,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
             principalToken,
             principalAmount, // currentPrincipal
             principalAmount, // initialPrincipal
-            interest,
+            interestRate,
             daysToMaturity,
             expiresAt,
             createdAt,
@@ -115,7 +115,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
     // creates a new lending request
     function createLendingRequest(
         uint16 percentage,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address lender,
@@ -144,7 +144,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
             RequestLibrary.State.PENDING,
             percentage,
             daysToMaturity,
-            interest,
+            interestRate,
             expiresAt,
             createdAt,
             lender,
@@ -168,7 +168,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         address collateralToken,
         uint256 collateralAmount,
         uint256 principalAmount,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address borrower
@@ -186,7 +186,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
             principalToken,
             principalAmount, // currentPrincipal
             principalAmount, // initialPrincipal
-            interest,
+            interestRate,
             daysToMaturity,
             expiresAt,
             createdAt,
@@ -212,7 +212,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         uint256 collateralAmount,
         uint256 collateralPriceInUSD,
         uint160 ltvUsed,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address borrower,
@@ -242,7 +242,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
             RequestLibrary.State.PENDING,
             percentage,
             daysToMaturity,
-            interest,
+            interestRate,
             expiresAt,
             createdAt,
             borrower,
@@ -289,6 +289,8 @@ contract OfferManager is IOfferManager, Ownable2Step {
     {
         RequestLibrary.Request storage request = requests[requestId];
         require(request.creator == user, "ERR_ONLY_CREATOR");
+        require(request.state != RequestLibrary.State.ACCEPTED, "ERR_ALREADY_USED");
+        require(request.state != RequestLibrary.State.CANCELLED, "ERR_ALREADY_CANCELLED");
         request.state = RequestLibrary.State.CANCELLED;
         _emitRequest(requestId, request);
     }
@@ -303,7 +305,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
             offer.principalToken,
             offer.currentPrincipal,
             offer.initialPrincipal,
-            offer.interest,
+            offer.interestRate,
             offer.daysToMaturity,
             offer.expiresAt,
             offer.createdAt,
@@ -325,7 +327,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
             request.state,
             request.percentage,
             request.daysToMaturity,
-            request.interest,
+            request.interestRate,
             request.expiresAt,
             request.createdAt,
             request.creator,

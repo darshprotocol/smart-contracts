@@ -19,12 +19,24 @@ library LoanLibrary {
         uint256 currentPrincipal,
         uint256 initialCollateral,
         uint256 currentCollateral,
-        uint256 interest,
+        uint256 interestRate,
         uint256 startDate,
         uint256 maturityDate,
         uint16 graceDays,
         address borrower,
         address lender
+    );
+
+    event LoanCreatedProperty(
+        uint256 loanId,
+        uint256 collateralPriceInUSD,
+        uint8 numInstallmentsPaid,
+        uint256 unClaimedPrincipal,
+        uint256 unClaimedCollateral,
+        uint256 unClaimedDefaultCollateral,
+        uint256 unClaimedBorrowedPrincipal,
+        uint256 totalInterestPaid,
+        uint256 repaidOn
     );
 
     struct Loan {
@@ -44,8 +56,8 @@ library LoanLibrary {
         uint256 currentCollateral;
         /// @dev worth of collateral in USD at the time of loan
         uint256 collateralPriceInUSD;
-        /// @dev loan interest rate per seconds
-        uint256 interest;
+        /// @dev loan interestRate rate per seconds
+        uint256 interestRate;
         /// @dev loan start in seconds
         uint256 startDate;
         /// @dev loan maturity in seconds
@@ -55,7 +67,7 @@ library LoanLibrary {
         /// @dev number of times that a borrower
         /// split to payback a loan
         uint8 numInstallmentsPaid;
-        /// @dev this represents principal + interest
+        /// @dev this represents principal + interestRate
         /// that was paid payback by the borrower that
         /// the lender as not claimed
         uint256 unClaimedPrincipal;
@@ -69,8 +81,8 @@ library LoanLibrary {
         uint256 unClaimedDefaultCollateral;
         /// @dev this represents principal amount
         /// that the borrower has not claimed
-        uint256 unClaimedLoanPrincipal;
-        /// @dev this represents total interest paid by 
+        uint256 unClaimedBorrowedPrincipal;
+        /// @dev this represents total interestRate paid by
         /// the borrower
         uint256 totalInterestPaid;
         /// @dev seconds of full repaid loan

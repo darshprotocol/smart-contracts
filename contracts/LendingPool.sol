@@ -2,6 +2,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "./Activity.sol";
+import "./LendingPoolProvider.sol";
 
 import "./libraries/Errors.sol";
 
@@ -9,7 +10,6 @@ import "./math/SimpleInterest.sol";
 
 import "./interfaces/IPriceFeed.sol";
 import "./interfaces/IFeeManager.sol";
-import "./interfaces/IVaultManager.sol";
 import "./interfaces/IOfferManager.sol";
 import "./interfaces/ILoanManager.sol";
 import "./interfaces/ILoanToValueRatio.sol";
@@ -20,6 +20,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 /**
  * @title LendingPool contract
@@ -35,12 +36,14 @@ import "@openzeppelin/contracts/security/Pausable.sol";
  * @author Arogundade Ibrahim
  **/
 contract LendingPool is
+    LendingPoolProvider,
     Context,
     ReentrancyGuard,
     SimpleInterest,
     Ownable2Step,
     Pausable
 {
+    using SafeMath for uint256;
     using SafeERC20 for ERC20;
 
     /// @dev contract version
@@ -48,9 +51,8 @@ contract LendingPool is
 
     Activity private _activity;
     IPriceFeed private _priceFeed;
-    ILoanToValueRatio private _ltv;
+    ILoanToValueRatio private _ltvRatio;
 
-    IVaultManager private _vaultManager;
     ILoanManager private _loanManager;
     IOfferManager private _offerManager;
     IFeeManager private _feeManager;
@@ -68,7 +70,7 @@ contract LendingPool is
         address principalToken,
         address[] memory collateralTokens,
         uint16 daysToMaturity,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToExpire
     ) public payable whenNotPaused {
         uint256 principalAmount;
@@ -89,19 +91,19 @@ contract LendingPool is
         uint256 offerId = _offerManager.createLendingOffer(
             principalToken,
             principalAmount,
-            interest,
+            interestRate,
             daysToMaturity,
             daysToExpire,
             collateralTokens,
             _msgSender()
         );
 
-        /* delegate principal to lender */
-        _vaultManager.deposit(
+        transfer(
+            offerId,
             _msgSender(),
-            principalToken,
             principalAmount,
-            offerId
+            principalToken,
+            Type.ADDED
         );
     }
 
@@ -111,7 +113,7 @@ contract LendingPool is
         uint256 offerId,
         uint16 percentage,
         uint16 daysToMaturity,
-        uint256 interest,
+        uint256 interestRate,
         uint16 hoursToExpire
     ) public payable whenNotPaused {
         checkPercentage(percentage);
@@ -123,7 +125,6 @@ contract LendingPool is
             percentage
         );
 
-        /* extract tokens from lender */
         if (offer.principalToken == nativeAddress) {
             require(msg.value >= principalAmount);
         } else {
@@ -137,7 +138,7 @@ contract LendingPool is
         /* create the lending request */
         _offerManager.createLendingRequest(
             percentage,
-            interest,
+            interestRate,
             daysToMaturity,
             hoursToExpire,
             _msgSender(),
@@ -152,6 +153,7 @@ contract LendingPool is
         whenNotPaused
     {
         checkPercentage(percentage);
+
         OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
 
         uint256 collateralAmount = percentageOf(
@@ -164,7 +166,6 @@ contract LendingPool is
             percentage
         );
 
-        /* extract principal from lender/caller */
         if (offer.principalToken == nativeAddress) {
             require(msg.value >= principalAmount);
         } else {
@@ -175,20 +176,20 @@ contract LendingPool is
             );
         }
 
-        /* undelegate the loan principal from to lender */
-        _vaultManager.deposit(
+        transfer(
+            offerId,
             _msgSender(),
-            offer.principalToken,
             principalAmount,
-            offerId
+            offer.principalToken,
+            Type.ADDED
         );
 
-        /* delegate the loan collateral to lender */
-        _vaultManager.withdraw(
-            _msgSender(),
-            offer.collateralToken,
+        transfer(
+            offerId,
+            offer.creator,
             collateralAmount,
-            offerId
+            offer.collateralToken,
+            Type.LOCKED
         );
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
@@ -196,7 +197,6 @@ contract LendingPool is
             collateralAmount
         );
 
-        /* register the loan from the loan manager */
         _loanManager.createLoan(
             offer.offerId,
             offer.offerType,
@@ -205,25 +205,24 @@ contract LendingPool is
             principalAmount,
             collateralAmount,
             collateralPriceInUSD,
-            offer.interest,
+            offer.interestRate,
             offer.daysToMaturity,
             principalAmount,
             offer.creator,
             _msgSender()
         );
 
-        // will revert the transaction if fail
         _offerManager.afterOfferBorrowingLoan(
             offerId,
             principalAmount,
             collateralAmount
         );
 
-        // update activity
         uint256 borrowedAmountInUSD = _priceFeed.amountInUSD(
             offer.principalToken,
             principalAmount
         );
+
         _activity.borrowLoan(offer.creator, borrowedAmountInUSD);
     }
 
@@ -242,33 +241,14 @@ contract LendingPool is
             request.percentage
         );
 
-        /* transfer principal to borrower */
-        if (offer.principalToken == nativeAddress) {
-            payable(request.creator).transfer(principalAmount);
-        } else {
-            ERC20(offer.principalToken).safeTransfer(
-                request.creator,
-                principalAmount
-            );
-        }
-
-        /* delegate the collateral to borrower */
-        _vaultManager.deposit(
+        transfer(
+            request.offerId,
             request.creator,
-            request.collateralToken,
             request.collateralAmount,
-            request.offerId
+            request.collateralToken,
+            Type.LOCKED
         );
 
-        /* undelegate the principal from lender */
-        _vaultManager.withdraw(
-            _msgSender(),
-            offer.principalToken,
-            principalAmount,
-            request.offerId
-        );
-
-        /* register the loan from the loan manager */
         _loanManager.createLoan(
             request.offerId,
             offer.offerType,
@@ -277,14 +257,13 @@ contract LendingPool is
             principalAmount,
             request.collateralAmount,
             request.collateralPriceInUSD,
-            request.interest,
+            request.interestRate,
             request.daysToMaturity,
-            0,
+            principalAmount,
             request.creator,
             _msgSender()
         );
 
-        // will revert the transaction if fail
         _offerManager.afterOfferBorrowingLoan(
             request.offerId,
             principalAmount,
@@ -293,7 +272,6 @@ contract LendingPool is
 
         _offerManager.acceptRequest(requestId, _msgSender());
 
-        // update activity
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
             offer.principalToken,
             principalAmount
@@ -307,7 +285,7 @@ contract LendingPool is
         address principalToken,
         uint256 principalAmount,
         address collateralToken,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 hoursToExpire
     ) public payable whenNotPaused {
@@ -316,7 +294,10 @@ contract LendingPool is
             principalAmount
         );
 
-        uint160 ltv = _ltv.getRelativeLTV(_msgSender(), principalAmountInUSD);
+        uint160 ltvRatio = _ltvRatio.getRelativeLTV(
+            _msgSender(),
+            principalAmountInUSD
+        );
 
         uint256 collateralNormalAmount = _priceFeed.exchangeRate(
             principalToken,
@@ -326,10 +307,9 @@ contract LendingPool is
 
         uint256 collateralAmount = percentageOf(
             collateralNormalAmount,
-            ltv / _ltv.getBase()
+            ltvRatio / _ltvRatio.getBase()
         );
 
-        /* extract collateral from borrower */
         if (collateralToken == nativeAddress) {
             require(msg.value >= collateralAmount);
         } else {
@@ -340,31 +320,22 @@ contract LendingPool is
             );
         }
 
-        /* create the offer */
-        uint256 offerId = _offerManager.createBorrowingOffer(
+        _offerManager.createBorrowingOffer(
             principalToken,
             collateralToken,
             collateralAmount,
             principalAmount,
-            interest,
+            interestRate,
             daysToMaturity,
             hoursToExpire,
             _msgSender()
         );
 
-        /* delegate the collateral to borrower */
-        _vaultManager.deposit(
-            _msgSender(),
-            collateralToken,
-            collateralAmount,
-            offerId
-        );
-
-        // update activity
         uint256 amountInUSD = _priceFeed.amountInUSD(
             collateralToken,
             collateralAmount
         );
+
         _activity.dropCollateral(_msgSender(), amountInUSD);
     }
 
@@ -373,7 +344,7 @@ contract LendingPool is
         uint256 offerId,
         uint16 percentage,
         address collateralToken,
-        uint256 interest,
+        uint256 interestRate,
         uint16 daysToMaturity,
         uint16 hoursToExpire
     ) public payable whenNotPaused {
@@ -396,7 +367,10 @@ contract LendingPool is
             principalAmount
         );
 
-        uint160 ltv = _ltv.getRelativeLTV(_msgSender(), principalPriceInUSD);
+        uint160 ltvRatio = _ltvRatio.getRelativeLTV(
+            _msgSender(),
+            principalPriceInUSD
+        );
 
         uint256 collateralNormalAmount = _priceFeed.exchangeRate(
             offer.principalToken,
@@ -406,10 +380,9 @@ contract LendingPool is
 
         uint256 collateralAmount = percentageOf(
             collateralNormalAmount,
-            ltv / _ltv.getBase()
+            ltvRatio / _ltvRatio.getBase()
         );
 
-        /* extract collateral from borrower */
         if (collateralToken == nativeAddress) {
             require(collateralAmount >= msg.value);
         } else {
@@ -425,21 +398,19 @@ contract LendingPool is
             collateralAmount
         );
 
-        /* create the request */
         _offerManager.createBorrowingRequest(
             percentage,
             collateralToken,
             collateralAmount,
             collateralPriceInUSD,
-            ltv,
-            interest,
+            ltvRatio,
+            interestRate,
             daysToMaturity,
             hoursToExpire,
             _msgSender(),
             offerId
         );
 
-        // update activity
         _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
@@ -468,7 +439,10 @@ contract LendingPool is
             principalAmount
         );
 
-        uint160 ltv = _ltv.getRelativeLTV(_msgSender(), principalPriceInUSD);
+        uint160 ltvRatio = _ltvRatio.getRelativeLTV(
+            _msgSender(),
+            principalPriceInUSD
+        );
 
         /* calculate the collateral amount */
         uint256 collateralNormalAmount = _priceFeed.exchangeRate(
@@ -479,10 +453,9 @@ contract LendingPool is
 
         uint256 collateralAmount = percentageOf(
             collateralNormalAmount,
-            ltv / _ltv.getBase()
+            ltvRatio / _ltvRatio.getBase()
         );
 
-        /* extract collateral tokens from borrower */
         if (collateralToken == nativeAddress) {
             require(collateralAmount >= msg.value, "ERR_COLLATERAL_AMOUNT");
         } else {
@@ -493,20 +466,29 @@ contract LendingPool is
             );
         }
 
-        /* delegate the loan collateral to lender */
-        _vaultManager.deposit(
+        transfer(
+            offerId,
             _msgSender(),
-            collateralToken,
             collateralAmount,
-            offerId
+            collateralToken,
+            Type.LOCKED
         );
 
-        /* undelegate the loan principal from lender */
-        _vaultManager.withdraw(
+        if (offer.principalToken == nativeAddress) {
+            payable(_msgSender()).transfer(principalAmount);
+        } else {
+            ERC20(offer.principalToken).safeTransfer(
+                _msgSender(),
+                principalAmount
+            );
+        }
+
+        transfer(
+            offerId,
             _msgSender(),
-            offer.principalToken,
             principalAmount,
-            offerId
+            offer.principalToken,
+            Type.CLAIMED
         );
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
@@ -514,7 +496,6 @@ contract LendingPool is
             collateralAmount
         );
 
-        /* register the loan */
         _loanManager.createLoan(
             offerId,
             offer.offerType,
@@ -523,22 +504,22 @@ contract LendingPool is
             principalAmount,
             collateralAmount,
             collateralPriceInUSD,
-            offer.interest,
+            offer.interestRate,
             offer.daysToMaturity,
-            principalAmount,
+            0,
             _msgSender(),
             offer.creator
         );
 
-        // will revert if transaction fail
         _offerManager.afterOfferLendingLoan(offerId, principalAmount);
 
-        // update activity
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
             offer.principalToken,
             principalAmount
         );
+
         _activity.borrowLoan(_msgSender(), amountBorrowedInUSD);
+
         _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
@@ -566,7 +547,14 @@ contract LendingPool is
             request.percentage
         );
 
-        /* transfer principal to borrower */
+        transfer(
+            request.offerId,
+            _msgSender(),
+            collateralAmount,
+            offer.collateralToken,
+            Type.LOCKED
+        );
+
         if (offer.principalToken == nativeAddress) {
             payable(_msgSender()).transfer(principalAmount);
         } else {
@@ -576,20 +564,12 @@ contract LendingPool is
             );
         }
 
-        /* delegate the loan collateral to lender */
-        _vaultManager.deposit(
+        transfer(
+            request.offerId,
             _msgSender(),
-            offer.collateralToken,
-            collateralAmount,
-            request.offerId
-        );
-
-        /* undelegate the loan principal from lender */
-        _vaultManager.withdraw(
-            _msgSender(),
-            offer.principalToken,
             principalAmount,
-            request.offerId
+            offer.principalToken,
+            Type.CLAIMED
         );
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
@@ -597,7 +577,6 @@ contract LendingPool is
             collateralAmount
         );
 
-        /* register the loan from the loan manager */
         _loanManager.createLoan(
             request.offerId,
             offer.offerType,
@@ -606,19 +585,17 @@ contract LendingPool is
             principalAmount,
             collateralAmount,
             collateralPriceInUSD,
-            request.interest,
+            request.interestRate,
             request.daysToMaturity,
             0,
             _msgSender(),
             request.creator
         );
 
-        // will revert the transaction if fail
         _offerManager.afterOfferLendingLoan(offer.offerId, principalAmount);
 
         _offerManager.acceptRequest(requestId, _msgSender());
 
-        // update activityj
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
             offer.principalToken,
             principalAmount
@@ -645,10 +622,8 @@ contract LendingPool is
 
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
-        // verify the borrower is the repayer
         require(loan.borrower == _msgSender(), "ERR_NOT_BORROWER");
 
-        // calculate the duration of the loan
         uint256 time = block.timestamp;
         uint256 ellapsedSecs = (time - loan.startDate);
 
@@ -662,21 +637,19 @@ contract LendingPool is
             percentage
         );
 
-        // calculate the pay back amount
         uint256 repaymentPrincipal = getFullInterestAmount(
             principalAmount,
             ellapsedSecs,
-            loan.interest
+            loan.interestRate
         );
 
         uint256 interestPaid = (repaymentPrincipal - principalAmount);
         uint256 fee = percentageOf(interestPaid, _feeManager.feePercentage());
-        
+
         uint256 unClaimedInterest = (interestPaid - fee);
 
         _feeManager.credit(loan.principalToken, fee);
 
-        // will revert the transaction if fail
         bool completed = _loanManager.repayLoan(
             loanId,
             unClaimedInterest,
@@ -684,7 +657,6 @@ contract LendingPool is
             collateralAmount
         );
 
-        /* extract pay back amount */
         if (loan.principalToken == nativeAddress) {
             require(msg.value >= repaymentPrincipal);
         } else {
@@ -695,23 +667,14 @@ contract LendingPool is
             );
         }
 
-        /* delegate principal to lender */
-        _vaultManager.deposit(
+        transfer(
+            loan.offerId,
             _msgSender(),
+            principalAmount.add(unClaimedInterest),
             loan.principalToken,
-            (principalAmount + unClaimedInterest),
-            loan.offerId
+            Type.ADDED
         );
 
-        /* undelegate collateral from lender to borrower */
-        _vaultManager.withdraw(
-            _msgSender(),
-            loan.collateralToken,
-            collateralAmount,
-            loan.offerId
-        );
-
-        // update activity
         uint256 interestPaidInUSD = _priceFeed.amountInUSD(
             loan.principalToken,
             (repaymentPrincipal - principalAmount)
@@ -736,58 +699,38 @@ contract LendingPool is
         _offerManager.rejectRequest(requestId, _msgSender());
     }
 
-    function cancelLendRequest(uint256 requestId) public whenNotPaused {
+    function cancelRequest(uint256 requestId) public whenNotPaused {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
-        );
-
-        require(
-            request.requestType == RequestLibrary.Type.LENDING_REQUEST,
-            "ERR_REQUEST_TYPE"
         );
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(
             request.offerId
         );
 
-        uint256 principalAmount = percentageOf(
-            offer.initialPrincipal,
-            request.percentage
-        );
-
-        if (offer.principalToken == nativeAddress) {
-            payable(_msgSender()).transfer(principalAmount);
-        } else {
-            ERC20(offer.principalToken).safeTransfer(
-                _msgSender(),
-                principalAmount
+        if (request.requestType == RequestLibrary.Type.LENDING_REQUEST) {
+            uint256 principalAmount = percentageOf(
+                offer.initialPrincipal,
+                request.percentage
             );
-        }
 
-        _offerManager.cancelRequest(requestId, _msgSender());
-    }
-
-    function cancelBorrowRequest(uint256 requestId) public whenNotPaused {
-        RequestLibrary.Request memory request = _offerManager.getRequest(
-            requestId
-        );
-
-        require(
-            request.requestType == RequestLibrary.Type.BORROWING_REQUEST,
-            "ERR_REQUEST_TYPE"
-        );
-
-        OfferLibrary.Offer memory offer = _offerManager.getOffer(
-            request.offerId
-        );
-
-        if (offer.collateralToken == nativeAddress) {
-            payable(_msgSender()).transfer(request.collateralAmount);
+            if (offer.principalToken == nativeAddress) {
+                payable(_msgSender()).transfer(principalAmount);
+            } else {
+                ERC20(offer.principalToken).safeTransfer(
+                    _msgSender(),
+                    principalAmount
+                );
+            }
         } else {
-            ERC20(offer.collateralToken).safeTransfer(
-                _msgSender(),
-                request.collateralAmount
-            );
+            if (offer.collateralToken == nativeAddress) {
+                payable(_msgSender()).transfer(request.collateralAmount);
+            } else {
+                ERC20(offer.collateralToken).safeTransfer(
+                    _msgSender(),
+                    request.collateralAmount
+                );
+            }
         }
 
         _offerManager.cancelRequest(requestId, _msgSender());
@@ -796,46 +739,46 @@ contract LendingPool is
     // =========== Claim Functions =========== //
 
     function claimCollateral(uint256 loanId) public nonReentrant whenNotPaused {
-        (uint256 amount, address token) = _loanManager.claimCollateral(
-            loanId,
-            _msgSender()
-        );
+        (uint256 amount, uint256 offerId, address token) = _loanManager
+            .claimCollateral(loanId, _msgSender());
 
         if (token == nativeAddress) {
             payable(_msgSender()).transfer(amount);
         } else {
             ERC20(token).safeTransfer(_msgSender(), amount);
         }
+
+        transfer(offerId, _msgSender(), amount, token, Type.CLAIMED);
     }
 
-    function claimLoanPrincipal(uint256 loanId)
+    function claimBorrowedPrincipal(uint256 loanId)
         public
         nonReentrant
         whenNotPaused
     {
-        (uint256 amount, address token) = _loanManager.claimLoanPrincipal(
-            loanId,
-            _msgSender()
-        );
+        (uint256 amount, uint256 offerId, address token) = _loanManager
+            .claimBorrowedPrincipal(loanId, _msgSender());
 
         if (token == nativeAddress) {
             payable(_msgSender()).transfer(amount);
         } else {
             ERC20(token).safeTransfer(_msgSender(), amount);
         }
+
+        transfer(offerId, _msgSender(), amount, token, Type.CLAIMED);
     }
 
     function claimPrincipal(uint256 loanId) public nonReentrant whenNotPaused {
-        (uint256 amount, address token) = _loanManager.claimPrincipal(
-            loanId,
-            _msgSender()
-        );
+        (uint256 amount, uint256 offerId, address token) = _loanManager
+            .claimPrincipal(loanId, _msgSender());
 
         if (token == nativeAddress) {
             payable(_msgSender()).transfer(amount);
         } else {
             ERC20(token).safeTransfer(_msgSender(), amount);
         }
+
+        transfer(offerId, _msgSender(), amount, token, Type.CLAIMED);
     }
 
     function claimDefaultCollateral(uint256 loanId)
@@ -843,16 +786,16 @@ contract LendingPool is
         nonReentrant
         whenNotPaused
     {
-        (uint256 amount, address token) = _loanManager.claimDefaultCollateral(
-            loanId,
-            _msgSender()
-        );
+        (uint256 amount, uint256 offerId, address token) = _loanManager
+            .claimDefaultCollateral(loanId, _msgSender());
 
         if (token == nativeAddress) {
             payable(_msgSender()).transfer(amount);
         } else {
             ERC20(token).safeTransfer(_msgSender(), amount);
         }
+
+        transfer(offerId, _msgSender(), amount, token, Type.CLAIMED);
     }
 
     function repayLiquidatedLoan(uint256 loanId) public payable nonReentrant {}
@@ -865,7 +808,10 @@ contract LendingPool is
 
     // ============= ADMIN FUNCTIONS =============== //
 
-    function liquidateLoan(uint256 loanId) public onlyOwner nonReentrant {
+    /// @dev this function will liquidate a loan when it has pass
+    /// maturity date + grace days.
+    /// It can be call by anyone
+    function liquidateLoan(uint256 loanId) public nonReentrant {
         LoanLibrary.Loan memory loan = _loanManager.getLoan(loanId);
 
         // calculate the duration of the loan
@@ -875,7 +821,7 @@ contract LendingPool is
         uint256 repaymentPrincipal = getFullInterestAmount(
             loan.currentPrincipal,
             ellapsedSecs,
-            loan.interest
+            loan.interestRate
         );
 
         uint256 repaymentCollateral = _priceFeed.exchangeRate(
@@ -938,24 +884,22 @@ contract LendingPool is
         address activity_,
         address priceFeed_
     ) public onlyOwner nonReentrant {
-        _ltv = ILoanToValueRatio(ltv_);
+        _ltvRatio = ILoanToValueRatio(ltv_);
         _activity = Activity(activity_);
         _priceFeed = IPriceFeed(priceFeed_);
     }
 
     function setManagers(
-        address vaultManager_,
         address loanManager_,
         address offerManager_,
         address feeManager_
     ) public onlyOwner nonReentrant {
-        _vaultManager = IVaultManager(vaultManager_);
         _loanManager = ILoanManager(loanManager_);
         _offerManager = IOfferManager(offerManager_);
         _feeManager = IFeeManager(feeManager_);
     }
 
-    /// @dev to claim revenue
+    /// @dev to claim developer revenue
     function claim(
         address token,
         address payable receiver,

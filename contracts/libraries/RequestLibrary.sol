@@ -19,7 +19,7 @@ library RequestLibrary {
         State state,
         uint16 percentage,
         uint16 daysToMaturity,
-        uint256 interest,
+        uint256 interestRate,
         uint expiresAt,
         uint createdAt,
         address creator,
@@ -37,7 +37,7 @@ library RequestLibrary {
         State state;
         uint16 percentage;
         uint16 daysToMaturity;
-        uint256 interest;
+        uint256 interestRate;
         uint expiresAt;
         uint createdAt;
         address creator;

@@ -27,7 +27,7 @@ contract Activity is Ownable2Step {
         uint160 lastActive;
         // collateral
         uint256 collateralVolume;
-        // interest
+        // interestRate
         uint256 interestPaidVolume;
         // defaulting
         uint16 defaultedTimes;
