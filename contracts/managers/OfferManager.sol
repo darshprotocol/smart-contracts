@@ -280,6 +280,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         OfferLibrary.Offer memory offer = offers[request.offerId];
         require(offer.creator == user, "ERR_ONLY_CREATOR");
         request.state = RequestLibrary.State.ACCEPTED;
+        _emitRequest(requestId, request);
     }
 
     function cancelRequest(uint256 requestId, address user)

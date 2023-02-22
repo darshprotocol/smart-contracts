@@ -1,4 +1,3 @@
-const VaultManager = artifacts.require("VaultManager");
 const OfferManager = artifacts.require("OfferManager");
 const LoanManager = artifacts.require("LoanManager");
 const FeeManager = artifacts.require("FeeManager");
@@ -42,9 +41,6 @@ contract("CreateLendingOffer", async accounts => {
         const offerManager = await OfferManager.deployed()
         await offerManager.setLendingPool(LendingPool.address)
 
-        const vaultManager = await VaultManager.deployed()
-        await vaultManager.setLendingPool(LendingPool.address)
-
         const loanManager = await LoanManager.deployed()
         await loanManager.setLendingPool(LendingPool.address)
 
@@ -61,11 +57,18 @@ contract("CreateLendingOffer", async accounts => {
             PriceFeed.address
         )
         await lendingPool.setManagers(
-            VaultManager.address,
             LoanManager.address,
             OfferManager.address,
             FeeManager.address
         )
+    }),
+    it("mint faucet", async () => {
+        const btc = await WBTC.deployed()
+        await btc.faucetMint('2000000000000000000', {from: accounts[1]})
+        const weth = await WETH.deployed()
+        await weth.faucetMint('5000000000000000000', {from: accounts[1]})
+        const usdt = await WBTC.deployed()
+        await usdt.faucetMint('100000000000000000000000', {from: accounts[1]})
     })
     it("createOffer", async () => {
         // const usdt = await USDT.deployed()

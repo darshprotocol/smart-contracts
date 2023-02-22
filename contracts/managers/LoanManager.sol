@@ -13,6 +13,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract LoanManager is ILoanManager, Ownable2Step {
     uint256 public constant ONE_DAY = 60 * 60 * 24;
     uint256 public constant ONE_HOUR = 60 * 60;
+    uint256 public DUST_AMOUNT = 100;
 
     using Counters for Counters.Counter;
     using SafeMath for uint256;
@@ -117,7 +118,7 @@ contract LoanManager is ILoanManager, Ownable2Step {
         loan.currentPrincipal -= principalPaid;
         loan.currentCollateral -= collateralRetrieved;
 
-        if (loan.currentPrincipal <= 10) {
+        if (loan.currentPrincipal <= DUST_AMOUNT) {
             loan.state = LoanLibrary.State.REPAID;
             loan.repaidOn = block.timestamp;
         }
@@ -141,6 +142,8 @@ contract LoanManager is ILoanManager, Ownable2Step {
         require(loan.unClaimedPrincipal > 0, "ERR_ZERO_BALANCE");
         uint256 amount = loan.unClaimedPrincipal;
         loan.unClaimedPrincipal = 0;
+
+        _emit(loanId, loan);
         return (amount, loan.offerId, loan.principalToken);
     }
 
@@ -159,6 +162,8 @@ contract LoanManager is ILoanManager, Ownable2Step {
         require(loan.unClaimedDefaultCollateral > 0, "ERR_ZERO_BALANCE");
         uint256 amount = loan.unClaimedDefaultCollateral;
         loan.unClaimedDefaultCollateral = 0;
+
+        _emit(loanId, loan);
         return (amount, loan.offerId, loan.collateralToken);
     }
 
@@ -177,6 +182,8 @@ contract LoanManager is ILoanManager, Ownable2Step {
         require(loan.unClaimedCollateral > 0, "ERR_ZERO_BALANCE");
         uint256 amount = loan.unClaimedCollateral;
         loan.unClaimedCollateral = 0;
+
+        _emit(loanId, loan);
         return (amount, loan.offerId, loan.collateralToken);
     }
 
@@ -195,6 +202,8 @@ contract LoanManager is ILoanManager, Ownable2Step {
         require(loan.unClaimedBorrowedPrincipal > 0, "ERR_ZERO_BALANCE");
         uint256 amount = loan.unClaimedBorrowedPrincipal;
         loan.unClaimedBorrowedPrincipal = 0;
+
+        _emit(loanId, loan);
         return (amount, loan.offerId, loan.principalToken);
     }
 
