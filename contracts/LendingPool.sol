@@ -65,7 +65,7 @@ contract LendingPool is
 
     // ============= Create Lending / Borrowing Offer ============ //
 
-    /// @notice This function creates a lending new lending offer
+    /// @notice This function creates a new lending offer
     /// @dev the principalAmount_ parameter is use for ERC20 tokens only
     function createLendingOffer(
         uint256 principalAmount_,
@@ -109,7 +109,7 @@ contract LendingPool is
         );
     }
 
-    // @borrower
+    /// @notice This function creates a new borrowing offer
     function createBorrowingOffer(
         address principalToken,
         uint256 principalAmount,
@@ -170,8 +170,7 @@ contract LendingPool is
 
     // ============ Create Lending / Borrowing Request ============= //
 
-    /// @notice Explain to an end user what this does
-    /// @dev Explain to a developer any extra details
+    /// @notice This function creates a new lending request on a borrowing offer
     function createLendingRequest(
         uint256 offerId,
         uint16 percentage,
@@ -209,7 +208,7 @@ contract LendingPool is
         );
     }
 
-    // @borrower
+    /// @notice This function creates a new borrowing request on a lending offer
     function createBorrowingRequest(
         uint256 offerId,
         uint16 percentage,
@@ -286,7 +285,8 @@ contract LendingPool is
 
     // ============ Accept Lending / Borrowing Offer =============== //
 
-    // @lenders
+    /// @notice This function accepts a borrowing offer | LEND
+    /// @dev The percentage params specifies the portion of the offer to accept
     function acceptBorrowingOffer(uint256 offerId, uint16 percentage)
         public
         payable
@@ -366,7 +366,8 @@ contract LendingPool is
         _activity.borrowLoan(offer.creator, borrowedAmountInUSD);
     }
 
-    // @borrower
+    /// @notice This function accepts a lending offer | BORROW
+    /// @dev The percentage params specifies the portion of the offer to accept
     function acceptLendingOffer(
         uint256 offerId,
         uint16 percentage,
@@ -477,7 +478,7 @@ contract LendingPool is
 
     // ============ Accept Lending / Borrowing Request =============== //
 
-    /// @notice accept new borrowing request placed on a lender's offer
+    /// @notice This funcion accepts a borrowing request placed on a lender's offer
     function acceptBorrowingRequest(uint256 requestId) public whenNotPaused {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
@@ -531,7 +532,7 @@ contract LendingPool is
         _activity.borrowLoan(request.creator, amountBorrowedInUSD);
     }
 
-    // @borrower
+    /// @notice This funcion accepts a lending request placed on a borrower's offer
     function acceptLendingRequest(uint256 requestId)
         public
         payable
@@ -614,7 +615,7 @@ contract LendingPool is
 
     // ============= ReActivating Lending / Borrowing Offer ============= //
 
-    // @lender
+    /// @notice This function will reactivate a offer when they expires
     function reActivateOffer(uint256 offerId, uint16 toExpire)
         public
         whenNotPaused
@@ -624,7 +625,8 @@ contract LendingPool is
 
     // =============== Loan Repayment ============= //
 
-    // @borrower
+    /// @notice This function is use to repay a loan
+    /// @dev The percentage params specifies the portion to be repaid
     function repayLoan(uint256 loanId, uint16 percentage)
         public
         payable
@@ -705,14 +707,20 @@ contract LendingPool is
         );
     }
 
+    /// @notice This function is use to repay a liquidated loan
+    /// @dev Liquidated loans cannot be repaid by percentage
     function repayLiquidatedLoan(uint256 loanId) public payable whenNotPaused {}
 
     // =========== Cancel / Reject Request Functions =========== //
 
+    /// @notice This function will reject a request
+    /// @dev Request can only be rejected by the offer creator
     function rejectRequest(uint256 requestId) public whenNotPaused {
         _offerManager.rejectRequest(requestId, _msgSender());
     }
 
+    /// @notice This function will cancel a request
+    /// @dev Request can only be calncelled by the request creator
     function cancelRequest(uint256 requestId) public whenNotPaused {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
@@ -752,6 +760,8 @@ contract LendingPool is
 
     // =========== Claim Functions =========== //
 
+    /// @notice This function is use to claim back unlocked collateral from a loan
+    /// @dev Can only be called by the borrower
     function claimCollateral(uint256 loanId) public nonReentrant whenNotPaused {
         (uint256 amount, uint256 offerId, address token) = _loanManager
             .claimCollateral(loanId, _msgSender());
@@ -765,6 +775,8 @@ contract LendingPool is
         transfer(offerId, _msgSender(), amount, token, Type.CLAIMED);
     }
 
+    /// @notice This function is use to claim borrowed loan principal
+    /// @dev Can only be called by the borrower
     function claimBorrowedPrincipal(uint256 loanId)
         public
         nonReentrant
@@ -782,6 +794,8 @@ contract LendingPool is
         transfer(offerId, _msgSender(), amount, token, Type.CLAIMED);
     }
 
+    /// @notice This function is use to claim back repaid principal + interests from a loan
+    /// @dev Can only be called by the lender
     function claimPrincipal(uint256 loanId) public nonReentrant whenNotPaused {
         (uint256 amount, uint256 offerId, address token) = _loanManager
             .claimPrincipal(loanId, _msgSender());
@@ -795,6 +809,8 @@ contract LendingPool is
         transfer(offerId, _msgSender(), amount, token, Type.CLAIMED);
     }
 
+    /// @notice This function is use to claim defaulted loan collateral
+    /// @dev Can only be called by the lender
     function claimDefaultCollateral(uint256 loanId)
         public
         nonReentrant

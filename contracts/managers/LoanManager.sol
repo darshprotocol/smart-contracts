@@ -117,10 +117,10 @@ contract LoanManager is ILoanManager, Ownable2Step {
         loan.unClaimedCollateral += collateralRetrieved;
         loan.currentPrincipal -= principalPaid;
         loan.currentCollateral -= collateralRetrieved;
+        loan.repaidOn = block.timestamp;
 
         if (loan.currentPrincipal <= DUST_AMOUNT) {
             loan.state = LoanLibrary.State.REPAID;
-            loan.repaidOn = block.timestamp;
         }
 
         _emit(loanId, loan);

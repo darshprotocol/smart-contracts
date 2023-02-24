@@ -85,7 +85,7 @@ library LoanLibrary {
         /// @dev this represents total interestRate paid by
         /// the borrower
         uint256 totalInterestPaid;
-        /// @dev seconds of full repaid loan
+        /// @dev seconds of full/installment repaid loan
         uint256 repaidOn;
         /// @dev actors address
         address borrower;
