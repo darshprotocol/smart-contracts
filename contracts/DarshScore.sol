@@ -17,61 +17,61 @@ contract DarshScore is Ownable2Step, IDarshScore {
         uint16 result;
 
         // repaymentTimes - 15 marks
-        if (_activity.pendingLoansCount(user) > 2) {
+        if (_activity.activeLoansCount(user) > 2) {
             result += 15;
-        } else if (_activity.pendingLoansCount(user) == 2) {
+        } else if (_activity.activeLoansCount(user) == 2) {
             result += 10;
-        } else if (_activity.pendingLoansCount(user) == 1) {
+        } else if (_activity.activeLoansCount(user) == 1) {
             result += 5;
-        } else if (activity.repaymentTimes > 30) {
+        } else if (activity.lentTimes > 30) {
             result += 0;
-        } else if (activity.repaymentTimes > 21) {
+        } else if (activity.lentTimes > 21) {
             result += 2;
-        } else if (activity.repaymentTimes > 13) {
+        } else if (activity.lentTimes > 13) {
             result += 4;
-        } else if (activity.repaymentTimes > 7) {
+        } else if (activity.lentTimes > 7) {
             result += 6;
-        } else if (activity.repaymentTimes > 3) {
+        } else if (activity.lentTimes > 3) {
             result += 8;
         } else {
             result += 10;
         }
 
         // repaymentVolume - 20 marks
-        if (_activity.pendingLoansCount(user) > 2) {
+        if (_activity.activeLoansCount(user) > 2) {
             result += 20;
-        } else if (_activity.pendingLoansCount(user) == 2) {
+        } else if (_activity.activeLoansCount(user) == 2) {
             result += 15;
-        } else if (_activity.pendingLoansCount(user) == 1) {
+        } else if (_activity.activeLoansCount(user) == 1) {
             result += 10;
-        } else if (activity.repaymentVolume > 35000 * 1e18) {
+        } else if (activity.lentVolume > 35000 * 1e18) {
             result += 0;
-        } else if (activity.repaymentVolume > 25000 * 1e18) {
+        } else if (activity.lentVolume > 25000 * 1e18) {
             result += 3;
-        } else if (activity.repaymentVolume > 16000 * 1e18) {
+        } else if (activity.lentVolume > 16000 * 1e18) {
             result += 6;
-        } else if (activity.repaymentVolume > 12000 * 1e18) {
+        } else if (activity.lentVolume > 12000 * 1e18) {
             result += 8;
-        } else if (activity.repaymentVolume > 9000 * 1e18) {
+        } else if (activity.lentVolume > 9000 * 1e18) {
             result += 10;
-        } else if (activity.repaymentVolume > 6000 * 1e18) {
+        } else if (activity.lentVolume > 6000 * 1e18) {
             result += 12;
-        } else if (activity.repaymentVolume > 3500 * 1e18) {
+        } else if (activity.lentVolume > 3500 * 1e18) {
             result += 14;
-        } else if (activity.repaymentVolume > 2000 * 1e18) {
+        } else if (activity.lentVolume > 2000 * 1e18) {
             result += 16;
-        } else if (activity.repaymentVolume > 500 * 1e18) {
+        } else if (activity.lentVolume > 500 * 1e18) {
             result += 18;
         } else {
             result += 20;
         }
 
         // borrowedTimes - 10 marks
-        if (_activity.pendingLoansCount(user) > 2) {
+        if (_activity.activeLoansCount(user) > 2) {
             result += 10;
-        } else if (_activity.pendingLoansCount(user) == 2) {
+        } else if (_activity.activeLoansCount(user) == 2) {
             result += 6;
-        } else if (_activity.pendingLoansCount(user) == 1) {
+        } else if (_activity.activeLoansCount(user) == 1) {
             result += 3;
         } else if (activity.borrowedTimes > 26) {
             result += 0;
@@ -88,11 +88,11 @@ contract DarshScore is Ownable2Step, IDarshScore {
         }
 
         // borrowedVolume - 10 marks
-        if (_activity.pendingLoansCount(user) > 2) {
+        if (_activity.activeLoansCount(user) > 2) {
             result += 10;
-        } else if (_activity.pendingLoansCount(user) == 2) {
+        } else if (_activity.activeLoansCount(user) == 2) {
             result += 8;
-        } else if (_activity.pendingLoansCount(user) == 1) {
+        } else if (_activity.activeLoansCount(user) == 1) {
             result += 6;
         } else if (activity.borrowedVolume > 35000 * 1e18) {
             result += 0;
@@ -117,11 +117,11 @@ contract DarshScore is Ownable2Step, IDarshScore {
         }
 
         // collateralVolume - 15 marks
-        if (_activity.pendingLoansCount(user) > 2) {
+        if (_activity.activeLoansCount(user) > 2) {
             result += 15;
-        } else if (_activity.pendingLoansCount(user) == 2) {
+        } else if (_activity.activeLoansCount(user) == 2) {
             result += 10;
-        } else if (_activity.pendingLoansCount(user) == 1) {
+        } else if (_activity.activeLoansCount(user) == 1) {
             result += 5;
         } else if (activity.collateralVolume > 35000 * 1e18) {
             result += 0;
@@ -146,11 +146,11 @@ contract DarshScore is Ownable2Step, IDarshScore {
         }
 
         // interestPaidVolume - 20 marks
-        if (_activity.pendingLoansCount(user) > 2) {
+        if (_activity.activeLoansCount(user) > 2) {
             result += 20;
-        } else if (_activity.pendingLoansCount(user) == 2) {
+        } else if (_activity.activeLoansCount(user) == 2) {
             result += 15;
-        } else if (_activity.pendingLoansCount(user) == 1) {
+        } else if (_activity.activeLoansCount(user) == 1) {
             result += 10;
         } else if (activity.interestPaidVolume > 150 * 1e18) {
             result += 0;
@@ -176,20 +176,20 @@ contract DarshScore is Ownable2Step, IDarshScore {
             result += 20;
         }
 
-        // stars - 10 marks
-        if (activity.stars > 5) {
-            result += 0;
-        } else if (activity.stars > 3) {
-            result += 2;
-        } else if (activity.stars > 2) {
-            result += 4;
-        } else if (activity.stars > 1) {
-            result += 6;
-        } else if (activity.stars > 0) {
-            result += 8;
-        } else {
-            result += 10;
-        }
+        // // stars - 10 marks
+        // if (activity.stars > 5) {
+        //     result += 0;
+        // } else if (activity.stars > 3) {
+        //     result += 2;
+        // } else if (activity.stars > 2) {
+        //     result += 4;
+        // } else if (activity.stars > 1) {
+        //     result += 6;
+        // } else if (activity.stars > 0) {
+        //     result += 8;
+        // } else {
+        //     result += 10;
+        // }
 
         // EXTRA -- MARKS
 

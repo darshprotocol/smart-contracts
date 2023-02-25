@@ -3,29 +3,25 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
+/// @title Activity contract
+/// @author Arogundade Ibrahim
+/// @notice Keeps record of every user's activity on the LendingPool contract
+/// @dev These records are use to calculate user's darsh score
 contract Activity is Ownable2Step {
     address lendingPool;
 
     constructor() Ownable2Step() {}
 
-    /*
-        The activity contract keeps record of every
-        users wallet address activity on the lending pool.
-
-        These data and other externally sourced data are used to calculate
-        the creditworthiness of a borrower's wallet address.
-    */
-
     struct ActivityModel {
         // frequency
-        uint16 repaymentTimes;
         uint16 borrowedTimes;
+        uint16 lentTimes;
         // volume
         uint256 borrowedVolume;
-        uint256 repaymentVolume;
-        // active
-        uint160 lastActive;
-        // collateral
+        uint256 lentVolume;
+        // last active
+        uint256 lastActive;
+        // collateral volume
         uint256 collateralVolume;
         // interestRate
         uint256 interestPaidVolume;
@@ -33,53 +29,64 @@ contract Activity is Ownable2Step {
         uint16 defaultedTimes;
         uint256 defaultedVolume;
         // first borrow date
-        uint160 firstBorrowAt;
-        // hero stars collected
-        uint16 stars;
+        uint256 firstBorrowAt;
+        // active loans
+        uint16 activeLoans;
     }
 
     mapping(address => ActivityModel) activities;
 
-    function borrowLoan(address user, uint256 amountBorrowedInUSD)
-        external
-        onlyLendingPool
-    {
-        ActivityModel storage activity = activities[user];
-        activity.borrowedTimes += 1;
-        activity.borrowedVolume += amountBorrowedInUSD;
-        activity.lastActive = uint160(block.timestamp);
-        if (activity.firstBorrowAt == 0) {
-            activity.firstBorrowAt = uint160(block.timestamp);
+    function borrowLoan(
+        address lender,
+        address borrower,
+        uint256 amountBorrowedInUSD
+    ) external onlyLendingPool {
+        ActivityModel storage lenderActivity = activities[lender];
+        ActivityModel storage borrowerActivity = activities[borrower];
+
+        lenderActivity.lentTimes += 1;
+        lenderActivity.lentVolume += amountBorrowedInUSD;
+        lenderActivity.activeLoans += 1;
+
+        lenderActivity.lastActive = block.timestamp;
+
+        borrowerActivity.borrowedTimes += 1;
+        borrowerActivity.borrowedVolume += amountBorrowedInUSD;
+        borrowerActivity.activeLoans += 1;
+
+        if (borrowerActivity.firstBorrowAt == 0) {
+            borrowerActivity.firstBorrowAt = block.timestamp;
         }
     }
 
     function repayLoan(
-        address user,
-        uint256 amountPaidInUSD,
+        address lender,
+        address borrower,
         uint256 interestPaidInUSD,
         bool completed
     ) external onlyLendingPool {
-        ActivityModel storage activity = activities[user];
-        activity.repaymentVolume += amountPaidInUSD;
-        activity.interestPaidVolume += interestPaidInUSD;
-        activity.lastActive = uint160(block.timestamp);
-        
+        ActivityModel storage lenderActivity = activities[lender];
+        ActivityModel storage borrowerActivity = activities[borrower];
+
+        borrowerActivity.interestPaidVolume += interestPaidInUSD;
+        borrowerActivity.lastActive = block.timestamp;
+
         if (completed) {
-            activity.repaymentTimes += 1;
+            lenderActivity.activeLoans -= 1;
+            borrowerActivity.activeLoans -= 1;
         }
     }
 
-    function dropCollateral(address user, uint256 amountInUSD)
+    function activeLoansCount(address user) external view returns(uint16) {
+        return activities[user].activeLoans;
+    }
+
+    function dropCollateral(address borrower, uint256 amountInUSD)
         external
         onlyLendingPool
     {
-        ActivityModel storage activity = activities[user];
+        ActivityModel storage activity = activities[borrower];
         activity.collateralVolume += amountInUSD;
-        activity.lastActive = uint160(block.timestamp);
-    }
-
-    function pendingLoansCount(address user) external view returns (uint16) {
-        return activities[user].borrowedTimes - activities[user].repaymentTimes;
     }
 
     function isDefaulter(address user) external view returns (bool) {

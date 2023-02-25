@@ -363,7 +363,7 @@ contract LendingPool is
             principalAmount
         );
 
-        _activity.borrowLoan(offer.creator, borrowedAmountInUSD);
+        _activity.borrowLoan(_msgSender(), offer.creator, borrowedAmountInUSD);
     }
 
     /// @notice This function accepts a lending offer | BORROW
@@ -471,7 +471,7 @@ contract LendingPool is
             principalAmount
         );
 
-        _activity.borrowLoan(_msgSender(), amountBorrowedInUSD);
+        _activity.borrowLoan(offer.creator, _msgSender(), amountBorrowedInUSD);
 
         _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
@@ -529,7 +529,11 @@ contract LendingPool is
             principalAmount
         );
 
-        _activity.borrowLoan(request.creator, amountBorrowedInUSD);
+        _activity.borrowLoan(
+            _msgSender(),
+            request.creator,
+            amountBorrowedInUSD
+        );
     }
 
     /// @notice This funcion accepts a lending request placed on a borrower's offer
@@ -610,7 +614,11 @@ contract LendingPool is
             principalAmount
         );
 
-        _activity.borrowLoan(_msgSender(), amountBorrowedInUSD);
+        _activity.borrowLoan(
+            request.creator,
+            _msgSender(),
+            amountBorrowedInUSD
+        );
     }
 
     // ============= ReActivating Lending / Borrowing Offer ============= //
@@ -694,14 +702,9 @@ contract LendingPool is
             (repaymentPrincipal - principalAmount)
         );
 
-        uint256 amountPaidInUSD = _priceFeed.amountInUSD(
-            loan.principalToken,
-            principalAmount
-        );
-
         _activity.repayLoan(
+            loan.lender,
             _msgSender(),
-            amountPaidInUSD,
             interestPaidInUSD,
             completed
         );
