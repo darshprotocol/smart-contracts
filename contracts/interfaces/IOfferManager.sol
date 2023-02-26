@@ -13,7 +13,7 @@ interface IOfferManager {
         uint16 daysToExpire,
         address[] memory collateralTokens,
         address lender
-    ) external returns(uint256);
+    ) external returns (uint256);
 
     function createLendingRequest(
         uint16 percentage,
@@ -22,7 +22,7 @@ interface IOfferManager {
         uint16 hoursToExpire,
         address lender,
         uint256 offerId
-    ) external returns(uint256);
+    ) external returns (uint256);
 
     function createBorrowingOffer(
         address principalToken,
@@ -33,7 +33,7 @@ interface IOfferManager {
         uint16 daysToMaturity,
         uint16 hoursToExpire,
         address borrower
-    ) external returns(uint256);
+    ) external returns (uint256);
 
     function createBorrowingRequest(
         uint16 percentage,
@@ -46,7 +46,7 @@ interface IOfferManager {
         uint16 hoursToExpire,
         address borrower,
         uint256 offerId
-    ) external returns(uint256);
+    ) external returns (uint256);
 
     function reActivateOffer(
         uint256 offerId,
@@ -60,7 +60,21 @@ interface IOfferManager {
 
     function cancelRequest(uint256 requestId, address user) external;
 
-    function isCollateralSupported(uint256 offerId, address token) external returns(bool);
+    function removePrincipal(
+        uint256 offerId,
+        address user,
+        uint256 amount
+    ) external;
+
+    function removeCollateral(
+        uint256 offerId,
+        address user,
+        uint256 amount
+    ) external;
+
+    function isCollateralSupported(uint256 offerId, address token)
+        external
+        returns (bool);
 
     function afterOfferBorrowingLoan(
         uint256 offerId,

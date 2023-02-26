@@ -267,7 +267,10 @@ contract OfferManager is IOfferManager, Ownable2Step {
         RequestLibrary.Request storage request = requests[requestId];
         OfferLibrary.Offer memory offer = offers[request.offerId];
         require(offer.creator == user, "ERR_ONLY_CREATOR");
-        require(request.state == RequestLibrary.State.PENDING, "ERR_OFFER_STATE");
+        require(
+            request.state == RequestLibrary.State.PENDING,
+            "ERR_OFFER_STATE"
+        );
         request.state = RequestLibrary.State.REJECTED;
         _emitRequest(requestId, request);
     }
@@ -291,10 +294,60 @@ contract OfferManager is IOfferManager, Ownable2Step {
     {
         RequestLibrary.Request storage request = requests[requestId];
         require(request.creator == user, "ERR_ONLY_CREATOR");
-        require(request.state != RequestLibrary.State.ACCEPTED, "ERR_ALREADY_USED");
-        require(request.state != RequestLibrary.State.CANCELLED, "ERR_ALREADY_CANCELLED");
+        require(
+            request.state != RequestLibrary.State.ACCEPTED,
+            "ERR_ALREADY_USED"
+        );
+        require(
+            request.state != RequestLibrary.State.CANCELLED,
+            "ERR_ALREADY_CANCELLED"
+        );
         request.state = RequestLibrary.State.CANCELLED;
         _emitRequest(requestId, request);
+    }
+
+    function removePrincipal(
+        uint256 offerId,
+        address user,
+        uint256 amount
+    ) public override onlyLendingPool {
+        OfferLibrary.Offer storage offer = offers[offerId];
+        require(
+            offer.offerType == OfferLibrary.Type.LENDING_OFFER,
+            "ERR_OFFER_TYPE"
+        );
+        require(offer.currentPrincipal >= amount, "INSUFICIENT_AMOUNT");
+        require(offer.creator == user, "ERR_ONLY_LENDER");
+        
+        offer.currentPrincipal -= amount;
+
+        if (amount == offer.initialPrincipal) {
+            offer.state = OfferLibrary.State.CANCELLED;
+        }
+
+        _emitOffer(offerId, offer);
+    }
+
+     function removeCollateral(
+        uint256 offerId,
+        address user,
+        uint256 amount
+    ) public override onlyLendingPool {
+        OfferLibrary.Offer storage offer = offers[offerId];
+        require(
+            offer.offerType == OfferLibrary.Type.BORROWING_OFFER,
+            "ERR_OFFER_TYPE"
+        );
+        require(offer.currentCollateral >= amount, "INSUFICIENT_AMOUNT");
+        require(offer.creator == user, "ERR_ONLY_LENDER");
+
+        offer.currentCollateral -= amount;
+
+        if (amount == offer.initialCollateral) {
+            offer.state = OfferLibrary.State.CANCELLED;
+        }
+
+        _emitOffer(offerId, offer);
     }
 
     // events

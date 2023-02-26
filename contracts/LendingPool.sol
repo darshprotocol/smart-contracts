@@ -476,6 +476,55 @@ contract LendingPool is
         _activity.dropCollateral(_msgSender(), collateralPriceInUSD);
     }
 
+    // =========== Withdraw From Offer ============== //
+    function removePrincipal(uint256 offerId, uint16 percentage)
+        public
+        whenNotPaused
+    {
+        checkPercentage(percentage);
+        OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
+
+        uint256 principalAmount = percentageOf(
+            offer.initialPrincipal,
+            percentage
+        );
+
+        if (offer.principalToken == nativeAddress) {
+            payable(_msgSender()).transfer(principalAmount);
+        } else {
+            ERC20(offer.principalToken).safeTransfer(
+                _msgSender(),
+                principalAmount
+            );
+        }
+
+        _offerManager.removePrincipal(offerId, _msgSender(), principalAmount);
+    }
+
+    function removeCollateral(uint256 offerId, uint16 percentage)
+        public
+        whenNotPaused
+    {
+        checkPercentage(percentage);
+        OfferLibrary.Offer memory offer = _offerManager.getOffer(offerId);
+
+        uint256 collateralAmount = percentageOf(
+            offer.initialCollateral,
+            percentage
+        );
+
+        if (offer.collateralToken == nativeAddress) {
+            payable(_msgSender()).transfer(collateralAmount);
+        } else {
+            ERC20(offer.collateralToken).safeTransfer(
+                _msgSender(),
+                collateralAmount
+            );
+        }
+
+        _offerManager.removeCollateral(offerId, _msgSender(), collateralAmount);
+    }
+
     // ============ Accept Lending / Borrowing Request =============== //
 
     /// @notice This funcion accepts a borrowing request placed on a lender's offer
@@ -493,11 +542,16 @@ contract LendingPool is
             request.percentage
         );
 
+        uint256 collateralAmount = percentageOf(
+            offer.initialCollateral,
+            request.percentage
+        );
+
         transfer(
             request.offerId,
             request.creator,
-            request.collateralAmount,
-            request.collateralToken,
+            collateralAmount,
+            offer.collateralToken,
             Type.LOCKED
         );
 
@@ -505,9 +559,9 @@ contract LendingPool is
             request.offerId,
             offer.offerType,
             offer.principalToken,
-            request.collateralToken,
+            offer.collateralToken,
             principalAmount,
-            request.collateralAmount,
+            collateralAmount,
             request.collateralPriceInUSD,
             request.interestRate,
             request.daysToMaturity,
