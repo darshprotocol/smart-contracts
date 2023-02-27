@@ -76,13 +76,13 @@ interface IOfferManager {
         external
         returns (bool);
 
-    function afterOfferBorrowingLoan(
+    function afterBorrowingLoan(
         uint256 offerId,
         uint256 principalAmount,
         uint256 collateralAmount
     ) external;
 
-    function afterOfferLendingLoan(uint256 offerId, uint256 principalAmount)
+    function afterLendingLoan(uint256 offerId, uint256 principalAmount)
         external;
 
     function getOffer(uint256 offerId)

@@ -20,7 +20,7 @@ module.exports = {
         },
 
         fantom: {
-            provider: () => new HDWalletProvider(MNEMONIC, 'https://rpc.ankr.com/fantom_testnet'),
+            provider: () => new HDWalletProvider(MNEMONIC, 'https://fantom-testnet.public.blastapi.io'),
             network_id: 4002,
             confirmations: 2,
             timeoutBlocks: 9999999,

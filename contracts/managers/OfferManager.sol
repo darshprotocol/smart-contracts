@@ -396,7 +396,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
     }
 
     // called after a lending offer loan is executed
-    function afterOfferLendingLoan(uint256 offerId, uint256 principalAmount)
+    function afterLendingLoan(uint256 offerId, uint256 principalAmount)
         public
         override
         onlyLendingPool
@@ -414,7 +414,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
     }
 
     // called after a borrowing offer loan is executed
-    function afterOfferBorrowingLoan(
+    function afterBorrowingLoan(
         uint256 offerId,
         uint256 principalAmount,
         uint256 collateralAmount

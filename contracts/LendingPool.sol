@@ -352,7 +352,7 @@ contract LendingPool is
             _msgSender()
         );
 
-        _offerManager.afterOfferBorrowingLoan(
+        _offerManager.afterBorrowingLoan(
             offerId,
             principalAmount,
             collateralAmount
@@ -464,7 +464,7 @@ contract LendingPool is
             offer.creator
         );
 
-        _offerManager.afterOfferLendingLoan(offerId, principalAmount);
+        _offerManager.afterLendingLoan(offerId, principalAmount);
 
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
             offer.principalToken,
@@ -498,6 +498,14 @@ contract LendingPool is
             );
         }
 
+        transfer(
+            offerId,
+            _msgSender(),
+            principalAmount,
+            offer.principalToken,
+            Type.REMOVED
+        );
+
         _offerManager.removePrincipal(offerId, _msgSender(), principalAmount);
     }
 
@@ -521,6 +529,14 @@ contract LendingPool is
                 collateralAmount
             );
         }
+
+        transfer(
+            offerId,
+            _msgSender(),
+            collateralAmount,
+            offer.collateralToken,
+            Type.REMOVED
+        );
 
         _offerManager.removeCollateral(offerId, _msgSender(), collateralAmount);
     }
@@ -570,12 +586,7 @@ contract LendingPool is
             _msgSender()
         );
 
-        _offerManager.afterOfferBorrowingLoan(
-            request.offerId,
-            principalAmount,
-            request.collateralAmount
-        );
-
+        _offerManager.afterLendingLoan(request.offerId, principalAmount);
         _offerManager.acceptRequest(requestId, _msgSender());
 
         uint256 amountBorrowedInUSD = _priceFeed.amountInUSD(
@@ -659,7 +670,11 @@ contract LendingPool is
             request.creator
         );
 
-        _offerManager.afterOfferLendingLoan(offer.offerId, principalAmount);
+        _offerManager.afterBorrowingLoan(
+            offer.offerId,
+            principalAmount,
+            collateralAmount
+        );
 
         _offerManager.acceptRequest(requestId, _msgSender());
 
