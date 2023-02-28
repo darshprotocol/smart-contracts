@@ -549,6 +549,11 @@ contract LendingPool is
             requestId
         );
 
+        require(
+            request.requestType == RequestLibrary.Type.BORROWING_REQUEST,
+            "ERR_REQUEST_TYPE"
+        );
+
         OfferLibrary.Offer memory offer = _offerManager.getOffer(
             request.offerId
         );
@@ -558,16 +563,11 @@ contract LendingPool is
             request.percentage
         );
 
-        uint256 collateralAmount = percentageOf(
-            offer.initialCollateral,
-            request.percentage
-        );
-
         transfer(
             request.offerId,
             request.creator,
-            collateralAmount,
-            offer.collateralToken,
+            request.collateralAmount,
+            request.collateralToken,
             Type.LOCKED
         );
 
@@ -575,9 +575,9 @@ contract LendingPool is
             request.offerId,
             offer.offerType,
             offer.principalToken,
-            offer.collateralToken,
+            request.collateralToken,
             principalAmount,
-            collateralAmount,
+            request.collateralAmount,
             request.collateralPriceInUSD,
             request.interestRate,
             request.daysToMaturity,
@@ -609,6 +609,11 @@ contract LendingPool is
     {
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
+        );
+
+        require(
+            request.requestType == RequestLibrary.Type.LENDING_REQUEST,
+            "ERR_REQUEST_TYPE"
         );
 
         OfferLibrary.Offer memory offer = _offerManager.getOffer(
@@ -817,10 +822,10 @@ contract LendingPool is
                 );
             }
         } else {
-            if (offer.collateralToken == nativeAddress) {
+            if (request.collateralToken == nativeAddress) {
                 payable(_msgSender()).transfer(request.collateralAmount);
             } else {
-                ERC20(offer.collateralToken).safeTransfer(
+                ERC20(request.collateralToken).safeTransfer(
                     _msgSender(),
                     request.collateralAmount
                 );
