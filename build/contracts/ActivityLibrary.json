@@ -1,0 +1,821 @@
+{
+  "contractName": "ActivityLibrary",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "borrowedTimes",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "lentTimes",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "borrowedVolume",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lentVolume",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lastActive",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "collateralVolume",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "interestPaidVolume",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "defaultedTimes",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "defaultedVolume",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "firstBorrowAt",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "activeLoans",
+          "type": "uint16"
+        }
+      ],
+      "name": "ActivityChanged",
+      "type": "event"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint16\",\"name\":\"borrowedTimes\",\"type\":\"uint16\"},{\"indexed\":false,\"internalType\":\"uint16\",\"name\":\"lentTimes\",\"type\":\"uint16\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"borrowedVolume\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lentVolume\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lastActive\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"collateralVolume\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"interestPaidVolume\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint16\",\"name\":\"defaultedTimes\",\"type\":\"uint16\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"defaultedVolume\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"firstBorrowAt\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint16\",\"name\":\"activeLoans\",\"type\":\"uint16\"}],\"name\":\"ActivityChanged\",\"type\":\"event\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/libraries/ActivityLibrary.sol\":\"ActivityLibrary\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/libraries/ActivityLibrary.sol\":{\"keccak256\":\"0xa6a14ffc297d82d4c0d98a8464125085f8084e3534d0729b0dd2a41456bf4f03\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://730ee31e62720f22ea3c4328bdd8f828227e1b0bd8c4fb2f1d5d4c499e190c61\",\"dweb:/ipfs/QmbEFY6R4BKZLURmsDjCbgZH6c8NUSDtDeiUSjMTF3uFA3\"]}},\"version\":1}",
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea2646970667358221220b768ea51149eeddbba75d4ed3dcad29ba42c721ef96d97ee2853b49e6e87177064736f6c63430008110033",
+  "deployedBytecode": "0x600080fdfea2646970667358221220b768ea51149eeddbba75d4ed3dcad29ba42c721ef96d97ee2853b49e6e87177064736f6c63430008110033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "72:1009:36:-:0;;;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "72:1009:36:-:0;;",
+  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\nlibrary ActivityLibrary {\r\n    event ActivityChanged(\r\n        address user,\r\n        uint16 borrowedTimes,\r\n        uint16 lentTimes,\r\n        uint256 borrowedVolume,\r\n        uint256 lentVolume,\r\n        uint256 lastActive,\r\n        uint256 collateralVolume,\r\n        uint256 interestPaidVolume,\r\n        uint16 defaultedTimes,\r\n        uint256 defaultedVolume,\r\n        uint256 firstBorrowAt,\r\n        uint16 activeLoans\r\n    );\r\n\r\n    struct Model {\r\n        // frequency\r\n        uint16 borrowedTimes;\r\n        uint16 lentTimes;\r\n        // volume\r\n        uint256 borrowedVolume;\r\n        uint256 lentVolume;\r\n        // last active\r\n        uint256 lastActive;\r\n        // collateral volume\r\n        uint256 collateralVolume;\r\n        // interestRate\r\n        uint256 interestPaidVolume;\r\n        // defaulting\r\n        uint16 defaultedTimes;\r\n        uint256 defaultedVolume;\r\n        // first borrow date\r\n        uint256 firstBorrowAt;\r\n        // active loans\r\n        uint16 activeLoans;\r\n    }\r\n}\r\n",
+  "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\libraries\\ActivityLibrary.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/libraries/ActivityLibrary.sol",
+    "exportedSymbols": {
+      "ActivityLibrary": [
+        8709
+      ]
+    },
+    "id": 8710,
+    "license": "GPL-3.0",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 8659,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.7",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "37:31:36"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ActivityLibrary",
+        "contractDependencies": [],
+        "contractKind": "library",
+        "fullyImplemented": true,
+        "id": 8709,
+        "linearizedBaseContracts": [
+          8709
+        ],
+        "name": "ActivityLibrary",
+        "nameLocation": "80:15:36",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "eventSelector": "2dd01e2b69318edb9d1b3c3b89892c0035f669809d9fa20e7a489c2663e05194",
+            "id": 8685,
+            "name": "ActivityChanged",
+            "nameLocation": "109:15:36",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 8684,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8661,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "user",
+                  "nameLocation": "143:4:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "135:12:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 8660,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "135:7:36",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8663,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "borrowedTimes",
+                  "nameLocation": "165:13:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "158:20:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 8662,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "158:6:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8665,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "lentTimes",
+                  "nameLocation": "196:9:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "189:16:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 8664,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "189:6:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8667,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "borrowedVolume",
+                  "nameLocation": "224:14:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "216:22:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8666,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "216:7:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8669,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "lentVolume",
+                  "nameLocation": "257:10:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "249:18:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8668,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "249:7:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8671,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "lastActive",
+                  "nameLocation": "286:10:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "278:18:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8670,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "278:7:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8673,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "collateralVolume",
+                  "nameLocation": "315:16:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "307:24:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8672,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "307:7:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8675,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "interestPaidVolume",
+                  "nameLocation": "350:18:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "342:26:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8674,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "342:7:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8677,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "defaultedTimes",
+                  "nameLocation": "386:14:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "379:21:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 8676,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "379:6:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8679,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "defaultedVolume",
+                  "nameLocation": "419:15:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "411:23:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8678,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "411:7:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8681,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "firstBorrowAt",
+                  "nameLocation": "453:13:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "445:21:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8680,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "445:7:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8683,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "activeLoans",
+                  "nameLocation": "484:11:36",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8685,
+                  "src": "477:18:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 8682,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "477:6:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "124:378:36"
+            },
+            "src": "103:400:36"
+          },
+          {
+            "canonicalName": "ActivityLibrary.Model",
+            "id": 8708,
+            "members": [
+              {
+                "constant": false,
+                "id": 8687,
+                "mutability": "mutable",
+                "name": "borrowedTimes",
+                "nameLocation": "564:13:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "557:20:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 8686,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "557:6:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8689,
+                "mutability": "mutable",
+                "name": "lentTimes",
+                "nameLocation": "595:9:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "588:16:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 8688,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "588:6:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8691,
+                "mutability": "mutable",
+                "name": "borrowedVolume",
+                "nameLocation": "642:14:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "634:22:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 8690,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "634:7:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8693,
+                "mutability": "mutable",
+                "name": "lentVolume",
+                "nameLocation": "675:10:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "667:18:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 8692,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "667:7:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8695,
+                "mutability": "mutable",
+                "name": "lastActive",
+                "nameLocation": "728:10:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "720:18:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 8694,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "720:7:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8697,
+                "mutability": "mutable",
+                "name": "collateralVolume",
+                "nameLocation": "787:16:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "779:24:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 8696,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "779:7:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8699,
+                "mutability": "mutable",
+                "name": "interestPaidVolume",
+                "nameLocation": "847:18:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "839:26:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 8698,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "839:7:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8701,
+                "mutability": "mutable",
+                "name": "defaultedTimes",
+                "nameLocation": "906:14:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "899:21:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 8700,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "899:6:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8703,
+                "mutability": "mutable",
+                "name": "defaultedVolume",
+                "nameLocation": "939:15:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "931:23:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 8702,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "931:7:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8705,
+                "mutability": "mutable",
+                "name": "firstBorrowAt",
+                "nameLocation": "1003:13:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "995:21:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 8704,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "995:7:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8707,
+                "mutability": "mutable",
+                "name": "activeLoans",
+                "nameLocation": "1059:11:36",
+                "nodeType": "VariableDeclaration",
+                "scope": 8708,
+                "src": "1052:18:36",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 8706,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1052:6:36",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Model",
+            "nameLocation": "518:5:36",
+            "nodeType": "StructDefinition",
+            "scope": 8709,
+            "src": "511:567:36",
+            "visibility": "public"
+          }
+        ],
+        "scope": 8710,
+        "src": "72:1009:36",
+        "usedErrors": []
+      }
+    ],
+    "src": "37:1046:36"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-03-01T16:40:15.823Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

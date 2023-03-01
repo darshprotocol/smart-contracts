@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
+import "./libraries/ActivityLibrary.sol";
+
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 /// @title Activity contract
@@ -12,37 +14,15 @@ contract Activity is Ownable2Step {
 
     constructor() Ownable2Step() {}
 
-    struct ActivityModel {
-        // frequency
-        uint16 borrowedTimes;
-        uint16 lentTimes;
-        // volume
-        uint256 borrowedVolume;
-        uint256 lentVolume;
-        // last active
-        uint256 lastActive;
-        // collateral volume
-        uint256 collateralVolume;
-        // interestRate
-        uint256 interestPaidVolume;
-        // defaulting
-        uint16 defaultedTimes;
-        uint256 defaultedVolume;
-        // first borrow date
-        uint256 firstBorrowAt;
-        // active loans
-        uint16 activeLoans;
-    }
-
-    mapping(address => ActivityModel) activities;
+    mapping(address => ActivityLibrary.Model) activities;
 
     function borrowLoan(
         address lender,
         address borrower,
         uint256 amountBorrowedInUSD
     ) external onlyLendingPool {
-        ActivityModel storage lenderActivity = activities[lender];
-        ActivityModel storage borrowerActivity = activities[borrower];
+        ActivityLibrary.Model storage lenderActivity = activities[lender];
+        ActivityLibrary.Model storage borrowerActivity = activities[borrower];
 
         lenderActivity.lentTimes += 1;
         lenderActivity.lentVolume += amountBorrowedInUSD;
@@ -57,6 +37,9 @@ contract Activity is Ownable2Step {
         if (borrowerActivity.firstBorrowAt == 0) {
             borrowerActivity.firstBorrowAt = block.timestamp;
         }
+
+        _emitActivity(lenderActivity, lender);
+        _emitActivity(borrowerActivity, borrower);
     }
 
     function repayLoan(
@@ -65,8 +48,8 @@ contract Activity is Ownable2Step {
         uint256 interestPaidInUSD,
         bool completed
     ) external onlyLendingPool {
-        ActivityModel storage lenderActivity = activities[lender];
-        ActivityModel storage borrowerActivity = activities[borrower];
+        ActivityLibrary.Model storage lenderActivity = activities[lender];
+        ActivityLibrary.Model storage borrowerActivity = activities[borrower];
 
         borrowerActivity.interestPaidVolume += interestPaidInUSD;
         borrowerActivity.lastActive = block.timestamp;
@@ -75,9 +58,12 @@ contract Activity is Ownable2Step {
             lenderActivity.activeLoans -= 1;
             borrowerActivity.activeLoans -= 1;
         }
+
+        _emitActivity(lenderActivity, lender);
+        _emitActivity(borrowerActivity, borrower);
     }
 
-    function activeLoansCount(address user) external view returns(uint16) {
+    function activeLoansCount(address user) external view returns (uint16) {
         return activities[user].activeLoans;
     }
 
@@ -85,8 +71,10 @@ contract Activity is Ownable2Step {
         external
         onlyLendingPool
     {
-        ActivityModel storage activity = activities[borrower];
+        ActivityLibrary.Model storage activity = activities[borrower];
         activity.collateralVolume += amountInUSD;
+
+        _emitActivity(activity, borrower);
     }
 
     function isDefaulter(address user) external view returns (bool) {
@@ -96,9 +84,26 @@ contract Activity is Ownable2Step {
     function getActivity(address user)
         external
         view
-        returns (ActivityModel memory)
+        returns (ActivityLibrary.Model memory)
     {
         return activities[user];
+    }
+
+    function _emitActivity(ActivityLibrary.Model memory activity, address user) private {
+        emit ActivityLibrary.ActivityChanged(
+            user,
+            activity.borrowedTimes,
+            activity.lentTimes,
+            activity.borrowedVolume,
+            activity.lentVolume,
+            activity.lastActive,
+            activity.collateralVolume,
+            activity.interestPaidVolume,
+            activity.defaultedTimes,
+            activity.defaultedVolume,
+            activity.firstBorrowAt,
+            activity.activeLoans
+        );
     }
 
     function setLendingPool(address address_) public onlyOwner {

@@ -3,6 +3,8 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./Activity.sol";
 
+import "./libraries/ActivityLibrary.sol";
+
 import "./interfaces/IDarshScore.sol";
 
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
@@ -13,7 +15,7 @@ contract DarshScore is Ownable2Step, IDarshScore {
     constructor() Ownable2Step() {}
 
     function getScore(address user) public view override returns (uint16) {
-        Activity.ActivityModel memory activity = _activity.getActivity(user);
+        ActivityLibrary.Model memory activity = _activity.getActivity(user);
         uint16 result;
 
         // repaymentTimes - 15 marks
