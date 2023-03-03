@@ -71,9 +71,15 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 
 > truffle test --network=testnet|mainnet --compile-none -f2
 
-- Verify
+- Verify contracts
 
 > truffle verify --network=testnet|mainnet <contracts> --license=MIT
+
+- Run frontend
+> npm run dev
+ 
+- Start node backend
+> npm run start
 
 ## Tools
  | Smart contract | Frontend | Backend | Design | Cloud services |
