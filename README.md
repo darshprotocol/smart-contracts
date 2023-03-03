@@ -1,3 +1,5 @@
+![Loan Diagram](https://user-images.githubusercontent.com/123966451/222807924-377c0485-182d-468a-a16c-978bd75d9317.png)
+
 # Smart contracts
 ## LendingPool
 
