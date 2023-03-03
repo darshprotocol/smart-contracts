@@ -41,6 +41,15 @@ The LendingPool contract is the main point of interaction with the DARSH protoco
 ![dai](https://user-images.githubusercontent.com/123966451/222814334-d291e5d5-0932-4ea4-85ae-e91323f2745c.png)
 ![usdc](https://user-images.githubusercontent.com/123966451/222814326-154b1313-b1bd-412c-92c6-3a451988293f.png)
 
+## Governance
+
+**Darsh Token**
+![darsh](https://user-images.githubusercontent.com/123966451/222815232-286c6b17-27fe-4d07-9a8e-e0d7494d5d03.png)
+
+
+## Sneak peaks
+
+[view demo](https://darshprotocol.netlify.app)
 
 ## Development
 Create a `.env` like the `.env-example` and update with valid keys and mnemonic/phrase or private key
@@ -90,8 +99,6 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 ## Dependencies
 - Chainlink Price Feed
 - Openzeppelin
-
-## Sneak peaks
 
 ## Team
 **Arogundade Ibrahim**
