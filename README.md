@@ -77,7 +77,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 
 ## Tools
  | Smart contract | Frontend | Backend |
- |--|--|
+ |--|--|--|
  | Truffle and plugins | Vuejs | Expressjs |
 > Smart contract
 - Truffle and plugins
