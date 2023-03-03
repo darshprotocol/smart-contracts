@@ -1,3 +1,4 @@
+# Smart contracts
 ## LendingPool
 
 
@@ -14,17 +15,17 @@
 
 
 
-## Building
--# Compile contracts
+## Development
+- Compile contracts
 `truffle compile`
 
--# Migrate contracts
+- Migrate contracts
 `truffle migrate --network=testnet|mainnet --compile-none`
 
--# Set configs
+- Set configs
 `truffle test --network=testnet|mainnet --compile-none` -t1
 
--# Run test
+- Run test
 `truffle test --network=testnet|mainnet --compile-none` -f2
 
 ## Tool
@@ -36,13 +37,14 @@
 - Javascript
 
 ## Dependencies
-- Chainlink
+- Chainlink Price Feed
 - Openzeppelin
 
-## Author
+## Team
 Arogundade Ibrahim
-[linktr.ee](https://linktr.ee/devarogundade)
+Role: Developer
+[contact me](https://linktr.ee/devarogundade)
 
-## Teammate
 Awolola Idowu
-[profile](https://pip.me/krypton)
+Role: UI/UX Designer & Web3 Expert
+[contact me](https://pip.me/krypton)
