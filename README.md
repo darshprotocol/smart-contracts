@@ -79,21 +79,10 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
  | Smart contract | Frontend | Backend |
  |--|--|--|
  | Truffle and plugins | Vuejs | Expressjs |
-> Smart contract
-- Truffle and plugins
-- Web3js
+|Web3js|Web3js|Web3js|
+ ||Covalent API| Moralis Stream|
+ ||Jazzicon|Mongodb|
 
-> Frontend
-- Vuejs
-- Web3js
-- Covalent API
-- Jazzicon
-
-> Backend
-- Expressjs
-- Moralis Stream
-- Web3js
-- Mongodb
 
 ## Languages
 - Solidity
