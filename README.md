@@ -52,9 +52,15 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 
 ## Team
 **Arogundade Ibrahim**
+ 
 **Role:** Developer
+ 
 [contact me](https://linktr.ee/devarogundade)
 
+ 
+ 
 **Awolola Idowu**
+ 
 **Role:** UI/UX Designer & Web3 Expert
+ 
 [contact me](https://pip.me/krypton)
