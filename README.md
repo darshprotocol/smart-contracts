@@ -16,17 +16,27 @@
 
 
 ## Development
+Create a `.env` like the `.env-example` and update with valid keys and mnemonic/phrase or private key
+
 - Compile contracts
+
 `truffle compile`
 
 - Migrate contracts
+
 `truffle migrate --network=testnet|mainnet --compile-none`
 
 - Set configs
-`truffle test --network=testnet|mainnet --compile-none` -t1
+
+`truffle test --network=testnet|mainnet --compile-none -t1`
 
 - Run test
-`truffle test --network=testnet|mainnet --compile-none` -f2
+
+`truffle test --network=testnet|mainnet --compile-none -f2`
+
+- Verify
+
+`truffle verify --network=testnet|mainnet <contracts> --license=MIT`
 
 ## Tool
 - Truffle and plugins
