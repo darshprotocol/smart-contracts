@@ -18,23 +18,23 @@
 ## Development
 Create a `.env` like the `.env-example` and update with valid keys and mnemonic/phrase or private key
 
-- Compile contracts
+1. Compile contracts
 
 `truffle compile`
 
-- Migrate contracts
+2. Migrate contracts
 
 `truffle migrate --network=testnet|mainnet --compile-none`
 
-- Set configs
+3. Set configs
 
 `truffle test --network=testnet|mainnet --compile-none -t1`
 
-- Run test
+4. Run test
 
 `truffle test --network=testnet|mainnet --compile-none -f2`
 
-- Verify
+5. Verify
 
 `truffle verify --network=testnet|mainnet <contracts> --license=MIT`
 
@@ -51,10 +51,10 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 - Openzeppelin
 
 ## Team
-Arogundade Ibrahim
-Role: Developer
-[contact me](https://linktr.ee/devarogundade)
+- Arogundade Ibrahim
+- Role: Developer
+- [contact me](https://linktr.ee/devarogundade)
 
-Awolola Idowu
-Role: UI/UX Designer & Web3 Expert
-[contact me](https://pip.me/krypton)
+- Awolola Idowu
+- Role: UI/UX Designer & Web3 Expert
+- [contact me](https://pip.me/krypton)
