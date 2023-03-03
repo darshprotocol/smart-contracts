@@ -1,6 +1,7 @@
 # Project detail
 ## Name
 Darsh Protocol
+![darsh](https://user-images.githubusercontent.com/123966451/222813942-11c8f479-8471-47e3-b119-851bd41202f2.png)
 
 ## About
 **Darsh's mission is to create a socialized way of lending and borrowing while maintaining DeFi's autonomy and permissionlessness by offering a decentralized peer to peer way for any individual to engage as a lender or borrower.**
