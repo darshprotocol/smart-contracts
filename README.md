@@ -57,12 +57,26 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 > truffle verify --network=testnet|mainnet <contracts> --license=MIT
 
 ## Tools
+> Smart contract
 - Truffle and plugins
 - Web3js
+
+> Frontend
+- Vuejs
+- Web3js
+- Covalent API
+- Jazzicon
+
+> Backend
+- Expressjs
+- Moralis Stream
+- Web3js
+- Mongodb
 
 ## Languages
 - Solidity
 - Javascript
+- HTML/CSS
 
 ## Dependencies
 - Chainlink Price Feed
