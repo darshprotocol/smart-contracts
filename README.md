@@ -27,6 +27,8 @@ The LendingPool contract is the main point of interaction with the DARSH protoco
  - Withdraw accrued fees
  - Change owner
  - Update configs
+ 
+ [view on explorer](https://ftmscan.com)
 
 ## Development
 Create a `.env` like the `.env-example` and update with valid keys and mnemonic/phrase or private key
