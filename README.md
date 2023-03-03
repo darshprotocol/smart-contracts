@@ -13,14 +13,20 @@ Darsh Protocol
 ## LendingPool contract
 The LendingPool contract is the main point of interaction with the DARSH protocol's market.
 
- *- Users can:
+ > Users can:
  - Create Lending/Borrowing offers
  - Request for new terms on offers
  - Repay (Fully/Installment)
  - Claim principal and earnings
  - Claim back collateral
  - Cancel/Reject/Accept requests
- - and more
+ - and more.
+
+ > Admin can:
+ - Liquidate matured loans
+ - Withdraw accrued fees
+ - Change owner
+ - Update configs
 
 ## Development
 Create a `.env` like the `.env-example` and update with valid keys and mnemonic/phrase or private key
