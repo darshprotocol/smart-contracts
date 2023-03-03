@@ -35,7 +35,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 
 > truffle verify --network=testnet|mainnet <contracts> --license=MIT
 
-## Tool
+## Tools
 - Truffle and plugins
 - Web3js
 
