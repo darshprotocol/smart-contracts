@@ -2,9 +2,6 @@
 ## Name
 Darsh Protocol
 
-## Logo
-![darsh](https://user-images.githubusercontent.com/123966451/222813942-11c8f479-8471-47e3-b119-851bd41202f2.png)
-
 ## About
 **Darsh's mission is to create a socialized way of lending and borrowing while maintaining DeFi's autonomy and permissionlessness by offering a decentralized peer to peer way for any individual to engage as a lender or borrower.**
 
@@ -35,6 +32,15 @@ The LendingPool contract is the main point of interaction with the DARSH protoco
  - Update configs
  
  [view contract on explorer](https://ftmscan.com)
+ 
+## Supported tokens
+![ftm](https://user-images.githubusercontent.com/123966451/222814337-c1378fdd-3dd5-4e57-9e1f-b8a9d830f91f.png)
+![eth](https://user-images.githubusercontent.com/123966451/222814336-3cb5e554-a981-4ff8-86f6-ea7b4f6f1e2d.png)
+![usdt](https://user-images.githubusercontent.com/123966451/222814331-f617e15b-8ae9-4c36-a6c9-7ad50c400348.png)
+![btc](https://user-images.githubusercontent.com/123966451/222814332-2954a827-153d-492c-97c6-6a1a49715b8f.png)
+![dai](https://user-images.githubusercontent.com/123966451/222814334-d291e5d5-0932-4ea4-85ae-e91323f2745c.png)
+![usdc](https://user-images.githubusercontent.com/123966451/222814326-154b1313-b1bd-412c-92c6-3a451988293f.png)
+
 
 ## Development
 Create a `.env` like the `.env-example` and update with valid keys and mnemonic/phrase or private key
