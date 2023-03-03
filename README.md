@@ -1,6 +1,8 @@
 # Project detail
 ## Name
 Darsh Protocol
+
+## Logo
 ![darsh](https://user-images.githubusercontent.com/123966451/222813942-11c8f479-8471-47e3-b119-851bd41202f2.png)
 
 ## About
