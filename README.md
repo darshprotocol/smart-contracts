@@ -82,6 +82,8 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 - Chainlink Price Feed
 - Openzeppelin
 
+## Sneak peak
+
 ## Team
 **Arogundade Ibrahim**
  
