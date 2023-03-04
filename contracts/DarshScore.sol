@@ -1,16 +1,15 @@
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
-
-import "./Activity.sol";
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 import "./libraries/ActivityLibrary.sol";
 
+import "./interfaces/IActivity.sol";
 import "./interfaces/IDarshScore.sol";
 
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
 contract DarshScore is Ownable2Step, IDarshScore {
-    Activity private _activity;
+    IActivity private _activity;
 
     constructor() Ownable2Step() {}
 
@@ -236,6 +235,6 @@ contract DarshScore is Ownable2Step, IDarshScore {
     }
 
     function setActivity(address activity_) public onlyOwner {
-        _activity = Activity(activity_);
+        _activity = IActivity(activity_);
     }
 }

@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 interface IPriceFeed {
     function getLatestPriceUSD(address) external returns (uint256, uint8);

@@ -1,7 +1,6 @@
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
-import "./Activity.sol";
 import "./LendingPoolProvider.sol";
 
 import "./libraries/Errors.sol";
@@ -13,6 +12,7 @@ import "./interfaces/IFeeManager.sol";
 import "./interfaces/IOfferManager.sol";
 import "./interfaces/ILoanManager.sol";
 import "./interfaces/ILoanToValueRatio.sol";
+import "./interfaces/IActivity.sol";
 
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -49,10 +49,9 @@ contract LendingPool is
     /// @dev contract version
     uint256 public constant LENDINGPOOL_VERSION = 0x2;
 
-    Activity private _activity;
+    IActivity private _activity;
     IPriceFeed private _priceFeed;
     ILoanToValueRatio private _ltvRatio;
-
     ILoanManager private _loanManager;
     IOfferManager private _offerManager;
     IFeeManager private _feeManager;
@@ -992,7 +991,7 @@ contract LendingPool is
         address priceFeed_
     ) public onlyOwner nonReentrant {
         _ltvRatio = ILoanToValueRatio(ltv_);
-        _activity = Activity(activity_);
+        _activity = IActivity(activity_);
         _priceFeed = IPriceFeed(priceFeed_);
     }
 

@@ -3,8 +3,7 @@ const OfferManager = artifacts.require("OfferManager")
 const FeeManager = artifacts.require("FeeManager")
 
 module.exports = async function(deployer, network, accounts) {
-    if (network == "test" || network == "test2") return;
-    // return
+    if (network == "testnet_test" || network == "mainnet_test") return;
 
     await deployer.deploy(LoanManager)
     await deployer.deploy(OfferManager)

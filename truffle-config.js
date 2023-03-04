@@ -4,22 +4,19 @@ const dotenv = require("dotenv")
 dotenv.config()
 
 const MNEMONIC = process.env.MNEMONIC;
+const FTMKEY = process.env.FTMKEY
 
 module.exports = {
+    plugins: ["truffle-plugin-verify", "truffle-contract-size", "truffle-flatten", "truffle-plugin-stdjsonin"],
+    verify: {
+        preamble: "Author: Arogundade Ibrahim.\nVersion: 1.0 \nProject name: DarshProtocol"
+    },
+    api_keys: {
+        ftmscan: FTMKEY,
+        ftmscantestnet: FTMKEY
+    },
     networks: {
-        development: {
-            host: "127.0.0.1", // Localhost (default: none)
-            port: 7545, // Standard Ethereum port (default: none)
-            network_id: "*", // Any network (default: none)
-        },
-
-        test: {
-            host: "127.0.0.1", // Localhost (default: none)
-            port: 7545, // Standard Ethereum port (default: none)
-            network_id: "*", // Any network (default: none)
-        },
-
-        fantom: {
+        testnet: {
             provider: () => new HDWalletProvider(MNEMONIC, 'https://fantom-testnet.public.blastapi.io'),
             network_id: 4002,
             confirmations: 2,
@@ -28,9 +25,27 @@ module.exports = {
             networkCheckTimeout: 999999999
         },
 
-        test2: {
+        mainnet: {
+            provider: () => new HDWalletProvider(MNEMONIC, 'https://rpc.fantom.network'),
+            network_id: 250,
+            confirmations: 2,
+            timeoutBlocks: 9999999,
+            skipDryRun: true,
+            networkCheckTimeout: 999999999
+        },
+
+        testnet_test: {
             provider: () => new HDWalletProvider(MNEMONIC, 'https://rpc.ankr.com/fantom_testnet'),
             network_id: 4002,
+            confirmations: 2,
+            timeoutBlocks: 9999999,
+            skipDryRun: true,
+            networkCheckTimeout: 999999999
+        },
+
+        mainnet_test: {
+            provider: () => new HDWalletProvider(MNEMONIC, 'https://rpc.ankr.com/fantom'),
+            network_id: 250,
             confirmations: 2,
             timeoutBlocks: 9999999,
             skipDryRun: true,

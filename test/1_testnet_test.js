@@ -17,8 +17,6 @@ const USDC = "0x81733e12b6C9c5F4Dd6459F3766dFDB2DC1f89f8"
 const DAI = "0xBE6FdBafBD486733601cA35300Cc1dbb763d6edB"
 const NATIVE = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
 
-// const arr = [NATIVE, WBTC, WETH, USDT, USDC, DAI]
-
 contract("CreateLendingOffer", async accounts => {
     it("setValues", async () => {
         const priceFeed = await PriceFeed.deployed()

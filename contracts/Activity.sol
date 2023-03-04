@@ -1,7 +1,9 @@
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
 
 import "./libraries/ActivityLibrary.sol";
+
+import "./interfaces/IActivity.sol";
 
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
@@ -9,7 +11,7 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
 /// @author Arogundade Ibrahim
 /// @notice Keeps record of every user's activity on the LendingPool contract
 /// @dev These records are use to calculate user's darsh score
-contract Activity is Ownable2Step {
+contract Activity is Ownable2Step, IActivity {
     address lendingPool;
 
     constructor() Ownable2Step() {}
@@ -20,7 +22,7 @@ contract Activity is Ownable2Step {
         address lender,
         address borrower,
         uint256 amountBorrowedInUSD
-    ) external onlyLendingPool {
+    ) public override onlyLendingPool {
         ActivityLibrary.Model storage lenderActivity = activities[lender];
         ActivityLibrary.Model storage borrowerActivity = activities[borrower];
 
@@ -63,12 +65,18 @@ contract Activity is Ownable2Step {
         _emitActivity(borrowerActivity, borrower);
     }
 
-    function activeLoansCount(address user) external view returns (uint16) {
+    function activeLoansCount(address user)
+        public
+        view
+        override
+        returns (uint16)
+    {
         return activities[user].activeLoans;
     }
 
     function dropCollateral(address borrower, uint256 amountInUSD)
-        external
+        public
+        override
         onlyLendingPool
     {
         ActivityLibrary.Model storage activity = activities[borrower];
@@ -77,19 +85,22 @@ contract Activity is Ownable2Step {
         _emitActivity(activity, borrower);
     }
 
-    function isDefaulter(address user) external view returns (bool) {
+    function isDefaulter(address user) public view override returns (bool) {
         return activities[user].defaultedTimes > 0;
     }
 
     function getActivity(address user)
-        external
+        public
         view
+        override
         returns (ActivityLibrary.Model memory)
     {
         return activities[user];
     }
 
-    function _emitActivity(ActivityLibrary.Model memory activity, address user) private {
+    function _emitActivity(ActivityLibrary.Model memory activity, address user)
+        private
+    {
         emit ActivityLibrary.ActivityChanged(
             user,
             activity.borrowedTimes,

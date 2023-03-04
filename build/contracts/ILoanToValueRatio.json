@@ -58,7 +58,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getBase\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"getLTV\",\"outputs\":[{\"internalType\":\"uint160\",\"name\":\"\",\"type\":\"uint160\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"getRelativeLTV\",\"outputs\":[{\"internalType\":\"uint160\",\"name\":\"\",\"type\":\"uint160\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/ILoanToValueRatio.sol\":\"ILoanToValueRatio\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/interfaces/ILoanToValueRatio.sol\":{\"keccak256\":\"0xdcf620f0e455d4765c74afc7fd72f645a96f7f1976f34963d83646702b3fc62b\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://88c8a7e1a808e48ce6cb8d9dee4fd5429182ad4d7eb1059e7a89417a470707c1\",\"dweb:/ipfs/QmNX3b4yTtsvcFV28uKBU97fzyspb8a7vdFEmqqrbwRbxi\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getBase\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"getLTV\",\"outputs\":[{\"internalType\":\"uint160\",\"name\":\"\",\"type\":\"uint160\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"getRelativeLTV\",\"outputs\":[{\"internalType\":\"uint160\",\"name\":\"\",\"type\":\"uint160\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/ILoanToValueRatio.sol\":\"ILoanToValueRatio\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"project:/contracts/interfaces/ILoanToValueRatio.sol\":{\"keccak256\":\"0x860156cba26255ca9064435e2fd6090f9ed61694eadac9e686bb98141d8cb0f6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d68a3d56e228bb44428f4353d1887e65845aa8edc454f0dc23bba67e14c9dbce\",\"dweb:/ipfs/QmePNZoAKvSSfGkcQHcU5kM4nsXjmmAZQb3baUFMt8X6Tt\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -66,32 +66,29 @@
   "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.7.0 <0.9.0;\r\n\r\ninterface ILoanToValueRatio {\r\n    function getBase() external view returns (uint8);\r\n\r\n    function getLTV(address user) external view returns (uint160);\r\n\r\n    function getRelativeLTV(address user, uint256 amount)\r\n        external\r\n        view\r\n        returns (uint160);\r\n}\r\n",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.17;\r\n\r\ninterface ILoanToValueRatio {\r\n    function getBase() external view returns (uint8);\r\n\r\n    function getLTV(address user) external view returns (uint160);\r\n\r\n    function getRelativeLTV(address user, uint256 amount)\r\n        external\r\n        view\r\n        returns (uint160);\r\n}\r\n",
   "sourcePath": "C:\\Users\\DELL\\Documents\\darsh\\smart-contracts\\contracts\\interfaces\\ILoanToValueRatio.sol",
   "ast": {
     "absolutePath": "project:/contracts/interfaces/ILoanToValueRatio.sol",
     "exportedSymbols": {
       "ILoanToValueRatio": [
-        8448
+        8509
       ]
     },
-    "id": 8449,
-    "license": "GPL-3.0",
+    "id": 8510,
+    "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 8426,
+        "id": 8487,
         "literals": [
           "solidity",
-          ">=",
-          "0.7",
-          ".0",
-          "<",
-          "0.9",
-          ".0"
+          "^",
+          "0.8",
+          ".17"
         ],
         "nodeType": "PragmaDirective",
-        "src": "37:31:33"
+        "src": "33:24:34"
       },
       {
         "abstract": false,
@@ -100,42 +97,42 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 8448,
+        "id": 8509,
         "linearizedBaseContracts": [
-          8448
+          8509
         ],
         "name": "ILoanToValueRatio",
-        "nameLocation": "82:17:33",
+        "nameLocation": "71:17:34",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "d104a136",
-            "id": 8431,
+            "id": 8492,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getBase",
-            "nameLocation": "116:7:33",
+            "nameLocation": "105:7:34",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8427,
+              "id": 8488,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "123:2:33"
+              "src": "112:2:34"
             },
             "returnParameters": {
-              "id": 8430,
+              "id": 8491,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8429,
+                  "id": 8490,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8431,
-                  "src": "149:5:33",
+                  "scope": 8492,
+                  "src": "138:5:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -143,10 +140,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 8428,
+                    "id": 8489,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "149:5:33",
+                    "src": "138:5:34",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -155,36 +152,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "148:7:33"
+              "src": "137:7:34"
             },
-            "scope": 8448,
-            "src": "107:49:33",
+            "scope": 8509,
+            "src": "96:49:34",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "aca25f9a",
-            "id": 8438,
+            "id": 8499,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getLTV",
-            "nameLocation": "173:6:33",
+            "nameLocation": "162:6:34",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8434,
+              "id": 8495,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8433,
+                  "id": 8494,
                   "mutability": "mutable",
                   "name": "user",
-                  "nameLocation": "188:4:33",
+                  "nameLocation": "177:4:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8438,
-                  "src": "180:12:33",
+                  "scope": 8499,
+                  "src": "169:12:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -192,10 +189,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8432,
+                    "id": 8493,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "180:7:33",
+                    "src": "169:7:34",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -205,21 +202,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "179:14:33"
+              "src": "168:14:34"
             },
             "returnParameters": {
-              "id": 8437,
+              "id": 8498,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8436,
+                  "id": 8497,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8438,
-                  "src": "217:7:33",
+                  "scope": 8499,
+                  "src": "206:7:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -227,10 +224,10 @@
                     "typeString": "uint160"
                   },
                   "typeName": {
-                    "id": 8435,
+                    "id": 8496,
                     "name": "uint160",
                     "nodeType": "ElementaryTypeName",
-                    "src": "217:7:33",
+                    "src": "206:7:34",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint160",
                       "typeString": "uint160"
@@ -239,36 +236,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "216:9:33"
+              "src": "205:9:34"
             },
-            "scope": 8448,
-            "src": "164:62:33",
+            "scope": 8509,
+            "src": "153:62:34",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "8a83f8cc",
-            "id": 8447,
+            "id": 8508,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getRelativeLTV",
-            "nameLocation": "243:14:33",
+            "nameLocation": "232:14:34",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8443,
+              "id": 8504,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8440,
+                  "id": 8501,
                   "mutability": "mutable",
                   "name": "user",
-                  "nameLocation": "266:4:33",
+                  "nameLocation": "255:4:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8447,
-                  "src": "258:12:33",
+                  "scope": 8508,
+                  "src": "247:12:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -276,10 +273,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8439,
+                    "id": 8500,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "258:7:33",
+                    "src": "247:7:34",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -290,13 +287,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 8442,
+                  "id": 8503,
                   "mutability": "mutable",
                   "name": "amount",
-                  "nameLocation": "280:6:33",
+                  "nameLocation": "269:6:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8447,
-                  "src": "272:14:33",
+                  "scope": 8508,
+                  "src": "261:14:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -304,10 +301,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8441,
+                    "id": 8502,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "272:7:33",
+                    "src": "261:7:34",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -316,21 +313,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "257:30:33"
+              "src": "246:30:34"
             },
             "returnParameters": {
-              "id": 8446,
+              "id": 8507,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8445,
+                  "id": 8506,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8447,
-                  "src": "338:7:33",
+                  "scope": 8508,
+                  "src": "327:7:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -338,10 +335,10 @@
                     "typeString": "uint160"
                   },
                   "typeName": {
-                    "id": 8444,
+                    "id": 8505,
                     "name": "uint160",
                     "nodeType": "ElementaryTypeName",
-                    "src": "338:7:33",
+                    "src": "327:7:34",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint160",
                       "typeString": "uint160"
@@ -350,21 +347,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "337:9:33"
+              "src": "326:9:34"
             },
-            "scope": 8448,
-            "src": "234:113:33",
+            "scope": 8509,
+            "src": "223:113:34",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 8449,
-        "src": "72:278:33",
+        "scope": 8510,
+        "src": "61:278:34",
         "usedErrors": []
       }
     ],
-    "src": "37:315:33"
+    "src": "33:308:34"
   },
   "compiler": {
     "name": "solc",
@@ -372,7 +369,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-01T16:40:15.814Z",
+  "updatedAt": "2023-03-04T10:33:51.509Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
