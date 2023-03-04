@@ -54,6 +54,7 @@ DARSH token holders will receive governance powers proportionally to their balan
 The governance power which is used to vote for or against existing proposals, and gives access to creating and sustaining a proposal.
 
 ## Sneak peaks
+![Desktop - 100](https://user-images.githubusercontent.com/123966451/222902959-7ddb4775-ec5a-4240-b029-03b7d8a1aba8.png)
 
 [view demo](https://darshprotocol.netlify.app)
 
