@@ -7,11 +7,26 @@ abstract contract LendingPoolProvider {
     using Counters for Counters.Counter;
     Counters.Counter private transferIdTracker;
 
+    uint256 public constant ACCEPT_REQUEST = 100;
+    uint256 public constant REJECT_REQUEST = 101;
+    uint256 public constant EXPIRE_REQUEST = 102;
+    uint256 public constant REPAID_LOAN = 103;
+
     enum Type {
         ADDED,
         CLAIMED,
         LOCKED,
         REMOVED
+    }
+
+    event Notify(uint256 id, uint256 timestamp, address from, address to);
+
+    function notify(
+        address from,
+        address to,
+        uint256 notification
+    ) public virtual {
+        emit Notify(notification, block.timestamp, from, to);
     }
 
     event Transfer(

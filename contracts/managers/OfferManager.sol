@@ -134,6 +134,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
             offer.offerType == OfferLibrary.Type.BORROWING_OFFER,
             "ERR_OFFER_TYPE"
         );
+
         if (offer.initialCollateral == offer.currentCollateral) {
             require(createdAt < offers[offerId].expiresAt, "ERR_OFFER_EXPIRED");
         }
@@ -231,7 +232,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
             offer.offerType == OfferLibrary.Type.LENDING_OFFER,
             "ERR_OFFER_TYPE"
         );
-        require(createdAt < offers[offerId].expiresAt, "ERR_OFFER_EXPIRED");
+
         if (offer.initialCollateral == offer.currentCollateral) {
             require(createdAt < offers[offerId].expiresAt, "ERR_OFFER_EXPIRED");
         }
@@ -318,7 +319,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         );
         require(offer.currentPrincipal >= amount, "INSUFICIENT_AMOUNT");
         require(offer.creator == user, "ERR_ONLY_LENDER");
-        
+
         offer.currentPrincipal -= amount;
 
         if (amount == offer.initialPrincipal) {
@@ -328,7 +329,7 @@ contract OfferManager is IOfferManager, Ownable2Step {
         _emitOffer(offerId, offer);
     }
 
-     function removeCollateral(
+    function removeCollateral(
         uint256 offerId,
         address user,
         uint256 amount
@@ -406,7 +407,10 @@ contract OfferManager is IOfferManager, Ownable2Step {
             offer.currentPrincipal >= principalAmount,
             "ERR_INSUFFICIENT_PRINCIPAL"
         );
-        require(offer.expiresAt > block.timestamp, "ERR_OFFER_EXPIRED");
+
+        if (offer.initialCollateral == offer.currentCollateral) {
+            require(offer.expiresAt > block.timestamp, "ERR_OFFER_EXPIRED");
+        }
 
         offers[offerId].currentPrincipal -= principalAmount;
 
@@ -428,7 +432,10 @@ contract OfferManager is IOfferManager, Ownable2Step {
             offer.currentCollateral >= collateralAmount,
             "ERR_INSUFFICIENT_COLLATERAL"
         );
-        require(offer.expiresAt > block.timestamp, "ERR_OFFER_EXPIRED");
+
+        if (offer.initialCollateral == offer.currentCollateral) {
+            require(offer.expiresAt > block.timestamp, "ERR_OFFER_EXPIRED");
+        }
 
         offer.currentPrincipal -= principalAmount;
         offer.currentCollateral -= collateralAmount;

@@ -585,6 +585,8 @@ contract LendingPool is
             _msgSender()
         );
 
+        notify(_msgSender(), request.creator, ACCEPT_REQUEST);
+
         _offerManager.afterLendingLoan(request.offerId, principalAmount);
         _offerManager.acceptRequest(requestId, _msgSender());
 
@@ -653,6 +655,8 @@ contract LendingPool is
             offer.principalToken,
             Type.CLAIMED
         );
+
+        notify(_msgSender(), request.creator, ACCEPT_REQUEST);
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
             offer.collateralToken,
@@ -775,6 +779,8 @@ contract LendingPool is
             (repaymentPrincipal - principalAmount)
         );
 
+        notify(_msgSender(), loan.lender, REPAID_LOAN);
+
         _activity.repayLoan(
             loan.lender,
             _msgSender(),
@@ -793,6 +799,10 @@ contract LendingPool is
     /// @dev Request can only be rejected by the offer creator
     function rejectRequest(uint256 requestId) public whenNotPaused {
         _offerManager.rejectRequest(requestId, _msgSender());
+        RequestLibrary.Request memory request = _offerManager.getRequest(
+            requestId
+        );
+        notify(_msgSender(), request.creator, REJECT_REQUEST);
     }
 
     /// @notice This function will cancel a request
