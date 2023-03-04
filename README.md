@@ -22,7 +22,13 @@ Our main goal is to provide an efficient and sustainable way for lenders to maxi
 
 **On-Chain matching:** loan offers funded by lenders are matched and settled with a borrower once countersigned, all happening seamlessly with all transactions recorded and fully verifiable on-chain.
 
-**Loan Managing:** on approving and creating a loan offer, lenders are assigned the full authority to a created loan offer of actions like settling borrow requests, repayments claiming, asset vault management all achievable on-chain
+**Loan Managing:** on approving and creating a loan offer, lenders are assigned the full authority to a created loan offer of actions like settling borrow requests, repayments claiming, asset vault management all achievable on-chain.
+
+**Offer Bidding:** on a lend loan offer, borrowers are allowed to directly request for a borrow loan offer with loan terms relative to the lend loan initially offered by a lender.
+
+**Permissionless Borrowing:** principals can be borrowed by borrowers permissionlessly from a lend loan offer created by a lender, once the loan terms demanded are met.
+
+**Customed Repayment:** loan repayments are ease for borrowers to reassess their collateralized asset anytime once repaid. Repayments can be paid in proportions or once within the loan duration specified.
 
 [learn more](https://darshprotocol.gitbook.io/product-docs)
 
