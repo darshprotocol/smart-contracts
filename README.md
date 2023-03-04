@@ -14,6 +14,8 @@ Our main goal is to provide an efficient and sustainable way for lenders to maxi
 ![Loan Diagram](https://user-images.githubusercontent.com/123966451/222807924-377c0485-182d-468a-a16c-978bd75d9317.png)
 [view full flow diagram](https://www.figma.com/file/iqIY47PfSbBb0W6fQH835c/Darsh-Flow-Charts?node-id=0%3A1&t=C66NhTmJgB4HB12L-0)
 
+## Features
+
 **Terms Structuring:** Lenders are enabled to create offers with sets of predetermined loan terms, specifying the principal amount and asset type (ERC20), Collateral types, Loan duration, interest rate demanded to be met by a potential borrower.
 
 **Asset Vaulting:** the principal supplied by a Lender is locked into a principal vault accessible to the lender anytime. The vault serves as a decentralized escrow between a lender and borrowers.
