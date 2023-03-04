@@ -50,7 +50,7 @@ The LendingPool contract is the main point of interaction with the DARSH protoco
  - Change owner
  - Update configs
  
- [view contract on explorer](https://ftmscan.com)
+ [view contract on explorer](https://ftmscan.com/address/0x1aaf5a56d66164be9df6c8b8d6e5f10d354c5744#code)
  
 ## Supported tokens
 ![ftm](https://user-images.githubusercontent.com/123966451/222814337-c1378fdd-3dd5-4e57-9e1f-b8a9d830f91f.png)
