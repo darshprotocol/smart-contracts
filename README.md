@@ -12,6 +12,25 @@ Our main goal is to provide an efficient and sustainable way for lenders to maxi
 
 # Flow diagram
 ![Loan Diagram](https://user-images.githubusercontent.com/123966451/222807924-377c0485-182d-468a-a16c-978bd75d9317.png)
+[view full flow diagram](https://www.figma.com/file/iqIY47PfSbBb0W6fQH835c/Darsh-Flow-Charts?node-id=0%3A1&t=C66NhTmJgB4HB12L-0)
+
+## Features
+
+**Terms Structuring:** Lenders are enabled to create offers with sets of predetermined loan terms, specifying the principal amount and asset type (ERC20), Collateral types, Loan duration, interest rate demanded to be met by a potential borrower.
+
+**Asset Vaulting:** the principal supplied by a Lender is locked into a principal vault accessible to the lender anytime. The vault serves as a decentralized escrow between a lender and borrowers.
+
+**On-Chain matching:** loan offers funded by lenders are matched and settled with a borrower once countersigned, all happening seamlessly with all transactions recorded and fully verifiable on-chain.
+
+**Loan Managing:** on approving and creating a loan offer, lenders are assigned the full authority to a created loan offer of actions like settling borrow requests, repayments claiming, asset vault management all achievable on-chain.
+
+**Offer Bidding:** on a lend loan offer, borrowers are allowed to directly request for a borrow loan offer with loan terms relative to the lend loan initially offered by a lender.
+
+**Permissionless Borrowing:** principals can be borrowed by borrowers permissionlessly from a lend loan offer created by a lender, once the loan terms demanded are met.
+
+**Customed Repayment:** loan repayments are ease for borrowers to reassess their collateralized asset anytime once repaid. Repayments can be paid in proportions or once within the loan duration specified.
+
+[learn more](https://darshprotocol.gitbook.io/product-docs)
 
 ## LendingPool contract
 The LendingPool contract is the main point of interaction with the DARSH protocol's market.
@@ -53,9 +72,16 @@ DARSH token holders will receive governance powers proportionally to their balan
 
 The governance power which is used to vote for or against existing proposals, and gives access to creating and sustaining a proposal.
 
-## Sneak peaks
+## Revenue model
+A platform fee of 5% will be deducted from interests paid by borrowers.
+> More revenue models will be introduced as we grow and unlock more use cases to our users.
 
-[view demo](https://darshprotocol.netlify.app)
+## Sneak peaks
+![Desktop - 100 (1)](https://user-images.githubusercontent.com/123966451/222903210-45840f83-0d05-440b-a555-925f38325b50.png)
+![Desktop - 102](https://user-images.githubusercontent.com/123966451/222903213-1e17b8cc-4cf8-49e4-b87d-dec96e7050ef.png)
+![Desktop - 83](https://user-images.githubusercontent.com/123966451/222903216-c726512a-c815-4fa8-b533-0fe76bca9f13.png)
+
+[checkout full demo here](https://darshprotocol.netlify.app)
 
 ## Development
 Create a `.env` like the `.env-example` and update with valid keys and mnemonic/phrase or private key
@@ -86,7 +112,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 - Start node backend
 > npm run start
 
-## Tools
+## Stacks
  | Smart contract | Frontend | Backend | Design | Cloud services |
  |--|--|--| -- |--|
  | Truffle and plugins | Vuejs | Expressjs | Figma | Netlify |
@@ -107,7 +133,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 ## Team
 **Arogundade Ibrahim**
  
-**Role:** Developer
+**Role:** Web3 Fullstack Developer
  
 [contact me](https://linktr.ee/devarogundade)
 
@@ -115,6 +141,6 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
  
 **Awolola Idowu**
  
-**Role:** Designer
+**Role:** UI/UX Designer
  
 [contact me](https://www.pip.me/Kryptograph)
