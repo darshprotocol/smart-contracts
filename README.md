@@ -94,7 +94,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 - Start node backend
 > npm run start
 
-## Tools
+## Stacks
  | Smart contract | Frontend | Backend | Design | Cloud services |
  |--|--|--| -- |--|
  | Truffle and plugins | Vuejs | Expressjs | Figma | Netlify |
