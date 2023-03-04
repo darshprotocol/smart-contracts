@@ -47,6 +47,11 @@ The LendingPool contract is the main point of interaction with the DARSH protoco
 
 | **Darsh Token** | **DARSH** |
 
+This ensures the protocol can rapidly adjust to changing market conditions, as well as update core parts of the protocol as time goes on.
+
+DARSH token holders will receive governance powers proportionally to their balance.
+
+The governance power which is used to vote for or against existing proposals, and gives access to creating and sustaining a proposal.
 
 ## Sneak peaks
 
