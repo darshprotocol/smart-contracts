@@ -12,6 +12,7 @@ Our main goal is to provide an efficient and sustainable way for lenders to maxi
 
 # Flow diagram
 ![Loan Diagram](https://user-images.githubusercontent.com/123966451/222807924-377c0485-182d-468a-a16c-978bd75d9317.png)
+[view full flow diagram](https://darshprotocol.gitbook.io/product-docs)
 
 ## LendingPool contract
 The LendingPool contract is the main point of interaction with the DARSH protocol's market.
