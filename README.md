@@ -115,6 +115,6 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
  
 **Awolola Idowu**
  
-**Role:** UI/UX Designer & Web3 Expert
+**Role:** Designer
  
 [contact me](https://www.pip.me/Kryptograph)
