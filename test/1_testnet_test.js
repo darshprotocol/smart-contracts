@@ -26,6 +26,7 @@ contract("CreateLendingOffer", async accounts => {
         await priceFeed.addPriceFeed(USDT, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
         await priceFeed.addPriceFeed(USDC, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
         await priceFeed.addPriceFeed(DAI, "0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
+        await priceFeed.addUSDFeed("0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128")
     })
     it("setValues 2", async () => {
         const ltv = await LoanToValueRatio.deployed()
@@ -58,62 +59,5 @@ contract("CreateLendingOffer", async accounts => {
             OfferManager.address,
             FeeManager.address
         )
-    }),
-        // it("mint faucet", async () => {
-        //     const btc = await WBTC.deployed()
-        //     await btc.faucetMint('2000000000000000000', { from: accounts[1] })
-        //     const weth = await WETH.deployed()
-        //     await weth.faucetMint('5000000000000000000', { from: accounts[1] })
-        //     const usdt = await WBTC.deployed()
-        //     await usdt.faucetMint('100000000000000000000000', { from: accounts[1] })
-        // })
-    it("createOffer", async () => {
-        // const usdt = await USDT.deployed()
-        // await usdt.approve(LendingPool.address, '2000000000000000000')
-        // const lending = await LendingPool.deployed()
-        // await lending.createBorrowingOffer(
-        //     NATIVE.address,
-        //     '1000000000000000000',
-        //     USDT.address,
-        //     "50000000000000",
-        //     30,
-        //     24,
-        //     {
-        //         from: accounts[0]
-        //     }
-        // )
-    })
-    it("createBorrowOffer", async () => {
-        // const lendingPool = await LendingPool.deployed()
-        // await lendingPool.createBorrowingRequest(
-        //     3,
-        //     25,
-        //     '0x99960D3d0A6F57D9F75eE5756888Fcfb7A47C93B',
-        //     '3858024691358',
-        //     30,
-        //     24,
-        //     {
-        //         from: accounts[1]
-        //     }
-        // )
-    })
-    it("borrowOffer", async () => {
-        // const dai = await DAI.deployed()
-        // let b = await dai.balanceOf("0x579959633488750B0C6603bEC0f8FDd24aD57fcA")
-        // console.log(b.toNumber());
-        // // await dai.transfer(accounts[1], "10000000000000000000")
-        // await dai.approve(LendingPool.address, "10000000000000000000", { from: accounts[1] })
-        // const borrowing = await LendingPool.deployed()
-        // await borrowing.acceptLendingOffer(2, 50, DAI.address, { from: accounts[1] })
-    })
-    it("repayLoan", async () => {
-        // const lendingPool = await LendingPool.deployed()
-        // const createdAt = 1676286833
-        // const now = Math.floor(Date.now() / 1000)
-        // const ellapsed = (now + 20) - createdAt
-        // const ftmAmount = "250000000000000000"
-        // const payback = await lendingPool.getFullInterestAmount(ftmAmount, ellapsed, "50000000000000")
-        // console.log(Number(payback));
-        // await lendingPool.repayLoan(2, 25, { value: payback, from: accounts[1] });
     })
 })

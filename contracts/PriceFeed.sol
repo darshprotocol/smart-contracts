@@ -10,7 +10,8 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract PriceFeed is Ownable2Step, IPriceFeed {
     mapping(address => address) feedAddresses;
-    address USD = 0x9BB8A6dcD83E36726Cc230a97F1AF8a84ae5F128;
+
+    address private USD;
 
     event PriceFeedAdded(
         uint256 timestamp,
@@ -20,6 +21,10 @@ contract PriceFeed is Ownable2Step, IPriceFeed {
 
     constructor() Ownable2Step() {
         feedAddresses[USD] = USD;
+    }
+
+    function addUSDFeed(address usd_) external onlyOwner {
+        USD = usd_;
     }
 
     /// @dev function for owner to add more price feeds

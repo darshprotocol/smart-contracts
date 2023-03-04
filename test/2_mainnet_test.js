@@ -19,44 +19,45 @@ const NATIVE = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
 
 contract("CreateLendingOffer", async accounts => {
     it("setValues", async () => {
-        const priceFeed = await PriceFeed.deployed()
-        await priceFeed.addPriceFeed(NATIVE, "0xf4766552D15AE4d256Ad41B6cf2933482B0680dc")
-        await priceFeed.addPriceFeed(WBTC, "0x8e94C22142F4A64b99022ccDd994f4e9EC86E4B4")
-        await priceFeed.addPriceFeed(WETH, "0x11DdD3d147E5b83D01cee7070027092397d63658")
-        await priceFeed.addPriceFeed(USDT, "0xF64b636c5dFe1d3555A847341cDC449f612307d0")
-        await priceFeed.addPriceFeed(USDC, "0x2553f4eeb82d5A26427b8d1106C51499CBa5D99c")
-        await priceFeed.addPriceFeed(DAI, "0x91d5DEFAFfE2854C7D02F50c80FA1fdc8A721e52")
+        // const priceFeed = await PriceFeed.deployed()
+        // await priceFeed.addPriceFeed(NATIVE, "0xf4766552D15AE4d256Ad41B6cf2933482B0680dc")
+        // await priceFeed.addPriceFeed(WBTC, "0x8e94C22142F4A64b99022ccDd994f4e9EC86E4B4")
+        // await priceFeed.addPriceFeed(WETH, "0x11DdD3d147E5b83D01cee7070027092397d63658")
+        // await priceFeed.addPriceFeed(USDT, "0xF64b636c5dFe1d3555A847341cDC449f612307d0")
+        // await priceFeed.addPriceFeed(USDC, "0x2553f4eeb82d5A26427b8d1106C51499CBa5D99c")
+        // await priceFeed.addPriceFeed(DAI, "0x91d5DEFAFfE2854C7D02F50c80FA1fdc8A721e52")
+        // await priceFeed.addUSDFeed("0xF64b636c5dFe1d3555A847341cDC449f612307d0")
     })
     it("setValues 2", async () => {
-        const ltv = await LoanToValueRatio.deployed()
-        await ltv.setDarshScore(DarshScore.address, 100, 120)
+        // const ltv = await LoanToValueRatio.deployed()
+        // await ltv.setDarshScore(DarshScore.address, 100, 120)
 
-        const darshScore = await DarshScore.deployed()
-        await darshScore.setActivity(Activity.address)
+        // const darshScore = await DarshScore.deployed()
+        // await darshScore.setActivity(Activity.address)
 
-        const offerManager = await OfferManager.deployed()
-        await offerManager.setLendingPool(LendingPool.address)
+        // const offerManager = await OfferManager.deployed()
+        // await offerManager.setLendingPool(LendingPool.address)
 
-        const loanManager = await LoanManager.deployed()
-        await loanManager.setLendingPool(LendingPool.address)
+        // const loanManager = await LoanManager.deployed()
+        // await loanManager.setLendingPool(LendingPool.address)
 
-        const feeManager = await FeeManager.deployed()
-        await feeManager.setLendingPool(LendingPool.address)
+        // const feeManager = await FeeManager.deployed()
+        // await feeManager.setLendingPool(LendingPool.address)
 
-        const activity = await Activity.deployed()
-        await activity.setLendingPool(LendingPool.address)
+        // const activity = await Activity.deployed()
+        // await activity.setLendingPool(LendingPool.address)
     })
     it("setValues 3", async function () {
-        const lendingPool = await LendingPool.deployed()
-        await lendingPool.setFeeds(
-            LoanToValueRatio.address,
-            Activity.address,
-            PriceFeed.address
-        )
-        await lendingPool.setManagers(
-            LoanManager.address,
-            OfferManager.address,
-            FeeManager.address
-        )
+        // const lendingPool = await LendingPool.deployed()
+        // await lendingPool.setFeeds(
+        //     LoanToValueRatio.address,
+        //     Activity.address,
+        //     PriceFeed.address
+        // )
+        // await lendingPool.setManagers(
+        //     LoanManager.address,
+        //     OfferManager.address,
+        //     FeeManager.address
+        // )
     })
 })

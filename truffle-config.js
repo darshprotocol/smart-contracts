@@ -26,7 +26,7 @@ module.exports = {
         },
 
         mainnet: {
-            provider: () => new HDWalletProvider(MNEMONIC, 'https://endpoints.omniatech.io/v1/fantom/mainnet/public'),
+            provider: () => new HDWalletProvider(MNEMONIC, 'https://rpc.ftm.tools'),
             network_id: 250,
             confirmations: 2,
             timeoutBlocks: 9999999,
