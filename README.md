@@ -24,6 +24,8 @@ Our main goal is to provide an efficient and sustainable way for lenders to maxi
 
 **Loan Managing:** on approving and creating a loan offer, lenders are assigned the full authority to a created loan offer of actions like settling borrow requests, repayments claiming, asset vault management all achievable on-chain
 
+[learn more](https://darshprotocol.gitbook.io/product-docs)
+
 ## LendingPool contract
 The LendingPool contract is the main point of interaction with the DARSH protocol's market.
 
