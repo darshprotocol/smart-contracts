@@ -55,6 +55,8 @@ DARSH token holders will receive governance powers proportionally to their balan
 The governance power which is used to vote for or against existing proposals, and gives access to creating and sustaining a proposal.
 
 ## Revenue model
+A platform fee of 5% will be deducted from interests paid by borrowers.
+> More revenue model will be introduce as we grow and unlocks more use case to our users.
 
 ## Sneak peaks
 ![Desktop - 100 (1)](https://user-images.githubusercontent.com/123966451/222903210-45840f83-0d05-440b-a555-925f38325b50.png)
