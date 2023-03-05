@@ -96,11 +96,11 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 
 - Set configs
 
-> truffle test --network=testnet|mainnet --compile-none -t1
+> truffle test --network=testnet|mainnet --compile-none --t1
 
 - Run test
 
-> truffle test --network=testnet|mainnet --compile-none -f2
+> truffle test --network=testnet|mainnet --compile-none --f2
 
 - Verify contracts
 
@@ -116,7 +116,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
  | Smart contract | Frontend | Backend | Design | Cloud services |
  |--|--|--| -- |--|
  | Truffle and plugins | Vuejs | Expressjs | Figma | Netlify |
-|Web3js|Web3js|Web3js||Render|
+ |Web3js|Web3js|Web3js||Render|
  ||Covalent API| Moralis Stream|||
  ||Jazzicon|Mongodb|||
 
