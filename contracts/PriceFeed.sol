@@ -19,12 +19,11 @@ contract PriceFeed is Ownable2Step, IPriceFeed {
         address indexed priceFeed
     );
 
-    constructor() Ownable2Step() {
-        feedAddresses[USD] = USD;
-    }
+    constructor() Ownable2Step() {}
 
     function addUSDFeed(address usd_) external onlyOwner {
         USD = usd_;
+        feedAddresses[usd_] = usd_;
     }
 
     /// @dev function for owner to add more price feeds

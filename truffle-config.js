@@ -44,7 +44,7 @@ module.exports = {
         },
 
         mainnet_test: {
-            provider: () => new HDWalletProvider(MNEMONIC, 'https://rpc.ankr.com/fantom'),
+            provider: () => new HDWalletProvider(MNEMONIC, 'https://rpc.ftm.tools'),
             network_id: 250,
             confirmations: 2,
             timeoutBlocks: 9999999,
