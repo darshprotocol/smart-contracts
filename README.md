@@ -133,7 +133,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 ## Team
 **Arogundade Ibrahim**
  
-**Role:** Web3 Fullstack Developer
+**Position:** Web3 Fullstack Developer
  
 [contact me](https://linktr.ee/devarogundade)
 
@@ -141,6 +141,6 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
  
 **Awolola Idowu**
  
-**Role:** UI/UX Designer
+**Position:** UI/UX Designer
  
 [contact me](https://www.pip.me/Kryptograph)
