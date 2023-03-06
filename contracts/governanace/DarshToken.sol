@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 */
 
 contract DarshToken is Ownable2Step, ERC20 {
-    constructor() Ownable2Step() ERC20("Darsh Token", "DARSH") {
+    constructor() Ownable2Step() ERC20("Darsh Token", "DSH") {
         _mint(msg.sender, 100000000 * 10**18);
     }
 }
