@@ -64,7 +64,7 @@ The LendingPool contract is the main point of interaction with the DARSH protoco
 
 ![darsh](https://user-images.githubusercontent.com/123966451/222815877-9c242f12-2477-4396-88c5-709d848c4f3b.png)
 
-| **Darsh Token** | **DARSH** |
+| **Darsh Token** | **DSH** |
 
 This ensures the protocol can rapidly adjust to changing market conditions, as well as update core parts of the protocol as time goes on.
 
@@ -96,11 +96,11 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 
 - Set configs
 
-> truffle test --network=testnet|mainnet --compile-none -t1
+> truffle test --network=testnet|mainnet --compile-none --t1
 
 - Run test
 
-> truffle test --network=testnet|mainnet --compile-none -f2
+> truffle test --network=testnet|mainnet --compile-none --f2
 
 - Verify contracts
 
@@ -116,7 +116,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
  | Smart contract | Frontend | Backend | Design | Cloud services |
  |--|--|--| -- |--|
  | Truffle and plugins | Vuejs | Expressjs | Figma | Netlify |
-|Web3js|Web3js|Web3js||Render|
+ |Web3js|Web3js|Web3js||Render|
  ||Covalent API| Moralis Stream|||
  ||Jazzicon|Mongodb|||
 
@@ -133,7 +133,7 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
 ## Team
 **Arogundade Ibrahim**
  
-**Role:** Web3 Fullstack Developer
+**Position:** Web3 Fullstack Developer
  
 [contact me](https://linktr.ee/devarogundade)
 
@@ -141,6 +141,6 @@ Create a `.env` like the `.env-example` and update with valid keys and mnemonic/
  
 **Awolola Idowu**
  
-**Role:** UI/UX Designer
+**Position:** UI/UX Designer
  
 [contact me](https://www.pip.me/Kryptograph)
