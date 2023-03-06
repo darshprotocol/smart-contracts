@@ -585,7 +585,7 @@ contract LendingPool is
             _msgSender()
         );
 
-        notify(_msgSender(), request.creator, ACCEPT_REQUEST);
+        notify(_msgSender(), request.creator, ACCEPT_REQUEST, request.offerId);
 
         _offerManager.afterLendingLoan(request.offerId, principalAmount);
         _offerManager.acceptRequest(requestId, _msgSender());
@@ -656,7 +656,7 @@ contract LendingPool is
             Type.CLAIMED
         );
 
-        notify(_msgSender(), request.creator, ACCEPT_REQUEST);
+        notify(_msgSender(), request.creator, ACCEPT_REQUEST, request.offerId);
 
         uint256 collateralPriceInUSD = _priceFeed.amountInUSD(
             offer.collateralToken,
@@ -779,7 +779,7 @@ contract LendingPool is
             (repaymentPrincipal - principalAmount)
         );
 
-        notify(_msgSender(), loan.lender, REPAID_LOAN);
+        notify(_msgSender(), loan.lender, REPAID_LOAN, loan.offerId);
 
         _activity.repayLoan(
             loan.lender,
@@ -802,7 +802,7 @@ contract LendingPool is
         RequestLibrary.Request memory request = _offerManager.getRequest(
             requestId
         );
-        notify(_msgSender(), request.creator, REJECT_REQUEST);
+        notify(_msgSender(), request.creator, REJECT_REQUEST, request.offerId);
     }
 
     /// @notice This function will cancel a request
@@ -976,6 +976,8 @@ contract LendingPool is
             principalPaid = collateralInPrincipal;
             collateralFee = 0;
         }
+
+        notify(_msgSender(), loan.borrower, LIQUIDATION, loan.offerId);
 
         _feeManager.credit(loan.collateralToken, collateralFee);
 

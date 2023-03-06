@@ -11,6 +11,7 @@ abstract contract LendingPoolProvider {
     uint256 public constant REJECT_REQUEST = 101;
     uint256 public constant EXPIRE_REQUEST = 102;
     uint256 public constant REPAID_LOAN = 103;
+    uint256 public constant LIQUIDATION = 104;
 
     enum Type {
         ADDED,
@@ -19,14 +20,21 @@ abstract contract LendingPoolProvider {
         REMOVED
     }
 
-    event Notify(uint256 id, uint256 timestamp, address from, address to);
+    event Notify(
+        uint256 id,
+        uint256 timestamp,
+        address from,
+        address to,
+        uint256 fieldId
+    );
 
     function notify(
         address from,
         address to,
-        uint256 notification
+        uint256 notification,
+        uint256 fieldId
     ) public virtual {
-        emit Notify(notification, block.timestamp, from, to);
+        emit Notify(notification, block.timestamp, from, to, fieldId);
     }
 
     event Transfer(
